@@ -11,3 +11,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.david {
+  font-family: 'David Libre', serif;
+}
+
+.fill {
+  text-align: justify;
+}
+
+.fill::after {
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
+/* ol { counter-reset: item } */
+/* li{ display: block } */
+/* li:before { content: counters(item, ".") " "; counter-increment: item } */
+li {
+  list-style-position: inside;
+}
+
+.fixed-size {
+  font-size: 14px;
+}
+
+input[type=text] {
+  border: none;
+  border-bottom: 2px solid black;
+}
