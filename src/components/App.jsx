@@ -101,12 +101,11 @@ export default function App(props) {
 
       <Router>
         <Routes>
-          <Route exact path="/" element={<div>
+          <Route exact path="/" element=
               {
                 // <Fillable documentData={documentData} saveData={saveData} />
                 <AddFormFieldToPdf />
-                }
-          </div>} />
+                } />
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
       </Router>

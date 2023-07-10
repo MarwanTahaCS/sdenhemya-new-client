@@ -4,35 +4,29 @@ import { PDFDocument, rgb  } from 'pdf-lib';
 import pdfDocument from '../parents_agreement.pdf';
 
 export default async function AddFormFieldsToPDF(props) {
-    const [documentBytes, setDocumentBytes] = useState(null);
+
+  const [fileBytes, setFileBytes] = useState(null);
 
   useEffect(() => {
-    const fetchDocument = async () => {
-      try {
-        const response = await fetch(pdfDocument);
-        const blob = await response.blob();
+    handleFileChange();
+  }, [])
 
-        const fileReader = new FileReader();
-        fileReader.onloadend = () => {
-          const arrayBuffer = fileReader.result;
-          const bytes = new Uint8Array(arrayBuffer);
-          setDocumentBytes(bytes);
-        };
-        fileReader.readAsArrayBuffer(blob);
-      } catch (error) {
-        console.error('Error loading document:', error);
-      }
-    };
+  const handleFileChange = (event) => {
+    const file = pdfDocument;
 
-    fetchDocument();
-  }, []);
-
-  if (documentBytes === null) {
-    return <div>Loading document...</div>;
-  }
+    if (file) {
+      const fileReader = new FileReader();
+      fileReader.onloadend = () => {
+        const arrayBuffer = fileReader.result;
+        const bytes = new Uint8Array(arrayBuffer);
+        setFileBytes(bytes);
+      };
+      fileReader.readAsArrayBuffer(file);
+    }
+  };
 
   //-------------------------------------------------------------------------------
-  
+
   let selectedPosition = null;
 
   const handlePageClick = (event) => {
@@ -40,10 +34,7 @@ export default async function AddFormFieldsToPDF(props) {
     selectedPosition = { x: offsetX, y: offsetY };
   };
 
-
-
-  const existingPdfBytes = documentBytes; // Load the existing PDF as bytes (from file or API)
-  const pdfDoc = await PDFDocument.load(existingPdfBytes);
+  const pdfDoc = await PDFDocument.load(fileBytes);
 
   const page = pdfDoc.getPages()[0];
   page.on('click', handlePageClick); // Attach the click event listener
@@ -78,8 +69,8 @@ export default async function AddFormFieldsToPDF(props) {
   return (
     <div>
         <h1> add form field </h1>
-      Document loaded! Total bytes: {documentBytes.length}
 
+        {/* <input type="file" onChange={handleFileInputChange} /> */}
 
       <button onClick={addFieldToPDF}>Add Field</button>
     </div>
