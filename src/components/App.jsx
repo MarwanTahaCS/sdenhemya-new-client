@@ -3,7 +3,6 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Axios from "axios";
 import Fillable from "./Fillable";
-import SentPage from "./SentPage";
 
 export default function App(props) {
 
@@ -40,11 +39,106 @@ export default function App(props) {
 
   }
 
-<<<<<<< Updated upstream
+  // texting branch
 
+  // function updateData(note) {
+  //   console.log("in update class")
+  //   Axios.post(`${localUrl}update`, note)
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) =>
+  //       console.log(err)
+  //     );
+  // }
 
-=======
->>>>>>> Stashed changes
+  // var organization = {
+  //   managerPhoneNumber: "0543257745",
+  //   orgDetails: {
+  //     organizationName: "",
+  //     orgLogo: "",
+  //     logoID: "",
+  //     staff: [
+  //       {
+  //         position: "manager",
+  //         name: "",
+  //         phoneNumber: "",
+  //         email: ""
+  //       },
+  //       {
+  //         position: "secretary",
+  //         name: "",
+  //         phoneNumber: "",
+  //         email: ""
+  //       },
+  //       {
+  //         position: "security manager",
+  //         name: "",
+  //         phoneNumber: "",
+  //         email: ""
+  //       }
+  //     ],
+  //   },
+  //   digitalPayment: {
+  //     iswanted: false,
+  //     details: {
+  //       accountNumber: "",
+  //       branchID: "",
+  //       bankName: "",
+  //     },
+  //   },
+  //   classes: {
+  //     numberOfClasses: 1,
+  //     classes: [{
+  //       className: "",
+  //       classLocation: "",
+  //       staff: {
+  //         teachers: [
+  //           {
+  //             name: "",
+  //             phoneNumber: "",
+  //           }
+  //         ],
+  //         assistants: [
+  //           {
+  //             name: "",
+  //             phoneNumber: "",
+  //           }
+  //         ],
+  //       },
+  //       classAgeGroup: "6-36-months",
+  //       workDays: [false, false, false, false, false, false, false],
+  //       startOfDay: "08:00",
+  //       endOfDay: "13:30",
+  //       longDay: {
+  //         isLongDay: false,
+  //         staff: {
+  //           teachers: [{
+  //             name: "",
+  //             phoneNumber: "",
+  //           }],
+  //           assistants: [{
+  //             name: "",
+  //             phoneNumber: "",
+  //           }],
+  //         },
+  //         startOfLongDayHours: "13:30",
+  //         endOfLongDayHours: "15:00",
+  //       },
+  //     }],
+  //   },
+  // };
+
+  // function getDefaultOrg() {
+  //   let defaultOrg = organization;
+  //   defaultOrg.managerPhoneNumber = managerPhoneNumber;
+  //   return defaultOrg;
+  // }
+
+  // function getNewManagerPhoneNumber(newPhoneNumber) {
+  //   setManagerPhoneNumber(newPhoneNumber);
+  // }
+
   var documentData = {
     day: "",
     month: "",
@@ -121,15 +215,7 @@ export default function App(props) {
           <Route exact path="/" element={<div>
               {<Fillable documentData={documentData} saveData={saveData} />}
           </div>} />
-<<<<<<< Updated upstream
-          <Route path="/success" element={
-            <SentPage />
-          } />
-=======
-          {/* <Route path="/success" element={<div> 
-
-          </div>} /> */}
->>>>>>> Stashed changes
+          {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
       </Router>
 
