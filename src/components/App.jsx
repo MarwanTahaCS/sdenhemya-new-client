@@ -24,7 +24,7 @@ export default function App(props) {
   }, [])
 
   // const localUrl = "http://localhost:3001/api/documentSign/";
-  const localUrl = "https:api.myvarno.io/api/documentSign/";
+  const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData) {
     try {
