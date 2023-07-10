@@ -55,17 +55,6 @@ export default function Reception(props) {
 
     }
 
-    // const [managerPhoneNumber, setManagerPhoneNumber] =
-    //     useState("");
-
-    // function changeNumber(event) {
-    //     setManagerPhoneNumber(event.target.value);
-    // }
-
-    // function updateNewNumber() {
-    //     props.setManagerPhoneNumber(managerPhoneNumber);
-    // }
-
     return (
         <div className="container py-3">
             <div className="p-3 text-center">

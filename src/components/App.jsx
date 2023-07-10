@@ -3,24 +3,12 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Axios from "axios";
 import Fillable from "./Fillable";
+import AddFormFieldToPdf from "./AddFormFieldsToPDF";
 
 export default function App(props) {
 
   useEffect(() => {
-    // handleClick("he");
-    // if (managerPhoneNumber !== "") {
-    //   Axios.get(localUrl + managerPhoneNumber)
-    //     .then((res) => {
-    //       let response = res.data;
-    //       setData(response);
-    //       if (response.length !== 0) {
-    //         setExists(true);
-    //       } else {
-    //         setExists(false);
-    //       }
-    //     })
-    //     .catch((err) => console.log(err));
-    // }
+  
   }, [])
 
   // const localUrl = "http://localhost:3001/api/documentSign/";
@@ -39,105 +27,6 @@ export default function App(props) {
 
   }
 
-  // texting branch
-
-  // function updateData(note) {
-  //   console.log("in update class")
-  //   Axios.post(`${localUrl}update`, note)
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) =>
-  //       console.log(err)
-  //     );
-  // }
-
-  // var organization = {
-  //   managerPhoneNumber: "0543257745",
-  //   orgDetails: {
-  //     organizationName: "",
-  //     orgLogo: "",
-  //     logoID: "",
-  //     staff: [
-  //       {
-  //         position: "manager",
-  //         name: "",
-  //         phoneNumber: "",
-  //         email: ""
-  //       },
-  //       {
-  //         position: "secretary",
-  //         name: "",
-  //         phoneNumber: "",
-  //         email: ""
-  //       },
-  //       {
-  //         position: "security manager",
-  //         name: "",
-  //         phoneNumber: "",
-  //         email: ""
-  //       }
-  //     ],
-  //   },
-  //   digitalPayment: {
-  //     iswanted: false,
-  //     details: {
-  //       accountNumber: "",
-  //       branchID: "",
-  //       bankName: "",
-  //     },
-  //   },
-  //   classes: {
-  //     numberOfClasses: 1,
-  //     classes: [{
-  //       className: "",
-  //       classLocation: "",
-  //       staff: {
-  //         teachers: [
-  //           {
-  //             name: "",
-  //             phoneNumber: "",
-  //           }
-  //         ],
-  //         assistants: [
-  //           {
-  //             name: "",
-  //             phoneNumber: "",
-  //           }
-  //         ],
-  //       },
-  //       classAgeGroup: "6-36-months",
-  //       workDays: [false, false, false, false, false, false, false],
-  //       startOfDay: "08:00",
-  //       endOfDay: "13:30",
-  //       longDay: {
-  //         isLongDay: false,
-  //         staff: {
-  //           teachers: [{
-  //             name: "",
-  //             phoneNumber: "",
-  //           }],
-  //           assistants: [{
-  //             name: "",
-  //             phoneNumber: "",
-  //           }],
-  //         },
-  //         startOfLongDayHours: "13:30",
-  //         endOfLongDayHours: "15:00",
-  //       },
-  //     }],
-  //   },
-  // };
-
-  // function getDefaultOrg() {
-  //   let defaultOrg = organization;
-  //   defaultOrg.managerPhoneNumber = managerPhoneNumber;
-  //   return defaultOrg;
-  // }
-
-  // function getNewManagerPhoneNumber(newPhoneNumber) {
-  //   setManagerPhoneNumber(newPhoneNumber);
-  // }
 
   var documentData = {
     day: "",
@@ -213,7 +102,10 @@ export default function App(props) {
       <Router>
         <Routes>
           <Route exact path="/" element={<div>
-              {<Fillable documentData={documentData} saveData={saveData} />}
+              {
+                // <Fillable documentData={documentData} saveData={saveData} />
+                <AddFormFieldToPdf />
+                }
           </div>} />
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
