@@ -40,8 +40,11 @@ export default function App(props) {
 
   }
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
   var documentData = {
     day: "",
     month: "",
@@ -118,9 +121,15 @@ export default function App(props) {
           <Route exact path="/" element={<div>
               {<Fillable documentData={documentData} saveData={saveData} />}
           </div>} />
+<<<<<<< Updated upstream
           <Route path="/success" element={
             <SentPage />
           } />
+=======
+          {/* <Route path="/success" element={<div> 
+
+          </div>} /> */}
+>>>>>>> Stashed changes
         </Routes>
       </Router>
 
