@@ -39,6 +39,8 @@ export default function App(props) {
 
   }
 
+  // texting branch
+
   // function updateData(note) {
   //   console.log("in update class")
   //   Axios.post(`${localUrl}update`, note)
