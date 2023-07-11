@@ -33,7 +33,7 @@ export default function Reception(props) {
         // });
     }
 
-    function updateSignature(id, url){
+    function updateSignature(id, url) {
         setDocumentData((prevValue) => {
             return {
                 ...prevValue,
@@ -55,16 +55,13 @@ export default function Reception(props) {
 
     }
 
-    // const [managerPhoneNumber, setManagerPhoneNumber] =
-    //     useState("");
-
-    // function changeNumber(event) {
-    //     setManagerPhoneNumber(event.target.value);
-    // }
-
-    // function updateNewNumber() {
-    //     props.setManagerPhoneNumber(managerPhoneNumber);
-    // }
+    function MyComponent() {
+        return (
+          <div>
+            <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe>
+          </div>
+        );
+      }
 
     return (
         <div className="container py-3">
@@ -992,6 +989,9 @@ export default function Reception(props) {
                 {/* ----------- נספח א'------------------------------------------ */}
                 <div className=" px-3 pb-3 text-center david">
                     נספח א'- לוח חופשות תשפ"ד
+                    <br />
+                    <br />
+                    <MyComponent />
                 </div>
                 <br /><br />
 
@@ -1813,7 +1813,7 @@ export default function Reception(props) {
                                     id="className"
                                     value={documentData.className}
                                     style={{ width: "80px" }}
-                                /> באגודה בשנת הלימודים תש"פ (להלן: "ההסכם העיקרי"); </p>
+                                /> באגודה בשנת הלימודים תשפ"ד (להלן: "ההסכם העיקרי"); </p>
                             </div>
                         </div>
                         <div className="row mx-auto">
@@ -1871,7 +1871,17 @@ export default function Reception(props) {
                                     <div className="col-1 px-0">3.</div>
                                     <div className="col-11 ">
                                         <p>
-                                            עבור שהיית הילד בבית הילדים, ישלמו ההורים לאגודה דמי שהייה חודשיים בסך של <input
+                                            עבור שהיית הילד בבית הילדים<input
+                                                className=""
+                                                onChange={updateDocumentData}
+                                                type="text"
+                                                name="className"
+                                                // placeholder={props.t("OrgDetails.3")}
+                                                autoComplete="off"
+                                                id="className"
+                                                value={documentData.className}
+                                                style={{ width: "80px" }}
+                                            />, ישלמו ההורים לאגודה דמי שהייה חודשיים בסך של <input
                                                 className=""
                                                 onChange={updateDocumentData}
                                                 type="text"

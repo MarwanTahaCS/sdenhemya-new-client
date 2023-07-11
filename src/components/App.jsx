@@ -4,8 +4,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Axios from "axios";
 import Fillable from "./Fillable";
 import SentPage from "./SentPage";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function App(props) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [childId, setChildId] = useState("");
 
   useEffect(() => {
     // handleClick("he");
@@ -24,12 +29,15 @@ export default function App(props) {
     // }
   }, [])
 
-  // const localUrl = "http://localhost:3001/api/documentSign/";
-  const localUrl = "https://api.myvarno.io/api/documentSign";
+  const localUrl = "http://localhost:3001/api/documentSign/";
+  // const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData) {
+    setIsLoading(true);
+
     try {
       console.log("in save data class")
+      setChildId(newDocumentData.childId);
       const response = await Axios.post(localUrl, newDocumentData)
       console.log(localUrl);
       console.log(response);
@@ -37,6 +45,8 @@ export default function App(props) {
     catch (err) {
       console.log(err);
     }
+
+    setIsLoading(false);
 
   }
 
@@ -116,10 +126,10 @@ export default function App(props) {
       <Router>
         <Routes>
           <Route exact path="/" element={<div>
-              {<Fillable documentData={documentData} saveData={saveData} />}
+            {<Fillable documentData={documentData} saveData={saveData} />}
           </div>} />
           <Route path="/success" element={
-            <SentPage />
+            <SentPage childId={childId} isLoading={isLoading} />
           } />
         </Routes>
       </Router>
