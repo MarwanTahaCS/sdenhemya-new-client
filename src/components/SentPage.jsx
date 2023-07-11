@@ -15,7 +15,7 @@ const SentPage = (props) => {
             <img className="img-fluid p-5" src="success-35.png"></img>
 
             <h5 class="lead text-muted">
-                תוכל לצפות במסמך החתום את תלחץ על הכפתור "הורד מסמך"
+                תוכל לצפות במסמך החתום אם תלחץ על הכפתור "הורד מסמך" למטה:
             </h5>
 
             {props.isLoading ? (
