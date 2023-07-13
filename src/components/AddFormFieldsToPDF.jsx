@@ -1,79 +1,135 @@
-import React, { useState, useEffect } from "react";
-import { PDFDocument, rgb  } from 'pdf-lib';
+import React, { useState, useEffect, useRef } from "react";
+import { PDFDocument, rgb } from 'pdf-lib';
+import { Document, Page, pdfjs } from 'react-pdf';
+import '@react-pdf/renderer';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import the required CSS file
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import { PDFDownloadLink, Page as PdfPage, Text, View, Document as PdfDocument, StyleSheet } from '@react-pdf/renderer';
 
-import pdfDocument from '../parents_agreement.pdf';
 
-export default async function AddFormFieldsToPDF(props) {
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-  const [fileBytes, setFileBytes] = useState(null);
+export default function AddFormFieldsToPDF(props) {
+  const [clicks, setClicks] = useState([]);
+  const [clickX, setClickX] = useState(null);
+  const [clickY, setClickY] = useState(null);
+  const [numPages, setNumPages] = useState(0);
+  const containerRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageWidth, setPageWidth] = useState(null);
+  const [pageHeight, setPageHeight] = useState(null);
+
+  const pdfFile = 'parents_agreement_fixed.pdf';
 
   useEffect(() => {
-    handleFileChange();
-  }, [])
+    const fetchNumPages = async () => {
+      try {
+        const pdf = await pdfjs.getDocument(pdfFile).promise;
+        setNumPages(pdf.numPages);
 
-  const handleFileChange = (event) => {
-    const file = pdfDocument;
+        const firstPage = await pdf.getPage(1);
+        const { width, height } = firstPage.getViewport({ scale: 1 });
 
-    if (file) {
-      const fileReader = new FileReader();
-      fileReader.onloadend = () => {
-        const arrayBuffer = fileReader.result;
-        const bytes = new Uint8Array(arrayBuffer);
-        setFileBytes(bytes);
-      };
-      fileReader.readAsArrayBuffer(file);
-    }
-  };
+        console.log([width, height]);
+        setPageWidth(width);
+        setPageHeight(height);
 
-  //-------------------------------------------------------------------------------
+      } catch (error) {
+        console.error('Error occurred while fetching PDF:', error);
+      }
+    };
 
-  let selectedPosition = null;
+    fetchNumPages();
+  }, [pdfFile]);
 
   const handlePageClick = (event) => {
-    const { offsetX, offsetY } = event.nativeEvent;
-    selectedPosition = { x: offsetX, y: offsetY };
+    console.log("at handle click");
+    const containerBounds = containerRef.current.getBoundingClientRect();
+    const containerX = containerBounds.left;
+    const containerY = containerBounds.top;
+
+    const containerwidthX = containerBounds.right - containerBounds.left;
+    const containerwidthY = containerBounds.bottom - containerBounds.top;
+
+    // console.log([containerwidthX, containerwidthY]);
+    const clickXtemp = ((event.clientX - containerX) / containerwidthX) * pageWidth;
+    const clickYtemp = ((event.clientY - containerY) / containerwidthY) * pageHeight;
+    setClickX(clickXtemp);
+    setClickY(clickYtemp);
+
+    const newClick = { x: clickXtemp, y: clickYtemp };
+    setClicks([...clicks, newClick]);
   };
 
-  const pdfDoc = await PDFDocument.load(fileBytes);
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    setClickY(null); // Reset clickY when the page changes
+  };
 
-  const page = pdfDoc.getPages()[0];
-  page.on('click', handlePageClick); // Attach the click event listener
-
-  const addFieldToPDF = async () => {
-    const textField = pdfDoc.createTextField('myField');
-    textField.setText('Default Value');
-    textField.addToPage(page, {
-      x: selectedPosition.x,
-      y: selectedPosition.y,
-      width: 200,
-      height: 20,
-      textColor: rgb(0, 0, 0),
-      backgroundColor: rgb(1, 1, 1),
-      borderColor: rgb(0, 0, 0),
-      borderWidth: 1,
-    });
-
-     // Save and download the modified PDF
-     const modifiedPdfBytes = await pdfDoc.save();
-
-     // Download the modified PDF
-     const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
-     const url = URL.createObjectURL(blob);
-     const link = document.createElement('a');
-     link.href = url;
-     link.download = 'modified.pdf';
-     link.click();
+  const renderPdfContent = () => {
+    return (
+      <PdfPage>
+        {/* <Text style={[styles.text, { top: clickY, left: clickX }]}>Your Text Field</Text> */}
+        {clicks.map((click, index) => (
+          <View key={index} style={[styles.textContainer, { top: click.y, left: click.x }]}>
+            <Text>Your Text Field</Text>
+          </View>
+        ))}
+      </PdfPage>
+    );
   };
 
   // Use the documentBytes as needed, e.g., display the PDF
   return (
     <div>
-        <h1> add form field </h1>
+      <h1> add form field </h1>
 
-        {/* <input type="file" onChange={handleFileInputChange} /> */}
+      <div>
+        Click coordinates: {clickX}, {clickY}
+      </div>
 
-      <button onClick={addFieldToPDF}>Add Field</button>
+      <div ref={containerRef} style={{ width: '100%', overflow: 'hidden' }}>
+        <Document file={pdfFile}>
+          {/* {Array.from(new Array(numPages), (el, index) => (
+            <Page key={index} pageNumber={index + 1} onClick={handlePageClick} width={containerRef.current?.clientWidth} />
+          ))} */}
+          <Page key={currentPage - 1} pageNumber={currentPage} onClick={handlePageClick} width={containerRef.current?.clientWidth} />
+        </Document>
+      </div>
+      <div>
+        Current page: {currentPage}
+      </div>
+      <button onClick={() => handlePageChange((currentPage == 1) ? currentPage : currentPage - 1)}>Previous Page</button>
+      <button onClick={() => handlePageChange((currentPage == numPages) ? currentPage : currentPage + 1)}>Next Page</button>
+
+      <div style={{ marginTop: '20px' }}>
+        <PDFDownloadLink document={
+          <PdfDocument>
+            {
+              renderPdfContent()
+            }
+          </PdfDocument>
+        } fileName="modified_document.pdf">
+          {({ blob, url, loading, error }) =>
+            loading ? 'Loading document...' : 'Download modified document'
+          }
+        </PDFDownloadLink>
+      </div>
+
+
     </div>
   );
-  
+
 }
+
+const styles = StyleSheet.create({
+  text: {
+    position: 'absolute',
+    fontSize: 12,
+  },
+  textContainer: {
+    position: 'absolute',
+    border: '1px solid black',
+    padding: '5px',
+  },
+});
