@@ -10,6 +10,8 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -70,7 +72,7 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
   }, [pdfFile]);
 
-  
+
 
   const handlePageClick = (event) => {
     console.log("at handle click");
@@ -84,13 +86,13 @@ export default function AddFormFieldsToPDF(props) {
     const containerwidthY = containerBounds.bottom - containerBounds.top;
 
     // console.log([containerwidthX, containerwidthY]);
-    const clickXtemp = ((event.clientX - containerX) / containerwidthX) ;
-    const clickYtemp = ((event.clientY - containerY) / containerwidthY) ;
-    
+    const clickXtemp = ((event.clientX - containerX) / containerwidthX);
+    const clickYtemp = ((event.clientY - containerY) / containerwidthY);
+
     setClickX(clickXtemp);
     setClickY(clickYtemp);
 
-    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight};
+    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight };
     setClicks([...clicks, newClick]);
 
     const clickX = event.clientX - containerX;
@@ -103,9 +105,15 @@ export default function AddFormFieldsToPDF(props) {
       page: currentPage,
       isCursor: false,
       click: newClick,
+      editor: {
+        state: false,
+        width: 0.25,
+        height: 1,
+        font: 1
+      }
     };
 
-    setInputFields([...inputFields, newInputField]);
+    setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
 
     SetAddingTextInoutField(false);
   };
@@ -197,16 +205,32 @@ export default function AddFormFieldsToPDF(props) {
 
     setContainerBounds(containerBounds);
 
-    const clickX = event.clientX - containerX;
-    const clickY = event.clientY - containerY;
+    const containerwidthX = containerBounds.right - containerBounds.left;
+    const containerwidthY = containerBounds.bottom - containerBounds.top;
+
+    // console.log([containerwidthX, containerwidthY]);
+    const clickXtemp = ((event.clientX - containerX) / containerwidthX);
+    const clickYtemp = ((event.clientY - containerY) / containerwidthY);
+
+    setClickX(clickXtemp);
+    setClickY(clickYtemp);
+
+    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight };
+    setClicks([...clicks, newClick]);
 
     const newInputField = {
-      x: clickX,
-      y: clickY,
+      x: clickXtemp,
+      y: clickYtemp,
       value: '',
       page: currentPage,
       isCursor: true,
       click: { x: 0, y: 0 },
+      editor: {
+        state: false,
+        width: 0.25,
+        height: 1,
+        font: 1
+      }
     };
 
     setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -220,6 +244,39 @@ export default function AddFormFieldsToPDF(props) {
 
   const handleMouseLeave = () => {
     setHoveredIndex(null);
+  };
+
+  const switchEditorState = (index) => {
+    const fieldToEdit = inputFields[index];
+    fieldToEdit.editor.state = !fieldToEdit.editor.state;
+    setInputFields([...inputFields.filter((field, liveIndex) => liveIndex !== index), fieldToEdit]);
+  }
+
+  const handleSliderChange = (event, newValue, index) => {
+    setInputWidth(newValue, index);
+  };
+
+  const setInputWidth = (newValue, index) => {
+    const fieldToEdit = inputFields[index];
+    fieldToEdit.editor.width = newValue / 100;
+    setInputFields([...inputFields.filter((field, liveIndex) => liveIndex !== index), fieldToEdit]);
+  };
+
+
+  const handleDragStart = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDragMove = (event, index) => {
+    const delta = event.movementY;
+
+    console.log(index);
+
+    if (delta > 0) {
+      setInputWidth(inputFields[index].filter.width - 1, index);
+    } else if (delta < 0) {
+      setInputWidth(inputFields[index].filter.width + 1, index);
+    }
   };
 
   // Use the documentBytes as needed, e.g., display the PDF
@@ -252,10 +309,10 @@ export default function AddFormFieldsToPDF(props) {
               value={inputField.value}
               onChange={(event) => handleInputChange(event, index)}
               style={{
-                position: 'absolute', top: inputField.y * windowWidth * (pageHeight/pageWidth), left: inputField.x * windowWidth, 
-                width: `${windowWidth/6}px`,
-                height: `${windowWidth/24}px`,
-                fontSize: `${windowWidth/60}px`,
+                position: 'absolute', top: inputField.y * (windowWidth - 18) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth - 18),
+                width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                height: `${windowWidth / 40}px`,
+                fontSize: `${windowWidth / 60}px`,
                 padding: '4px',
                 // ...(windowWidth <= 768 && {
                 //   width: '50px',
@@ -265,11 +322,54 @@ export default function AddFormFieldsToPDF(props) {
                 // }),
               }}
               onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}
+              onMouseLeave={handleMouseLeave}
             // className="input-field"
             /> {hoveredIndex === index && (
-              <FaEdit style={{ marginLeft: '5px', cursor: 'pointer' }} />
-            )}</div>: <div></div>
+              <FaEdit
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => switchEditorState(index)}
+                style={{
+                  height: `${windowWidth / 40}px`, marginLeft: `${windowWidth / 200}px`, cursor: 'pointer', position: 'absolute', top: (inputField.y * (windowWidth - 18) * ((pageHeight) / pageWidth)), left: (inputField.x * (windowWidth - 18)),
+                }} />
+            )} {inputField.editor.state && (
+              <div style={{
+                position: 'absolute',
+                top: (inputField.y * (windowWidth - 18) * ((pageHeight) / pageWidth)) + windowWidth / 40,
+                left: (inputField.x * (windowWidth - 18)),
+                width: `${windowWidth / 4}px`
+              }}>
+                <div class="card p-1" >
+                  <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        userSelect: 'none',
+                        cursor: 'grab',
+                      }}
+                      draggable
+                      onDragStart={handleDragStart}
+                      onDrag={(event) => handleDragMove(event, index)}
+                    >
+                      <Typography variant="body1" style={{fontSize: `${windowWidth / 60}px`}}>{Math.trunc(inputField.editor.width * 100)}</Typography>
+                      <Slider
+                        value={inputField.editor.width * 100}
+                        min={5}
+                        max={100}
+                        step={1}
+                        size="small"
+                        aria-label="Small"
+                        onChange={(event, newValue) => handleSliderChange(event, newValue, index)}
+                      />
+                    </div>
+                    <button className="btn btn-success" style={{fontSize: `${windowWidth / 60}px`}} onClick={() => switchEditorState(index)}> Save</button>
+                </div>
+
+                
+              </div>
+            )}
+            </div> : <div></div>
 
         ))}
       </div>
