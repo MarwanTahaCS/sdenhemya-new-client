@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
+import { FaEdit } from 'react-icons/fa';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -23,11 +24,29 @@ export default function AddFormFieldsToPDF(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageWidth, setPageWidth] = useState(null);
   const [pageHeight, setPageHeight] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const [addingTextInputField, SetAddingTextInoutField] = useState(false);
 
   const pdfFile = 'parents_agreement_fixed.pdf';
   const fontFileUrl = 'DavidLibre-Regular.ttf';
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  // Add event listener to handle window resize
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    setContainerBounds(containerRef.current.getBoundingClientRect());
+
+    console.log(containerBounds.bottom - containerBounds.top);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
 
   useEffect(() => {
@@ -51,11 +70,13 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
   }, [pdfFile]);
 
+  
+
   const handlePageClick = (event) => {
     console.log("at handle click");
     const containerBounds = containerRef.current.getBoundingClientRect();
-    const containerX = containerBounds.left ;
-    const containerY = containerBounds.top ;
+    const containerX = containerBounds.left;
+    const containerY = containerBounds.top;
 
     setContainerBounds(containerBounds);
 
@@ -63,20 +84,21 @@ export default function AddFormFieldsToPDF(props) {
     const containerwidthY = containerBounds.bottom - containerBounds.top;
 
     // console.log([containerwidthX, containerwidthY]);
-    const clickXtemp = ((event.clientX - containerX) / containerwidthX) * pageWidth;
-    const clickYtemp = ((event.clientY - containerY) / containerwidthY) * pageHeight;
+    const clickXtemp = ((event.clientX - containerX) / containerwidthX) ;
+    const clickYtemp = ((event.clientY - containerY) / containerwidthY) ;
+    
     setClickX(clickXtemp);
     setClickY(clickYtemp);
 
-    const newClick = { x: clickXtemp, y: clickYtemp };
+    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight};
     setClicks([...clicks, newClick]);
 
-    const clickX = event.clientX - containerX ;
-    const clickY = event.clientY - containerY ;
+    const clickX = event.clientX - containerX;
+    const clickY = event.clientY - containerY;
 
     const newInputField = {
-      x: clickX,
-      y: clickY,
+      x: clickXtemp,
+      y: clickYtemp,
       value: `${newClick}`,
       page: currentPage,
       isCursor: false,
@@ -100,6 +122,7 @@ export default function AddFormFieldsToPDF(props) {
   };
 
   const handleOpenPDF = async () => {
+    console.log(inputFields);
     try {
       // Load the existing PDF document
       const existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
@@ -120,11 +143,11 @@ export default function AddFormFieldsToPDF(props) {
         const { value } = inputField;
         const { x, y } = inputField.click;
         pages.forEach((page, index) => {
-          if(inputField.page === index+1){
-          const pageHeight = page.getHeight();
-          const sizeFornt = 10;
-          const adjustedY = pageHeight - y - sizeFornt; // Adjust the y-coordinate
-          page.drawText(value, { x, y: adjustedY, font: customFont, size: sizeFornt, color: rgb(0, 0, 0) });
+          if (inputField.page === index + 1) {
+            const pageHeight = page.getHeight();
+            const sizeFornt = 10;
+            const adjustedY = pageHeight - y - sizeFornt; // Adjust the y-coordinate
+            page.drawText(value, { x, y: adjustedY, font: customFont, size: sizeFornt, color: rgb(0, 0, 0) });
           }
         });
       });
@@ -146,22 +169,22 @@ export default function AddFormFieldsToPDF(props) {
     }
   };
 
-  const renderPdfContent = () => {
-    return (
-      <PdfPage>
-        {
-          inputFields.map((field, index) => (
-            clicks.map((click, index) => (
-              <View key={index} style={[styles.textContainer, { top: click.y, left: click.x }]}>
-                <Text>Your Text Field</Text>
-              </View>
-            ))
-          ))
-        }
-        
-      </PdfPage>
-    );
-  };
+  // const renderPdfContent = () => {
+  //   return (
+  //     <PdfPage>
+  //       {
+  //         inputFields.map((field, index) => (
+  //           clicks.map((click, index) => (
+  //             <View key={index} style={[styles.textContainer, { top: click.y, left: click.x }]}>
+  //               <Text>Your Text Field</Text>
+  //             </View>
+  //           ))
+  //         ))
+  //       }
+
+  //     </PdfPage>
+  //   );
+  // };
 
   const handleAddingTextInputField = () => {
     SetAddingTextInoutField(true);
@@ -169,13 +192,13 @@ export default function AddFormFieldsToPDF(props) {
 
   const handleMouseMove = (event) => {
     const containerBounds = containerRef.current.getBoundingClientRect();
-    const containerX = containerBounds.left ;
-    const containerY = containerBounds.top ;
+    const containerX = containerBounds.left;
+    const containerY = containerBounds.top;
 
     setContainerBounds(containerBounds);
 
-    const clickX = event.clientX - containerX ;
-    const clickY = event.clientY - containerY ;
+    const clickX = event.clientX - containerX;
+    const clickY = event.clientY - containerY;
 
     const newInputField = {
       x: clickX,
@@ -186,53 +209,68 @@ export default function AddFormFieldsToPDF(props) {
       click: { x: 0, y: 0 },
     };
 
-      // {
-      //   x: field.x,
-      // y: field.y + window.scrollY,
-      // value: field.value,
-      // page: field.page,
-      // isCursor: field.isCursor
-      // }
-      
     setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
 
     console.log([window.scrollX, window.scrollY, inputFields.find(field => field.isCursor)]);
+  };
+
+  const handleMouseEnter = (index) => {
+    setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(null);
   };
 
   // Use the documentBytes as needed, e.g., display the PDF
   return (
     <div>
       <h1> add form field </h1>
-      <BootstrapButton variant="contained" onClick={ handleAddingTextInputField } disableRipple>
+      <BootstrapButton variant="contained" onClick={handleAddingTextInputField} disableRipple>
         Add Text Input Field
       </BootstrapButton>
       <div>
         Click coordinates: {clickX}, {clickY}
       </div>
 
-      <div ref={containerRef} style={{ width: '100%', overflow: 'hidden' }} onMouseMove={addingTextInputField?handleMouseMove:null}>
+      <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} onMouseMove={addingTextInputField ? handleMouseMove : null}>
         <Document file={pdfFile}>
           {/* {Array.from(new Array(numPages), (el, index) => (
             <Page key={index} pageNumber={index + 1} onClick={handlePageClick} width={containerRef.current?.clientWidth} />
           ))} */}
-          {addingTextInputField? 
-          (<Page key={currentPage - 1} pageNumber={currentPage} onClick={handlePageClick} width={containerRef.current?.clientWidth} />)
-          :(<Page key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />)}
+          <div style={{ pointerEvents: `${addingTextInputField ? 'auto' : 'none'}` }} >
+            {addingTextInputField ?
+              (<Page key={currentPage - 1} pageNumber={currentPage} onClick={handlePageClick} width={containerRef.current?.clientWidth} />)
+              : (<Page key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />)}
+          </div>
         </Document>
-      </div>
-      <div style={{ marginTop: '20px' }}>
-
         {inputFields.map((inputField, index) => (
-          (inputField.page === currentPage)?
-          <input
-            key={index}
-            type="text"
-            value={inputField.value}
-            onChange={(event) => handleInputChange(event, index)}
-            style={{ position: 'absolute', top: inputField.y + containerBounds.top + window.scrollY , left: inputField.x }}
-            className="input-field"
-          />: <div></div>
-          
+          (inputField.page === currentPage) ?
+            <div><input
+              key={index}
+              type="text"
+              value={inputField.value}
+              onChange={(event) => handleInputChange(event, index)}
+              style={{
+                position: 'absolute', top: inputField.y * windowWidth * (pageHeight/pageWidth), left: inputField.x * windowWidth, 
+                width: `${windowWidth/6}px`,
+                height: `${windowWidth/24}px`,
+                fontSize: `${windowWidth/60}px`,
+                padding: '4px',
+                // ...(windowWidth <= 768 && {
+                //   width: '50px',
+                //   height: '14px',
+                //   fontSize: '8px',
+                //   padding: '2px',
+                // }),
+              }}
+              onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={handleMouseLeave}
+            // className="input-field"
+            /> {hoveredIndex === index && (
+              <FaEdit style={{ marginLeft: '5px', cursor: 'pointer' }} />
+            )}</div>: <div></div>
+
         ))}
       </div>
       <div>
@@ -241,19 +279,6 @@ export default function AddFormFieldsToPDF(props) {
       <button onClick={() => handlePageChange((currentPage == 1) ? currentPage : currentPage - 1)}>Previous Page</button>
       <button onClick={() => handlePageChange((currentPage == numPages) ? currentPage : currentPage + 1)}>Next Page</button>
 
-      <div style={{ marginTop: '20px' }}>
-        <PDFDownloadLink document={
-          <PdfDocument>
-            {
-              renderPdfContent()
-            }
-          </PdfDocument>
-        } fileName="modified_document.pdf">
-          {({ blob, url, loading, error }) =>
-            loading ? 'Loading document...' : 'Download modified document'
-          }
-        </PDFDownloadLink>
-      </div>
 
       <button onClick={handleOpenPDF}>Open PDF</button>
 

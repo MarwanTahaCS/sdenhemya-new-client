@@ -56,3 +56,11 @@ li {
     padding: 2px;
   }
 }
+
+.textLayer {
+  
+}
+
+.text-fields{
+  z-index: 1;
+}
