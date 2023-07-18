@@ -4,7 +4,6 @@ import SignatureCanvas from 'react-signature-canvas';
 export default function SignatureModal(props) {
 
   const [sign, setSign] = useState();
-  const [url, setUrl] = useState();
 
   function handleClear() {
     sign.clear();
@@ -12,10 +11,8 @@ export default function SignatureModal(props) {
 
   function handleGenerate() {
     let signatureBlob = sign.toDataURL('img/png');
-    setUrl(signatureBlob);
-    props.setUrl(signatureBlob);
 
-    props.updateSignature(props.id, signatureBlob);
+    props.updateSignature(props.index, signatureBlob);
   }
 
   return (
@@ -26,7 +23,7 @@ export default function SignatureModal(props) {
         לחץ כאן כדי לחתום/לעדכן חתימה <br/>
       </button> */}
 
-      <div className="fixed-size" data-bs-toggle="modal" data-bs-target={`#exampleModal${props.id}`}>
+      <div className="fixed-size" data-bs-toggle="modal" data-bs-target={`#exampleModal${props.index}`}>
         לחץ כאן כדי לחתום <br/>
         <img src={props.url} alt="signature" width="100"  /> 
       </div>
@@ -34,7 +31,7 @@ export default function SignatureModal(props) {
       
 
 
-      <div class="modal fade" id={`exampleModal${props.id}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id={`exampleModal${props.index}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
