@@ -11,8 +11,10 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete } from '@mui/material';
+import { Typography, TextField, Autocomplete  } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -29,11 +31,9 @@ export default function AddFormFieldsToPDF(props) {
   const [pageWidth, setPageWidth] = useState(null);
   const [pageHeight, setPageHeight] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const emptySignature = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
-  
-  const [url1, setUrl1] = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
-  const [url2, setUrl2] = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
 
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
@@ -43,7 +43,10 @@ export default function AddFormFieldsToPDF(props) {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file);
+  };
 
   const handleResize = () => {
     setWindowWidth(window.visualViewport.width);
@@ -83,10 +86,34 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
   }, [pdfFile]);
 
+  useEffect(() => {
+    const fetchNumPages = async () => {
+      try {
+        const existingPdfBytes = await selectedFile.arrayBuffer();
+        const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
+        setNumPages(pdfDoc.getPageCount());
+
+        const page = pdfDoc.getPage(1);
+        const { width, height } = page.getSize();
+
+        console.log([width, height]);
+        setPageWidth(width);
+        setPageHeight(height);
+
+      } catch (error) {
+        console.error('Error occurred while fetching PDF:', error);
+      }
+    };
+
+    fetchNumPages();
+
+    setWindowWidth(window.visualViewport.width);
+  }, [selectedFile]);
+
 
 
   const handlePageClick = (event, inputType) => {
-    
+
     const containerBounds = containerRef.current.getBoundingClientRect();
     const containerX = containerBounds.left;
     const containerY = containerBounds.top;
@@ -103,11 +130,11 @@ export default function AddFormFieldsToPDF(props) {
     setClickX(clickXtemp);
     setClickY(clickYtemp);
 
-    if(inputType === 1) {
+    if (inputType === 1) {
       const newInputField = {
         x: clickXtemp,
         y: clickYtemp,
-        value: `${[clickXtemp, clickYtemp]}`,
+        value: `שדה קלט`,
         page: currentPage,
         isCursor: false,
         editor: {
@@ -118,9 +145,9 @@ export default function AddFormFieldsToPDF(props) {
           inputType: { label: 'אחר', value: 'other' },
         }
       };
-  
+
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
-  
+
       SetAddingTextInputField(false);
 
     } else if (inputType === 2) {
@@ -128,7 +155,7 @@ export default function AddFormFieldsToPDF(props) {
       const newSignature = {
         x: clickXtemp,
         y: clickYtemp,
-        value: emptySignature,
+        value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC",
         page: currentPage,
         isCursor: false,
         editor: {
@@ -136,17 +163,79 @@ export default function AddFormFieldsToPDF(props) {
           width: 1,
           height: 1,
           font: 1,
-          inputType: { label: 'אחר', value: 'signature1' },
+          inputType: { label: 'חתימה', value: 'signature1' },
         }
       };
-  
-      setSignatures([...signatures.filter(signature => !signature.isCursor), newSignature]);
+
+      setSignatures([...inputFields.filter(field => !field.isCursor), inputFields]);
 
       SetAddingSignatureInputField(false);
     }
 
     console.log(signatures);
 
+  };
+
+  const handleMouseMove = (event, inputType) => {
+    const containerBounds = containerRef.current.getBoundingClientRect();
+    const containerX = containerBounds.left;
+    const containerY = containerBounds.top;
+
+    setContainerBounds(containerBounds);
+
+    const containerwidthX = containerBounds.right - containerBounds.left;
+    const containerwidthY = containerBounds.bottom - containerBounds.top;
+
+    // console.log([containerwidthX, containerwidthY]);
+    const clickXtemp = ((event.clientX - containerX) / containerwidthX);
+    const clickYtemp = ((event.clientY - containerY) / containerwidthY);
+
+    setClickX(clickXtemp);
+    setClickY(clickYtemp);
+
+    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight };
+    setClicks([...clicks, newClick]);
+
+    if (inputType === 1) {
+
+      const newInputField = {
+        x: clickXtemp,
+        y: clickYtemp,
+        value: '',
+        page: currentPage,
+        isCursor: true,
+        editor: {
+          state: false,
+          width: 0.25,
+          height: 1,
+          font: 1,
+          inputType: { label: 'אחר', value: 'other' },
+        }
+      };
+
+      setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
+
+      console.log([window.scrollX, window.scrollY, inputFields.find(field => field.isCursor)]);
+    } else if (inputType === 2) {
+      const newInputField = {
+        x: clickXtemp,
+        y: clickYtemp,
+        value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC",
+        page: currentPage,
+        isCursor: true,
+        editor: {
+          state: false,
+          width: 0.25,
+          height: 1,
+          font: 1,
+          inputType: { label: 'חתימה', value: 'signature1' },
+        }
+      };
+
+      setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
+
+      console.log([window.scrollX, window.scrollY, inputFields.find(field => field.isCursor)]);
+    }
   };
 
   const handleInputChange = (event, index) => {
@@ -161,10 +250,21 @@ export default function AddFormFieldsToPDF(props) {
   };
 
   const handleOpenPDF = async () => {
+
+    if (!selectedFile) {
+      console.log('Please select a PDF file.');
+      return;
+    }
+
     console.log(inputFields);
     try {
       // Load the existing PDF document
-      const existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
+      var existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
+
+      if (selectedFile) {
+        existingPdfBytes = await selectedFile.arrayBuffer();
+      }
+
       const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
 
       // Register the fontkit instance
@@ -178,17 +278,41 @@ export default function AddFormFieldsToPDF(props) {
 
       // Add the input field values as text on each page
       const pages = pdfDoc.getPages();
-      inputFields.forEach(inputField => {
-        const { value } = inputField;
-        const { x, y } = inputField;
-        pages.forEach((page, index) => {
-          if (inputField.page === index + 1) {
-            const pageHeight = page.getHeight();
-            const sizeFont = 12;
-            const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
-            page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
-          }
-        });
+      inputFields.forEach(async inputField => {
+        if (inputField.editor.inputType.value !== 'signature1') {
+          const { value } = inputField;
+          const { x, y } = inputField;
+          pages.forEach((page, index) => {
+            if (inputField.page === index + 1) {
+              const pageHeight = page.getHeight();
+              const sizeFont = 12;
+              const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
+              page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
+            }
+          });
+        } else if (inputField.editor.inputType.value === 'signature1') {
+          console.log(inputField.value);
+          // Embed the image in the PDF document
+          // const imageBytes = await fetch(inputField.value).then(res => res.arrayBuffer());
+          const image = await pdfDoc.embedPng(inputField.value);
+          // const pngImage = await pdfDoc.embedPng(inputField.value);
+          const pngDims = image.scale(0.27)
+          const { x, y } = inputField;
+          pages.forEach((page, index) => {
+            if (inputField.page === index + 1) {
+              const pageHeight = page.getHeight();
+
+              const adjustedY = pageHeight - y * (pageHeight) - pngDims.height; //- sizeFont; // Adjust the y-coordinate
+              // page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
+              // page.moveTo(393, 80);
+              page.drawImage(image, {
+                x: x * (pageWidth), y: adjustedY,
+                width: pngDims.width,
+                height: pngDims.height
+              })
+            }
+          });
+        }
       });
 
       // Generate the modified PDF document
@@ -233,46 +357,6 @@ export default function AddFormFieldsToPDF(props) {
     console.log(addingSignatureInputField);
     SetAddingSignatureInputField(true);
   }
-
-  const handleMouseMove = (event) => {
-    const containerBounds = containerRef.current.getBoundingClientRect();
-    const containerX = containerBounds.left;
-    const containerY = containerBounds.top;
-
-    setContainerBounds(containerBounds);
-
-    const containerwidthX = containerBounds.right - containerBounds.left;
-    const containerwidthY = containerBounds.bottom - containerBounds.top;
-
-    // console.log([containerwidthX, containerwidthY]);
-    const clickXtemp = ((event.clientX - containerX) / containerwidthX);
-    const clickYtemp = ((event.clientY - containerY) / containerwidthY);
-
-    setClickX(clickXtemp);
-    setClickY(clickYtemp);
-
-    const newClick = { x: clickXtemp * pageWidth, y: clickYtemp * pageHeight };
-    setClicks([...clicks, newClick]);
-
-    const newInputField = {
-      x: clickXtemp,
-      y: clickYtemp,
-      value: '',
-      page: currentPage,
-      isCursor: true,
-      editor: {
-        state: false,
-        width: 0.25,
-        height: 1,
-        font: 1,
-        inputType: { label: 'אחר', value: 'other' },
-      }
-    };
-
-    setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
-
-    console.log([window.scrollX, window.scrollY, inputFields.find(field => field.isCursor)]);
-  };
 
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -373,197 +457,230 @@ export default function AddFormFieldsToPDF(props) {
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
       updatedInputFields[index].editor.inputType = value;
+      if (value.value === 'signature1') {
+        updatedInputFields[index].value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
+      } else {
+        updatedInputFields[index].value = value.label;
+      }
       console.log(updatedInputFields);
       return updatedInputFields; // Set the updated array as the new state
     });
   }
 
-  function updateSignature(index, url ){
-    setSignatures(prevSignatures => {
-      const updatedInputFields = [...prevSignatures]; // Copy the existing array
+  function updateSignature(index, url) {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
       updatedInputFields[index].value = url;
       // console.log(updatedInputFields);
       return updatedInputFields; // Set the updated array as the new state
     });
-    
+
+  }
+
+  function saveInputFields() {
+    props.handleInputFieldsChange(inputFields);
   }
 
   // Use the documentBytes as needed, e.g., display the PDF
   return (
     <div>
-      <h1> add form field </h1>
-      <BootstrapButton variant="contained" onClick={handleAddingTextInputField} disableRipple>
-        Add Text Input Field
-      </BootstrapButton>
-      <BootstrapButton variant="contained" onClick={handleAddingSignatureInputField} disableRipple>
-        Add Signature Input Field
-      </BootstrapButton>
-      <div>
-        Click coordinates: {clickX}, {clickY}
-      </div>
+      <h1> הוספת טופס</h1>
+      {selectedFile && <div>
+        <BootstrapButton variant="contained" onClick={handleAddingTextInputField} disableRipple>
+          הוסף שדה קלט
+        </BootstrapButton>
+        <BootstrapButton variant="contained" onClick={handleAddingSignatureInputField} disableRipple>
+          הוסף לוח חתימה
+        </BootstrapButton>
+      </div>}
 
-      <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? handleMouseMove : null}>
-        <Document file={pdfFile}>
+
+      {!selectedFile && <div className="m-3">
+        <label for="formFile" className="form-label">בחר קובץ PDF</label>
+        <input className="form-control" id="formFile" type="file" accept="application/pdf" onChange={handleFileChange} />
+      </div>}
+
+      <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingSignatureInputField ? (event) => handleMouseMove(event, 2) : null}>
+        <Document file={selectedFile}>
           {/* {Array.from(new Array(numPages), (el, index) => (
             <Page key={index} pageNumber={index + 1} onClick={handlePageClick} width={containerRef.current?.clientWidth} />
           ))} */}
           <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
-            {addingTextInputField ?
-              (<Page key={currentPage - 1} pageNumber={currentPage} onClick={(event) => handlePageClick(event, 1)} width={containerRef.current?.clientWidth} />)
-              : (addingSignatureInputField ?
-                (<Page key={currentPage - 1} pageNumber={currentPage} onClick={(event) => handlePageClick(event, 2)} width={containerRef.current?.clientWidth} />)
-                : (<Page key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />))}
-              
+
+            <Page key={currentPage - 1} pageNumber={currentPage} onClick={addingTextInputField ? (event) => handlePageClick(event, 1) : addingSignatureInputField ? (event) => handlePageClick(event, 2) : null} width={containerRef.current?.clientWidth} />
+
+
           </div>
         </Document>
         {inputFields.map((inputField, index) => (
           (inputField.page === currentPage) ?
-            <div><input
-              key={index}
-              type="text"
-              value={inputField.value}
-              onChange={(event) => handleInputChange(event, index)}
-              style={{
-                opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
-                position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                height: `${windowWidth * inputField.editor.height / 40}px`,
-                fontSize: `${windowWidth / 60}px`,
-                padding: '4px',
-                // ...(windowWidth <= 768 && {
-                //   width: '50px',
-                //   height: '14px',
-                //   fontSize: '8px',
-                //   padding: '2px',
-                // }),
-              }}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={handleMouseLeave}
-            // className="input-field"
-            /> {hoveredIndex === index && (
-              <FaEdit
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => switchEditorState(index)}
-                style={{
-                  height: `${windowWidth / 40}px`, marginLeft: `${windowWidth / 200}px`, cursor: 'pointer', position: 'absolute', top: (inputField.y * (windowWidth) * ((pageHeight) / pageWidth)), left: (inputField.x * (windowWidth)),
-                }} />
-            )} {inputField.editor.state && (
-              <div className="pt-3" style={{
-                position: 'absolute',
-                top: (inputField.y * (windowWidth) * ((pageHeight) / pageWidth)) + windowWidth / 40,
-                left: (inputField.x * (windowWidth)),
-                width: `${windowWidth > 700 ? windowWidth / 4 : windowWidth / 2}px`
-              }}>
-                <div class="card p-1" >
-                  <h6 style={{ fontSize: `${windowWidth / 60}px` }}>רוחב:</h6>
-                  <div
+            <div>
+              {
+                inputField.editor.inputType.value === 'signature1' ? (
+                  <div key={index}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '16px',
-                      userSelect: 'none',
-                      cursor: 'grab',
+                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                      fontSize: `${windowWidth / 40}px`,
+                      width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                      padding: '4px',
                     }}
-                    className=""
-                    draggable
-                    onDragStart={handleDragStart}
-                    onDrag={(event) => handleDragMove(event, index)}
-                  >
-                    <Typography variant="body1" inputProps={{
-                      style: {
-                        fontSize: `${windowWidth / 50}px`,
-                      },
-                    }}>{Math.trunc(inputField.editor.width * 100)}</Typography>
-                    <Slider
-                      value={inputField.editor.width * 100}
-                      min={5}
-                      max={100}
-                      step={1}
-                      size="small"
-                      aria-label="Small"
-                      onChange={(event, newValue) => handleSliderChange(event, newValue, index)}
-                    />
-                  </div>
-                  <h6 style={{ fontSize: `${windowWidth / 60}px` }}>אורך:</h6>
-                  <div
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}>
+
+                    <SignatureModal updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+
+                  </div>) : (<input
+                    key={index}
+                    type="text"
+                    value={inputField.value}
+                    onChange={(event) => handleInputChange(event, index)}
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '16px',
-                      userSelect: 'none',
-                      cursor: 'grab',
+                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                      width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                      height: `${windowWidth * inputField.editor.height / 40}px`,
+                      fontSize: `${windowWidth / 60}px`,
+                      padding: '4px',
+                      // ...(windowWidth <= 768 && {
+                      //   width: '50px',
+                      //   height: '14px',
+                      //   fontSize: '8px',
+                      //   padding: '2px',
+                      // }),
                     }}
-                    className=""
-                    draggable
-                    onDragStart={handleHeightDragStart}
-                    onDrag={(event) => handleHeightDragMove(event, index)}
-                  >
-                    <Typography variant="body1" inputProps={{
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseLeave={handleMouseLeave}
+                  // className="input-field"
+                  />)
+              }
 
-                      style: {
-                        fontSize: `${windowWidth / 50}px`,
-                      },
-                    }}>{Math.trunc(inputField.editor.height * 100)}</Typography>
-                    <Slider
-                      value={inputField.editor.height * 100}
-                      min={5}
-                      max={100}
-                      step={1}
-                      size="small"
-                      aria-label="Small"
-                      onChange={(event, newValue) => handleHeightSliderChange(event, newValue, index)}
-                    />
-                  </div>
 
-                  <div className="row">
-                    <div className="col d-flex justify-content-center py-3">
-                      <TextField
 
-                        type="number"
-                        label="Horizontal"
-                        value={Math.trunc(inputField.x * windowWidth)}
-                        onChange={(event) => handleIndexChange(event, index, 'x')}
-                        inputProps={{
-                          min: 0,
-                          max: windowWidth,
-                          step: 5,
-                          style: {
-                            fontSize: `${windowWidth / 50}px`,
-                          },
-                        }}
-                        InputLabelProps={{
-                          style: {
-                            // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                          },
-                        }}
+              {hoveredIndex === index && (
+                <FaEdit
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => switchEditorState(index)}
+                  style={{
+                    height: `${windowWidth / 40}px`, marginLeft: `${windowWidth / 200}px`, cursor: 'pointer', position: 'absolute', top: (inputField.y * (windowWidth) * ((pageHeight) / pageWidth)), left: (inputField.x * (windowWidth)),
+                  }} />
+              )} {inputField.editor.state && (
+                <div className="pt-3" style={{
+                  position: 'absolute',
+                  top: (inputField.y * (windowWidth) * ((pageHeight) / pageWidth)) + windowWidth / 40,
+                  left: (inputField.x * (windowWidth)),
+                  width: `${windowWidth > 700 ? windowWidth / 4 : windowWidth / 2}px`
+                }}>
+                  <div class="card p-1" >
+                    <h6 style={{ fontSize: `${windowWidth / 60}px` }}>רוחב:</h6>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        userSelect: 'none',
+                        cursor: 'grab',
+                      }}
+                      className=""
+                      draggable
+                      onDragStart={handleDragStart}
+                      onDrag={(event) => handleDragMove(event, index)}
+                    >
+                      <Typography variant="body1" inputProps={{
+                        style: {
+                          fontSize: `${windowWidth / 50}px`,
+                        },
+                      }}>{Math.trunc(inputField.editor.width * 100)}</Typography>
+                      <Slider
+                        value={inputField.editor.width * 100}
+                        min={5}
+                        max={100}
+                        step={1}
+                        size="small"
+                        aria-label="Small"
+                        onChange={(event, newValue) => handleSliderChange(event, newValue, index)}
                       />
                     </div>
-                    <div className="col d-flex justify-content-center py-3">
-                      <TextField
-                        style={{ fontSize: `${windowWidth / 60}px` }}
+                    <h6 style={{ fontSize: `${windowWidth / 60}px` }}>אורך:</h6>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        userSelect: 'none',
+                        cursor: 'grab',
+                      }}
+                      className=""
+                      draggable
+                      onDragStart={handleHeightDragStart}
+                      onDrag={(event) => handleHeightDragMove(event, index)}
+                    >
+                      <Typography variant="body1" inputProps={{
 
-                        type="number"
-                        label="Vertical"
-                        value={Math.trunc(inputField.y * (windowWidth))}
-                        onChange={(event) => handleIndexChange(event, index, 'y')}
-                        inputProps={{
-                          min: 0,
-                          max: (windowWidth * ((pageHeight) / pageWidth)),
-                          step: 5,
-                          style: {
-                            fontSize: `${windowWidth / 50}px`,
-                          },
-                        }}
-                        InputLabelProps={{
-                          style: {
-                            // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                          },
-                        }}
+                        style: {
+                          fontSize: `${windowWidth / 50}px`,
+                        },
+                      }}>{Math.trunc(inputField.editor.height * 100)}</Typography>
+                      <Slider
+                        value={inputField.editor.height * 100}
+                        min={5}
+                        max={100}
+                        step={1}
+                        size="small"
+                        aria-label="Small"
+                        onChange={(event, newValue) => handleHeightSliderChange(event, newValue, index)}
                       />
                     </div>
-                  </div>
-                  {/* <Autocomplete
+
+                    <div className="row">
+                      <div className="col d-flex justify-content-center py-3">
+                        <TextField
+
+                          type="number"
+                          label="Horizontal"
+                          value={Math.trunc(inputField.x * windowWidth)}
+                          onChange={(event) => handleIndexChange(event, index, 'x')}
+                          inputProps={{
+                            min: 0,
+                            max: windowWidth,
+                            step: 5,
+                            style: {
+                              fontSize: `${windowWidth / 50}px`,
+                            },
+                          }}
+                          InputLabelProps={{
+                            style: {
+                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
+                            },
+                          }}
+                        />
+                      </div>
+                      <div className="col d-flex justify-content-center py-3">
+                        <TextField
+                          style={{ fontSize: `${windowWidth / 60}px` }}
+
+                          type="number"
+                          label="Vertical"
+                          value={Math.trunc(inputField.y * (windowWidth))}
+                          onChange={(event) => handleIndexChange(event, index, 'y')}
+                          inputProps={{
+                            min: 0,
+                            max: (windowWidth * ((pageHeight) / pageWidth)),
+                            step: 5,
+                            style: {
+                              fontSize: `${windowWidth / 50}px`,
+                            },
+                          }}
+                          InputLabelProps={{
+                            style: {
+                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
+                            },
+                          }}
+                        />
+                      </div>
+                    </div>
+                    {/* <Autocomplete
                     className="pb-2"
                     options={options}
                     // getOptionLabel={(option) => option.label}
@@ -574,59 +691,62 @@ export default function AddFormFieldsToPDF(props) {
                     )}
                     onChange={(event, value) => handleInputTypeChange(event,value, index)}
                   /> */}
-                  <Autocomplete
-                  className="mb-2"
-                    disablePortal
-                    options={options}
-                    onChange={(event, value) => handleInputTypeChange(event, value, index)}
-                    value={inputField.editor.inputType}
-                    renderInput={(params) => <TextField {...params} label="סוג קלט" />}
-                  />
-                  <div className="row">
-                    <div className="col col-7 d-flex justify-content-center ps-1">
-                      <button className="btn btn-success w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => switchEditorState(index)}> Save</button>
+                    <Autocomplete
+                      className="mb-2"
+                      disablePortal
+                      options={options}
+                      onChange={(event, value) => handleInputTypeChange(event, value, index)}
+                      value={inputField.editor.inputType}
+                      renderInput={(params) => <TextField {...params} label="סוג קלט" />}
+                    />
+                    <div className="row">
+                      <div className="col col-7 d-flex justify-content-center ps-1">
+                        <button className="btn btn-success w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => switchEditorState(index)}> Save</button>
 
-                    </div>
-                    <div className="col col-5 d-flex justify-content-center pe-1">
-                      <button className="btn btn-danger w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => deleteField(index)}> Delete</button>
+                      </div>
+                      <div className="col col-5 d-flex justify-content-center pe-1">
+                        <button className="btn btn-danger w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => deleteField(index)}> Delete</button>
 
+                      </div>
                     </div>
                   </div>
+
+
                 </div>
-
-
-              </div>
-            )}
+              )}
             </div> : <div></div>
 
         ))}
-        
-        {signatures.map((signature, index) => (
+
+        {/* {signatures.map((signature, index) => (
           (signature.page === currentPage) ?
             <div key={index}
-            style={{
-              opacity: `${hoveredIndex || signature.editor.state ? 0.8 : 1}`,
-              position: 'absolute', top: signature.y * (windowWidth) * ((pageHeight) / pageWidth), left: signature.x * (windowWidth),
-              fontSize: `${windowWidth / 60}px`,
-              padding: '4px',
-            }}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}>
+              style={{
+                opacity: `${hoveredIndex || signature.editor.state ? 0.8 : 1}`,
+                position: 'absolute', top: signature.y * (windowWidth) * ((pageHeight) / pageWidth), left: signature.x * (windowWidth),
+                fontSize: `${windowWidth / 60}px`,
+                padding: '4px',
+              }}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}>
 
-      <SignatureModal updateSignature={updateSignature} url={signature.value} index={index} signer={"חתימה ראשונה"} />
+              <SignatureModal updateSignature={updateSignature} url={signature.value} index={index} signer={"חתימה ראשונה"} />
 
             </div> : <div></div>
 
-        ))}
+        ))} */}
       </div>
-      <div>
-        Current page: {currentPage}
-      </div>
-      <button onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}>Previous Page</button>
-      <button onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}>Next Page</button>
+      {selectedFile && <div className="m-1">
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon  /></button>
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon  /></button>
 
+        <br />
+        <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button>
 
-      <button onClick={handleOpenPDF}>Open PDF</button>
+        <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
+
+      </div>}
+
 
 
     </div>
@@ -689,11 +809,12 @@ const BootstrapButton = styled(Button)({
 });
 
 const options = [
+  { label: 'שם הילד', value: 'childName' },
+  { label: 'מספר תעודת תלמיד', value: 'childId' },
+  { label: 'חתימה', value: 'signature1' },
   { label: 'היום', value: 'day' },
   { label: 'החודש', value: 'month' },
   { label: 'השנה', value: 'year' },
-  { label: 'שם הילד', value: 'childName' },
-  { label: 'מספר תעודת תלמיד', value: 'childId' },
   { label: 'שם הורה 1', value: 'parentName1' },
   { label: 'מספר תעודת הורה 1', value: 'parentId1' },
   { label: 'מספר פלפון הורה 1', value: 'phoneNumber1' },
@@ -748,7 +869,6 @@ const options = [
   { label: '41', value: 'approverStatus' },
   { label: '42', value: 'approverAddress' },
   { label: '43', value: 'approverPhoneNumber' },
-  { label: '44', value: 'signature1' },
   { label: '45', value: 'signature2' },
   { label: 'אחר', value: 'other' },
 ];

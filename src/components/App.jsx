@@ -10,9 +10,11 @@ import PdfSign from "./PdfSign";
 
 export default function App(props) {
 
-  useEffect(() => {
+  const [inputFields, setInputFields] = useState([]);
 
-  }, [])
+  useEffect(() => {
+    console.log(["from app",inputFields]);
+  }, [inputFields])
 
   // const localUrl = "http://localhost:3001/api/documentSign/";
   const localUrl = "https://api.myvarno.io/api/documentSign";
@@ -30,13 +32,12 @@ export default function App(props) {
 
   }
 
+  function handleInputFieldsChange(inputFields){
+    setInputFields(inputFields);
+  }
 
-  var inputs = [
-    { x: 2, y: 0.359375, value: '[object Object]', page: 1, isCursor: false, click: {x: 1.3007438894792773, y: 0.23387428101889896} },
-    { x: 1, y: 2.359375, value: '[object Object]', page: 2, isCursor: false, click: {x: 0.6503719447396387, y: 1.5354354971240758} },
-    {x: 273, y: 327.359375, value: '[object Object]', page: 1, isCursor: false, click: {x: 177.55154091392137, y: 213.03913311421528}},
-    {x: 462, y: 328.359375, value: '[object Object]', page: 1, isCursor: false, click: {x: 300.4718384697131, y: 213.6899137222679}},
-  ];
+
+  
 
   return (
     <div className="bg-light">
@@ -46,9 +47,11 @@ export default function App(props) {
         <Routes>
           <Route exact path="/" element=
             {
-              <AddFormFieldToPdf />
+              <AddFormFieldToPdf handleInputFieldsChange={handleInputFieldsChange}  />
             } />
-          <Route path="/FillDocument" element={<PdfSign inputs={inputs} />} />
+
+            {inputFields && <Route path="/FillDocument" element={<PdfSign inputs={inputFields} />} />}
+          
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
       </Router>
