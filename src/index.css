@@ -41,3 +41,42 @@ input[type=text] {
   border: none;
   border-bottom: 2px solid black;
 }
+
+/* Reset default styles */
+select {
+  appearance: none;
+  outline: none;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #333333;
+  cursor: pointer;
+  width: 250px;
+}
+
+/* Custom style for the arrow icon */
+select::-ms-expand {
+  display: none;
+}
+
+select::after {
+  content: "\f078";
+  font-family: FontAwesome; /* If you are using Font Awesome icons */
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Optional hover and focus styles for better user experience */
+select:hover {
+  border-color: #a0a0a0;
+}
+
+select:focus {
+  border-color: #4d90fe;
+  box-shadow: 0 0 0 2px rgba(77, 144, 254, 0.2);
+}

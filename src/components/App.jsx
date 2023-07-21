@@ -4,13 +4,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Axios from "axios";
 import Fillable from "./Fillable";
 import SentPage from "./SentPage";
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
 
 export default function App(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [childId, setChildId] = useState("");
+  const [documentURL, setDocumentURL] = useState('');
 
   useEffect(() => {
     // handleClick("he");
@@ -39,8 +38,9 @@ export default function App(props) {
       console.log("in save data class")
       setChildId(newDocumentData.childId);
       const response = await Axios.post(localUrl, newDocumentData)
-      console.log(localUrl);
-      console.log(response);
+      // console.log(localUrl);
+      setDocumentURL(response.data.documentURL);
+      console.log(response.data.documentURL);
     }
     catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ export default function App(props) {
     parentName2: "",
     parentId2: "",
     phoneNumber2: "",
-    kindergarten: "",
+    kindergarten: "תינוקיית בית קשת",
     hebrewYear: "",
     childFirstName: "",
     childLastName: "",
@@ -104,7 +104,7 @@ export default function App(props) {
     from: "",
     signingDate: "",
     className: "",
-    monthlyPayment: "",
+    monthlyPayment: "3750",
     paymentMethod: "12-checks",
 
     allowsPhotographingInternal: "false",
@@ -129,7 +129,7 @@ export default function App(props) {
             {<Fillable documentData={documentData} saveData={saveData} />}
           </div>} />
           <Route path="/success" element={
-            <SentPage childId={childId} isLoading={isLoading} />
+            <SentPage childId={childId} documentURL={documentURL} isLoading={isLoading} />
           } />
         </Routes>
       </Router>

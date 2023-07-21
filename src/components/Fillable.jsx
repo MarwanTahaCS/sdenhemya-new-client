@@ -6,7 +6,7 @@ import '../index.css';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
+import { FormControl } from "@mui/material";
 
 
 import SignatureModal from "./SignatureModal.jsx";
@@ -16,8 +16,23 @@ export default function Reception(props) {
     const [documentData, setDocumentData] = useState(props.documentData);
     const [url1, setUrl1] = useState(props.documentData.signature1);
     const [url2, setUrl2] = useState(props.documentData.signature1);
+    const [internal, setInternal] = useState(false);
+    const [allergyExistance, setAllergyExistance] = useState({
+        allergyToMedication: "false",
+        allergyToFood: "false",
+        pastDiseases: "false",
+        allergies: "false",
+    });
 
     const navigate = useNavigate();
+
+    const options = [
+        { value: "תינוקיית בית קשת", label: "תינוקיית בית קשת" },
+        { value: "בית קשת - פעוטון", label: "בית קשת -פעוטון" },
+        { value: "סנונית – גנון", label: "סנונית – גנון" },
+        { value: "רימון – גן צעיר", label: "רימון – גן צעיר" },
+        { value: "שיטה – גן בוגר", label: "שיטה – גן בוגר" },
+    ];
 
     function updateDocumentData(event) {
         const { value, name } = event.target;
@@ -27,6 +42,41 @@ export default function Reception(props) {
                 [name]: value,
             };
         });
+
+        console.log({
+            ...documentData,
+            [name]: value,
+        })
+
+        // props.setDocumentData({
+        //   ...orgDetailsData,
+        //   [name]: value,
+        // });
+    }
+
+    function updateKindergarten(event) {
+        const { value, name } = event.target;
+
+
+
+        setDocumentData((prevValue) => {
+            return {
+                ...prevValue,
+                [name]: value,
+                ["monthlyPayment"]: getPrice(value, internal),
+            };
+        });
+    }
+
+    function updateMonthlyPayment(event) {
+        const { value, name } = event;
+        setDocumentData((prevValue) => {
+            return {
+                ...prevValue,
+                [name]: value,
+            };
+        });
+
         // props.setDocumentData({
         //   ...orgDetailsData,
         //   [name]: value,
@@ -42,9 +92,104 @@ export default function Reception(props) {
         });
     }
 
+    function getPrice(kindergarten, internal) {
+        if (internal === "true") {
+            console.log("in true")
+            switch (kindergarten) {
+                case "תינוקיית בית קשת":
+                    return "3450";
+                case "בית קשת - פעוטון":
+                    return "3300";
+                case "סנונית – גנון":
+                    return "3050";
+                case "רימון – גן צעיר":
+                    return "1650";
+                case "שיטה – גן בוגר":
+                    return "1600";
+            }
+        } else {
+            console.log("in false")
+            switch (kindergarten) {
+                case "תינוקיית בית קשת":
+                    return "3750";
+                case "בית קשת - פעוטון":
+                    return "3600";
+                case "סנונית – גנון":
+                    return "3350";
+                case "רימון – גן צעיר":
+                    return "1950";
+                case "שיטה – גן בוגר":
+                    return "1900";
+            }
+        }
+    }
+
+    function updatePrice(eventTargetValue) {
+        const value = eventTargetValue;
+        setInternal(value);
+        if (value === "true") {
+            console.log("in true")
+            switch (documentData.kindergarten) {
+                case "תינוקיית בית קשת":
+                    updateMonthlyPayment({ value: "3,450", name: "monthlyPayment" });
+                    break;
+                case "בית קשת - פעוטון":
+                    updateMonthlyPayment({ value: "3,300", name: "monthlyPayment" });
+                    break;
+                case "סנונית – גנון":
+                    updateMonthlyPayment({ value: "3,050", name: "monthlyPayment" });
+                    break;
+                case "רימון – גן צעיר":
+                    updateMonthlyPayment({ value: "1,650", name: "monthlyPayment" });
+                    break;
+                case "שיטה – גן בוגר":
+                    updateMonthlyPayment({ value: "1,600", name: "monthlyPayment" });
+                    break;
+            }
+        } else {
+            console.log("in false")
+            switch (documentData.kindergarten) {
+                case "תינוקיית בית קשת":
+                    updateMonthlyPayment({ value: "3,750", name: "monthlyPayment" });
+                    break;
+                case "בית קשת - פעוטון":
+                    updateMonthlyPayment({ value: "3,600", name: "monthlyPayment" });
+                    break;
+                case "סנונית – גנון":
+                    updateMonthlyPayment({ value: "3,350", name: "monthlyPayment" });
+                    break;
+                case "רימון – גן צעיר":
+                    updateMonthlyPayment({ value: "1,950", name: "monthlyPayment" });
+                    break;
+                case "שיטה – גן בוגר":
+                    updateMonthlyPayment({ value: "1,900", name: "monthlyPayment" });
+                    break;
+            }
+        }
+    }
+
 
     async function printOnDocument() {
         console.log(documentData);
+
+        if (documentData.childId === '' || documentData.childName === '' || documentData.approverName === ''
+            || documentData.approverStatus === '' || documentData.approverAddress === '' || documentData.approverPhoneNumber === ''
+            || documentData.month === '' || documentData.year === '' || documentData.day === ''
+
+            || documentData.parentId1 === '' || documentData.phoneNumber1 === '' || documentData.parentName1 === ''
+            || documentData.hebrewYear === '' || documentData.childFirstName === '' || documentData.childLastName === ''
+            || documentData.parentName2 === '' || documentData.parentId2 === '' || documentData.phoneNumber2 === ''
+            || documentData.dateOfBirth === '' || documentData.address === '' || documentData.zip === ''
+            || documentData.relativeName1 === '' || documentData.relativeStatus1 === '' || documentData.relativeNumber1 === ''
+            || documentData.hmo === '' || documentData.attendanceStartingDate === '' 
+            || documentData.signingDate === '' ) {
+            alert('אנא מלא את כל שדות הקלט');
+            return;
+        } else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC"
+            || documentData.signature2 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC") {
+            alert('בבקשה תוודא שחתמת את המסמך');
+            return;
+        }
 
         props.saveData(documentData);
 
@@ -57,11 +202,11 @@ export default function Reception(props) {
 
     function MyComponent() {
         return (
-          <div>
-            <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe>
-          </div>
+            <div>
+                <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe>
+            </div>
         );
-      }
+    }
 
     return (
         <div className="container py-3">
@@ -214,17 +359,13 @@ export default function Reception(props) {
                     </div>
                     <div className="row mx-auto">
                         <div className="col-2 px-0">הואיל</div>
-                        <div className="col-10"><p>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן "<input
-                            className=""
-                            onChange={updateDocumentData}
-                            type="text"
-                            name="kindergarten"
-                            // placeholder={props.t("OrgDetails.3")}
-                            autoComplete="off"
-                            id="kindergarten"
-                            value={documentData.kindergarten}
-                            style={{ width: "80px" }}
-                        />" גן המיועד לילדי שדה נחמיה לשנתון <input
+                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן "<select style={{ width: '150px' }} name="kindergarten" value={documentData.kindergarten} onChange={updateKindergarten} id="dropdown">
+                            {options.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>" גן המיועד לילדי שדה נחמיה לשנתון <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -234,7 +375,7 @@ export default function Reception(props) {
                                 id="hebrewYear"
                                 value={documentData.hebrewYear}
                                 style={{ width: "80px" }}
-                            /> (להלן: "בתי הילדים"); </p>
+                            /> (להלן: "בתי הילדים"); </div>
                         </div>
                     </div>
                     <div className="row mx-auto">
@@ -1503,11 +1644,28 @@ export default function Reception(props) {
                                     id="healthIssueAndSolution"
                                     value={documentData.healthIssueAndSolution}
                                     style={{ width: "300px" }}
+                                    disabled={documentData.healthIssueExist === "false"}
                                 />
                             </p>
                             <p>
-                                רגישות לתרופות:<input
-                                    className=""
+                                רגישות לתרופות:<FormControl>
+                                    <RadioGroup
+                                        onChange={(event) => setAllergyExistance((prevValue) => {
+                                            return {
+                                                ...prevValue,
+                                                [event.target.name]: event.target.value,
+                                            };
+                                        })}
+                                        defaultValue={false}
+                                        name="allergyToMedication"
+                                        id="allergyToMedication"
+                                        row
+                                    >
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                    </RadioGroup>
+                                </FormControl><input
+                                    className="me-5"
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="allergyToMedication"
@@ -1516,11 +1674,28 @@ export default function Reception(props) {
                                     id="allergyToMedication"
                                     value={documentData.allergyToMedication}
                                     style={{ width: "300px" }}
+                                    disabled={allergyExistance.allergyToMedication === "false"}
                                 />
                             </p>
                             <p>
-                                רגישות למזון:<input
-                                    className=""
+                                רגישות למזון:<FormControl>
+                                    <RadioGroup
+                                        onChange={(event) => setAllergyExistance((prevValue) => {
+                                            return {
+                                                ...prevValue,
+                                                [event.target.name]: event.target.value,
+                                            };
+                                        })}
+                                        defaultValue={false}
+                                        name="allergyToFood"
+                                        id="allergyToFood"
+                                        row
+                                    >
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                    </RadioGroup>
+                                </FormControl><input
+                                    className="me-5"
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="allergyToFood"
@@ -1529,24 +1704,57 @@ export default function Reception(props) {
                                     id="allergyToFood"
                                     value={documentData.allergyToFood}
                                     style={{ width: "300px" }}
+                                    disabled={allergyExistance.allergyToFood === "false"}
                                 />
                             </p>
                             <p>
-                                אילו מחלות היו לילד:<input
-                                    className=""
+                                אילו מחלות היו לילד:<FormControl>
+                                    <RadioGroup
+                                        onChange={(event) => setAllergyExistance((prevValue) => {
+                                            return {
+                                                ...prevValue,
+                                                [event.target.name]: event.target.value,
+                                            };
+                                        })}
+                                        defaultValue={false}
+                                        name="pastDiseases"
+                                        id="pastDiseases"
+                                        row
+                                    >
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                    </RadioGroup>
+                                </FormControl><input
+                                    className="me-5"
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="pastDiseases"
-                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="pastDiseases"
                                     value={documentData.pastDiseases}
                                     style={{ width: "300px" }}
+                                    disabled={allergyExistance.pastDiseases === "false"}
                                 />
                             </p>
                             <p>
-                                האם הילד אלרגי למשהו:<input
-                                    className=""
+                                האם הילד אלרגי למשהו:<FormControl>
+                                    <RadioGroup
+                                        onChange={(event) => setAllergyExistance((prevValue) => {
+                                            return {
+                                                ...prevValue,
+                                                [event.target.name]: event.target.value,
+                                            };
+                                        })}
+                                        defaultValue={false}
+                                        name="allergies"
+                                        id="allergies"
+                                        row
+                                    >
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>כן </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא</span>} />
+                                    </RadioGroup>
+                                </FormControl><input
+                                    className="me-5"
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="allergies"
@@ -1555,6 +1763,7 @@ export default function Reception(props) {
                                     id="allergies"
                                     value={documentData.allergies}
                                     style={{ width: "300px" }}
+                                    disabled={allergyExistance.allergies === "false"}
                                 />
                             </p>
                             <p>
@@ -1582,6 +1791,7 @@ export default function Reception(props) {
                                     id="nonReceivedVaccinations"
                                     value={documentData.nonReceivedVaccinations}
                                     style={{ width: "300px" }}
+                                    disabled={documentData.receivedFullVaccination === "true"}
                                 />
                             </p>
                             <p>
@@ -1871,28 +2081,59 @@ export default function Reception(props) {
                                     <div className="col-1 px-0">3.</div>
                                     <div className="col-11 ">
                                         <p>
-                                            עבור שהיית הילד בבית הילדים<input
-                                                className=""
-                                                onChange={updateDocumentData}
-                                                type="text"
-                                                name="className"
-                                                // placeholder={props.t("OrgDetails.3")}
-                                                autoComplete="off"
-                                                id="className"
-                                                value={documentData.className}
-                                                style={{ width: "80px" }}
-                                            />, ישלמו ההורים לאגודה דמי שהייה חודשיים בסך של <input
-                                                className=""
-                                                onChange={updateDocumentData}
-                                                type="text"
-                                                name="monthlyPayment"
-                                                // placeholder={props.t("OrgDetails.3")}
-                                                autoComplete="off"
-                                                id="monthlyPayment"
-                                                value={documentData.monthlyPayment}
-                                                style={{ width: "80px" }}
-                                            /> ₪ לחודש (להלן: "דמי השהייה").
+                                            עבור שהיית הילד בבית הילדים, ישלמו ההורים לאגודה דמי שהייה חודשיים על פי הטבלה המצורפת:
                                         </p>
+                                        <br />
+                                        <div className="container">
+                                            <table className="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>שם הבית  /הפעוטון /גן</th>
+                                                        <th>תושבי שדה נחמיה</th>
+                                                        <th>תושבי חוץ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>תינוקיית בית קשת</td>
+                                                        <td>3,450 ₪</td>
+                                                        <td>3,750 ₪</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>בית קשת -פעוטון</td>
+                                                        <td>3,300 ₪</td>
+                                                        <td>3,600 ₪</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>סנונית –   גנון</td>
+                                                        <td>3,050 ₪</td>
+                                                        <td>3,350 ₪</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>רימון –    גן צעיר</td>
+                                                        <td>1,650 ₪</td>
+                                                        <td>1,950 ₪</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>שיטה –  גן בוגר</td>
+                                                        <td>1,600 ₪</td>
+                                                        <td>1,900 ₪</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <FormControl>
+                                                <RadioGroup
+                                                    onChange={(event) => updatePrice(event.target.value)}
+                                                    defaultValue={false}
+                                                    name="allowsPhotographingInternal"
+                                                    id="allowsPhotographingInternal"
+                                                    row
+                                                >
+                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה </span>} />
+                                                    <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>תושבי חוץ</span>} />
+                                                </RadioGroup>
+                                            </FormControl>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
@@ -2071,19 +2312,26 @@ export default function Reception(props) {
 
                     </p>
 
-                    <p className=" px-3  david fixed-size">
-                        חתימת ההורה <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> 	תאריך <input
-                            className=""
-                            onChange={updateDocumentData}
-                            type="text"
-                            name="signingDate"
-                            // placeholder={props.t("OrgDetails.3")}
-                            autoComplete="off"
-                            id="signingDate"
-                            value={documentData.signingDate}
-                            style={{ width: "80px" }}
-                        />
-                    </p>
+                    <div className=" px-3  david fixed-size">
+                        <div className="row mx-auto">
+                            <div className="col-2 px-0">חתימת ההורה: </div>
+                            <div className="col-10">
+                                <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
+                                תאריך <input
+                                    className=""
+                                    onChange={updateDocumentData}
+                                    type="text"
+                                    name="signingDate"
+                                    // placeholder={props.t("OrgDetails.3")}
+                                    autoComplete="off"
+                                    id="signingDate"
+                                    value={documentData.signingDate}
+                                    style={{ width: "80px" }}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
