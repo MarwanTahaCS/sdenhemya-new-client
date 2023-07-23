@@ -195,7 +195,7 @@ export default function Reception(props) {
         // PDF Modification
         // modifyPdf();
 
-        // navigate('/success');
+        navigate('/success');
 
     }
 
