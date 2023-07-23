@@ -222,6 +222,9 @@ export default function Reception(props) {
     };
 
     useEffect(() => {
+
+        handleResize();
+        
         // Add event listener when the component mounts
         window.addEventListener('resize', handleResize);
 
