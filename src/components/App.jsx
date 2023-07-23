@@ -28,8 +28,8 @@ export default function App(props) {
     // }
   }, [])
 
-  // const localUrl = "http://localhost:3001/api/documentSign/";
-  const localUrl = "https://api.myvarno.io/api/documentSign";
+  const localUrl = "http://localhost:3001/api/documentSign";
+  // const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData) {
     setIsLoading(true);
@@ -104,11 +104,11 @@ export default function App(props) {
     from: "",
     signingDate: "",
     className: "",
-    monthlyPayment: "3750",
-    paymentMethod: "12-checks",
+    monthlyPayment: "",
+    paymentMethod: "",
 
-    allowsPhotographingInternal: "false",
-    allowsPhotographingExternal: "false",
+    allowsPhotographingInternal: "true",
+    allowsPhotographingExternal: "true",
     approverName: "",
     approverStatus: "",
     approverAddress: "",

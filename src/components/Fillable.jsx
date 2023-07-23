@@ -16,7 +16,7 @@ export default function Reception(props) {
     const [documentData, setDocumentData] = useState(props.documentData);
     const [url1, setUrl1] = useState(props.documentData.signature1);
     const [url2, setUrl2] = useState(props.documentData.signature1);
-    const [internal, setInternal] = useState(false);
+    const [internal, setInternal] = useState("");
     const [allergyExistance, setAllergyExistance] = useState({
         allergyToMedication: "false",
         allergyToFood: "false",
@@ -178,11 +178,10 @@ export default function Reception(props) {
 
             || documentData.parentId1 === '' || documentData.phoneNumber1 === '' || documentData.parentName1 === ''
             || documentData.hebrewYear === '' || documentData.childFirstName === '' || documentData.childLastName === ''
-            || documentData.parentName2 === '' || documentData.parentId2 === '' || documentData.phoneNumber2 === ''
             || documentData.dateOfBirth === '' || documentData.address === '' || documentData.zip === ''
             || documentData.relativeName1 === '' || documentData.relativeStatus1 === '' || documentData.relativeNumber1 === ''
             || documentData.hmo === '' || documentData.attendanceStartingDate === ''
-            || documentData.signingDate === '') {
+            || documentData.signingDate === '' || internal === '' || documentData.paymentMethod === '') {
             alert('אנא מלא את כל שדות הקלט');
             return;
         } else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC"
@@ -196,7 +195,7 @@ export default function Reception(props) {
         // PDF Modification
         // modifyPdf();
 
-        navigate('/success');
+        // navigate('/success');
 
     }
 
@@ -2160,7 +2159,7 @@ export default function Reception(props) {
                                             <FormControl>
                                                 <RadioGroup
                                                     onChange={(event) => updatePrice(event.target.value)}
-                                                    defaultValue={false}
+                                                    // defaultValue={false}
                                                     name="allowsPhotographingInternal"
                                                     id="allowsPhotographingInternal"
                                                     row
@@ -2190,12 +2189,12 @@ export default function Reception(props) {
                                             <FormControl size="small" >
                                                 <RadioGroup
                                                     aria-labelledby="demo-radio-buttons-group-label"
-                                                    defaultValue="12-checks"
+                                                    // defaultValue="12-checks"
                                                     onChange={updateDocumentData}
                                                     id="paymentMethod"
                                                     name="paymentMethod"
                                                 >
-                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. </span>} />
+                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. בכל שיק יוסף סכום של 14.5 ₪, עבור עמלת טיפול בשיק דחוי). </span>} />
                                                     <FormControlLabel sx={{ margin: 0 }} value="credit-card" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות חיוב כרטיס אשראי על שם ההורים בהתאם להוראת הקבע לתשלום באמצעות כרטיס אשראי בנוסח הרצ"ב להסכם זה שתיחתם על ידי ההורים ותימסר לאגודה במועד החתימה על הסכם זה. </span>} />
                                                     <FormControlLabel sx={{ margin: 0 }} value="direct-debit" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>על ידי הוראת קבע.</span>} />
                                                     <FormControlLabel sx={{ margin: 0 }} value="billing-in-budget" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>בחיוב בתקציב (חברי קיבוץ בלבד)</span>} />
@@ -2274,7 +2273,7 @@ export default function Reception(props) {
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
-                                defaultValue={false}
+                                defaultValue={true}
                                 name="allowsPhotographingInternal"
                                 id="allowsPhotographingInternal"
                                 row
@@ -2289,7 +2288,7 @@ export default function Reception(props) {
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
-                                defaultValue={false}
+                                defaultValue={true}
                                 name="allowsPhotographingExternal"
                                 id="allowsPhotographingExternal"
                                 row
