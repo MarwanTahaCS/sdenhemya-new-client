@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
 
@@ -181,8 +181,8 @@ export default function Reception(props) {
             || documentData.parentName2 === '' || documentData.parentId2 === '' || documentData.phoneNumber2 === ''
             || documentData.dateOfBirth === '' || documentData.address === '' || documentData.zip === ''
             || documentData.relativeName1 === '' || documentData.relativeStatus1 === '' || documentData.relativeNumber1 === ''
-            || documentData.hmo === '' || documentData.attendanceStartingDate === '' 
-            || documentData.signingDate === '' ) {
+            || documentData.hmo === '' || documentData.attendanceStartingDate === ''
+            || documentData.signingDate === '') {
             alert('אנא מלא את כל שדות הקלט');
             return;
         } else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC"
@@ -196,9 +196,40 @@ export default function Reception(props) {
         // PDF Modification
         // modifyPdf();
 
-        navigate('/success');
+        // navigate('/success');
 
     }
+
+    const [fontSize, setFontSize] = useState(14); // Initial font size
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    const handleResize = () => {
+        setWindowWidth(window.innerWidth);
+        const screenWidth = window.innerWidth;
+        if (screenWidth >= 1200) {
+            setFontSize(16);
+        } else if (screenWidth >= 768) {
+            setFontSize(15);
+        } else if (screenWidth >= 435) {
+            setFontSize(14);
+        } else if (screenWidth >= 395) {
+            setFontSize(13);
+        } else if (screenWidth >= 365) {
+            setFontSize(12);
+        } else {
+            setFontSize(10);
+        }
+    };
+
+    useEffect(() => {
+        // Add event listener when the component mounts
+        window.addEventListener('resize', handleResize);
+
+        // Remove event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     function MyComponent() {
         return (
@@ -219,7 +250,7 @@ export default function Reception(props) {
                 <h5 className="p-3 text-center">
                     הסכם חינוך גיל רך  {/* {props.t("Reception.1")} */}
                 </h5>
-                <div className=" px-1 pb-3 text-center david fixed-size " >
+                <div className=" px-1 pb-3 text-center david " style={{ fontSize: `${fontSize-1}px` }}  >
 
                     {/* <div className="text-nowrap"> שנערך ונחתם בקיבוץ שדה נחמיה ביום </div> */}
 
@@ -232,7 +263,7 @@ export default function Reception(props) {
                         autoComplete="off"
                         id="day"
                         value={documentData.day}
-                        style={{ width: "30px" }}
+                        style={{ width: `${fontSize*2}px` }}
                     /> לחודש <input
                         className=""
                         onChange={updateDocumentData}
@@ -242,7 +273,7 @@ export default function Reception(props) {
                         autoComplete="off"
                         id="month"
                         value={documentData.month}
-                        style={{ width: "30px" }}
+                        style={{ width: `${fontSize*2}px` }}
                     /> שנת <input
                         className=""
                         onChange={updateDocumentData}
@@ -252,12 +283,12 @@ export default function Reception(props) {
                         autoComplete="off"
                         id="year"
                         value={documentData.year}
-                        style={{ width: "30px" }}
+                        style={{ width: `${fontSize*2}px` }}
                     />
 
                 </div>
                 {/* ------- בין: ----------------------------------------------------------------- */}
-                < div className="container   pb-3 david fixed-size" >
+                < div className="container   pb-3 david " style={{ fontSize: `${fontSize+1}px` }}>
                     <div className="row mx-auto">
                         <div className="col-2 px-0">בין:</div>
                         <div className="col-10">מתיישבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ <br />
@@ -278,7 +309,7 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="childName"
                             value={documentData.childName}
-                            style={{ width: "80px" }}
+                            style={{ width: `${fontSize*5}px` }}
                         /> ת"ז <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -288,7 +319,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="childId"
                                 value={documentData.childId}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> <br />
                             (להלן: "הילד") <br />
                             1.	שםֹ  ההורה <input
@@ -300,7 +331,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentName1"
                                 value={documentData.parentName1}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             />   	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -310,8 +341,8 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentId1"
                                 value={documentData.parentId1}
-                                style={{ width: "80px" }}
-                            />  פלאפון  <input
+                                style={{ width: `${fontSize*5}px` }}
+                            />  {windowWidth < 550 ? <br/>:null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -320,7 +351,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="phoneNumber1"
                                 value={documentData.phoneNumber1}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> <br />
                             2.	שםֹ  ההורה  <input
                                 className=""
@@ -331,7 +362,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentName2"
                                 value={documentData.parentName2}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> 	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -341,8 +372,8 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentId2"
                                 value={documentData.parentId2}
-                                style={{ width: "80px" }}
-                            /> פלאפון  <input
+                                style={{ width: `${fontSize*5}px` }}
+                            /> {windowWidth < 550 ? <br/>:null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -351,7 +382,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="phoneNumber2"
                                 value={documentData.phoneNumber2}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> <br />
                             (להלן ביחד ולחוד: "ההורים") <br />
                             <p className="text-start">מצד שני; </p>
@@ -359,7 +390,7 @@ export default function Reception(props) {
                     </div>
                     <div className="row mx-auto">
                         <div className="col-2 px-0">הואיל</div>
-                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן "<select style={{ width: '150px' }} name="kindergarten" value={documentData.kindergarten} onChange={updateKindergarten} id="dropdown">
+                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן "<select style={{ width: `${fontSize*11}px`, fontSize: `${fontSize+1}px` }} name="kindergarten" value={documentData.kindergarten} onChange={updateKindergarten} id="dropdown">
                             {options.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
@@ -374,7 +405,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="hebrewYear"
                                 value={documentData.hebrewYear}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> (להלן: "בתי הילדים"); </div>
                         </div>
                     </div>
@@ -405,21 +436,21 @@ export default function Reception(props) {
 
                     {/* ---------------------------------------------------------------------- */}
                 </div >
-                <div className=" px-3 pb-3 text-center david">
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+4}px` }}>
                     על כן הותנה, הוצהר והוסכם כלהלן:
                 </div>
 
                 {/* ------- על כן הותנה ----------------------------------------------------------------- */}
-                <div>
+                <div style={{ fontSize: `${fontSize}px` }}>
                     {/* ---------- 1. --------------------------------------------------- */}
-                    <div className="container   pb-3 david ">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-12 px-0">1.   מבוא</div>
                         </div>
-                        <div className="row  mx-0">
+                        <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">1.1.</div>
                                         <div className="col-11 ">
@@ -443,14 +474,14 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* --------- 2. ---------------------------------------------------------------- */}
-                    <div className="container   pb-3 david ">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-12 px-0">2.	אורחות חיים וחינוך</div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david" style={{ fontSize: `${fontSize}px` }}>
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">2.1.</div>
                                         <div className="col-11">
@@ -468,7 +499,7 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* -------- 3. ----------------------------------------------------------------- */}
-                    <div className="container   pb-3 david ">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-12 px-0">3.	אורחות חיים וחינוך</div>
                         </div>
@@ -482,7 +513,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                <div className=" px-0 pb-3 david fixed-size">
+                                <div className=" px-0 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0"></div>
                                         <div className="col-11 px-0">
@@ -524,11 +555,11 @@ export default function Reception(props) {
                         {/* ----- 3.2. -------------------------------------------------------------------- */}
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
-                            <div className="col-11 px-0">
+                            <div className="col-11 px-0" style={{ fontSize: `${fontSize}px` }}>
                                 3.2.	חגים:
                             </div>
                         </div>
-                        <div className="row  mx-0 fixed-size">
+                        <div className="row  mx-0 " style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
                                 <p>
@@ -537,13 +568,13 @@ export default function Reception(props) {
                             </div>
                         </div>
                         {/* ---- 3.3. ---------------------------------------------------------------------------- */}
-                        <div className="row  mx-0">
+                        <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
                                 3.3.	סגירת בית הילדים:
                             </div>
                         </div>
-                        <div className="row  mx-0 fixed-size">
+                        <div className="row  mx-0 " style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
                                 <p>
@@ -551,10 +582,10 @@ export default function Reception(props) {
                                 </p>
                             </div>
                         </div>
-                        <div className="row  mx-0">
+                        <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                <div className=" px-0 pb-3 david fixed-size">
+                                <div className=" px-0 pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0"></div>
                                         <div className="col-11 px-0">
@@ -594,10 +625,10 @@ export default function Reception(props) {
                             </div>
                         </div>
                         {/* ------ 3.4. ----------------------------------------- */}
-                        <div className="row  mx-0">
+                        <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                <div className="row mx-0 fixed-size">
+                                <div className="row mx-0 ">
                                     <div className="col-1 px-0">3.4. </div>
                                     <div className="col-11 px-0">
                                         בכל מקרה תועבר לידי ההורים הודעה בכתב על דבר השינויים ו/או סגירת בתי הילדים לכל הפחות שבועיים מראש, אלא במקרה חירום או כח עליון ו/או במקרים של הנחיות גופים מוסמכים כאמור בסעיף 3.3.4 לעיל.
@@ -615,7 +646,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                <div className=" px-0 pb-3 david fixed-size">
+                                <div className=" px-0 pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0"></div>
                                         <div className="col-11 px-0">
@@ -638,14 +669,14 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* ----------- 4. --------------------------------------------- */}
-                    <div className="container   pb-3 david ">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-12 px-0">4.	אוכל</div>
                         </div>
-                        <div className="row  mx-0">
+                        <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">4.1.</div>
                                         <div className="col-11">
@@ -669,25 +700,25 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* ----------- 5. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">5.</div>
-                            <div className="col-11 px-0">
-                                ביגוד והנעלה <br /> ההורים ידאגו להבאת בגדים ונעלים לילד, ללקיחתם ולניקיונם, לפי הנחיות האגודה. מומלץ לסמן את הבגדים נגד אובדן.
+                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}>5.</div>
+                            <div className="col-11 px-0" >
+                                <div style={{ fontSize: `${fontSize}px` }}>ביגוד והנעלה </div> <div style={{ fontSize: `${fontSize}px` }}>ההורים ידאגו להבאת בגדים ונעלים לילד, ללקיחתם ולניקיונם, לפי הנחיות האגודה. מומלץ לסמן את הבגדים נגד אובדן. </div>
                             </div>
                         </div>
                     </div>
                     {/* ----------- 6. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">6.</div>
+                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}>6.</div>
                             <div className="col-11 px-0">
-                                מגבות וכלי מיטה <br /> ההורים יביאו מגבת גדולה, מגבות קטנות, כלי מיטה ושמיכות לשימוש הילד באגודה וידאגו לניקיונם מעת לעת.
+                             <div style={{ fontSize: `${fontSize}px` }}> מגבות וכלי מיטה  </div><div style={{ fontSize: `${fontSize}px` }}> ההורים יביאו מגבת גדולה, מגבות קטנות, כלי מיטה ושמיכות לשימוש הילד באגודה וידאגו לניקיונם מעת לעת. </div>
                             </div>
                         </div>
                     </div>
                     {/* ----------- 7. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
                             <div className="col-1 px-0">7.</div>
                             <div className="col-11 px-0">
@@ -703,7 +734,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">8.1.</div>
                                         <div className="col-11">
@@ -769,7 +800,7 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* ----------- 9. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
                             <div className="col-1 px-0">9.</div>
                             <div className="col-11 px-0">
@@ -785,7 +816,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">10.1.</div>
                                         <div className="col-10">
@@ -823,7 +854,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">11.1.</div>
                                         <div className="col-10">
@@ -840,7 +871,7 @@ export default function Reception(props) {
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">11.3.</div>
                                         <div className="col-10 px-0">
-                                            <div className="row  mx-0 fixed-size"><p>
+                                            <div className="row  mx-0 "><p>
                                                 על אף האמור לעיל, האגודה תהא רשאית להביא הסכם זה לידי סיום לפי שיקול דעתה המוחלט בכל מקרה ולרבות בכל אחד מהמקרים המפורטים להלן:
                                             </p>
                                             </div>
@@ -913,7 +944,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">12.1.</div>
                                         <div className="col-10">
@@ -963,7 +994,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">13.1.</div>
                                         <div className="col-10">
@@ -994,7 +1025,7 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* ----------- 14. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
                             <div className="col-1 px-0">14.</div>
                             <div className="col-11 px-0">
@@ -1010,7 +1041,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">15.1.</div>
                                         <div className="col-10">
@@ -1029,7 +1060,7 @@ export default function Reception(props) {
                         </div>
                     </div>
                     {/* ----------- 16. --------------------------------------------- */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david ">
                         <div className="row  mx-0">
                             <div className="col-1 px-0">16.</div>
                             <div className="col-11 px-0">
@@ -1045,7 +1076,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 px-0">
-                                <div className="mx-0   pb-3 david fixed-size">
+                                <div className="mx-0   pb-3 david ">
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">17.1.</div>
                                         <div className="col-10">
@@ -1064,11 +1095,11 @@ export default function Reception(props) {
                         </div>
                     </div>
                 </div>
-                <div className=" px-3 pb-3 text-center david">
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                     ולראייה באו הצדדים על החתום
                 </div>
 
-                <div className="px-3 row align-items-start text-center fixed-size david">
+                <div className="px-3 row align-items-start text-center  david"style={{ fontSize: `${fontSize+2}px` }}>
                     <div className="col-4">
                         <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> <br /> הורה
                     </div>
@@ -1085,12 +1116,12 @@ export default function Reception(props) {
 
                 <div className="container   pb-3 david ">
                     <div className="row mx-auto">
-                        <div className="col-12 px-0">רשימת נספחים</div>
+                        <div className="col-12 px-0" style={{ fontSize: `${fontSize+3}px` }}>רשימת נספחים</div>
                     </div>
-                    <div className="row  mx-0">
+                    <div className="row  mx-0" style={{ fontSize: `${fontSize+2}px` }}>
                         <div className="col-1 px-0"></div>
                         <div className="col-11 px-0">
-                            <div className="mx-0   pb-3 david fixed-size">
+                            <div className="mx-0   pb-3 david ">
                                 <div className="row mx-auto">
                                     <div className="col-3 px-0">נספח א' -</div>
                                     <div className="col-9 ">
@@ -1128,7 +1159,7 @@ export default function Reception(props) {
 
 
                 {/* ----------- נספח א'------------------------------------------ */}
-                <div className=" px-3 pb-3 text-center david">
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                     נספח א'- לוח חופשות תשפ"ד
                     <br />
                     <br />
@@ -1138,19 +1169,19 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ב'------------------------------------------ */}
                 <div>
-                    <div className=" px-3 pb-3 text-center david">
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                         נספח ב' <br />
                         תקנון בריאות
                     </div>
 
-                    <div className=" px-3 pb-3  david fixed-size" >
+                    <div className=" px-3 pb-3  david " style={{ fontSize: `${fontSize+2}px` }} >
                         הקדמה: המטפלות אינן רשאיות, על פי הוראות משרד התמ"ת ומשרד החינוך, לתת תרופות כלשהן לילדים בבתי הילדים ובכלל זה אקמול.
                     </div>
 
                     {/* ----------- הנחיות כלליות: ------------------------------------------ */}
 
-                    <div className="px-3 pb-3 david fixed-size">
-                        <div className="row mx-auto">
+                    <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
+                        <div className="row mx-auto" style={{ fontSize: `${fontSize+2}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 ">
                                 הנחיות כלליות:
@@ -1184,8 +1215,8 @@ export default function Reception(props) {
 
                     {/* ----------- הנחיות כלליות: ------------------------------------------ */}
 
-                    <div className="px-3 pb-3 david fixed-size">
-                        <div className="row mx-auto">
+                    <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
+                        <div className="row mx-auto" style={{ fontSize: `${fontSize+2}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 ">
                                 הנחיות מפורטות:
@@ -1241,20 +1272,20 @@ export default function Reception(props) {
                 {/* ----------- נספח ג'------------------------------------------ */}
                 <div>
                     <div>
-                        <div className=" px-3 pb-3 text-center david">
+                        <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                             נספח ג' <br />
-                            <p className="fixed-size">
+                            <p className="">
                                 שאלון עם כניסת הילד לבית הילדים
                             </p>
-                            <ul className="fixed-size">
+                            <ul className="">
                                 <li>אנא מלאו פרטים מדויקים כדי שיהיה קל יותר להכיר את הילד על צרכיו השונים</li>
                                 <li>נא לצרף צילום תעודת הזהות של ההורים וצילום הספח בו רשום הילד.</li>
                             </ul>
                         </div>
                     </div>
                     {/* ----------- Details --------------------------------------------- */}
-                    <div className="container   pb-3 david ">
-                        <div className="mx-0   pb-3 david fixed-size">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
+                        <div className="mx-0   pb-3 david">
                             <p className="row mx-auto">
                                 <div className="col-1 px-0"></div>
                                 <div className="col-11">
@@ -1267,7 +1298,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childFirstName"
                                         value={documentData.childFirstName}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> שם משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1277,8 +1308,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childLastName"
                                         value={documentData.childLastName}
-                                        style={{ width: "80px" }}
-                                    />  מס' ת.ז.: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    />  {windowWidth < 550 ? <br/>:null} מס' ת.ז.: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1287,7 +1318,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childId"
                                         value={documentData.childId}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1303,7 +1334,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="dateOfBirth"
                                         value={documentData.dateOfBirth}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />  ארץ לידה:<input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1313,8 +1344,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="countryOfBirth"
                                         value={documentData.countryOfBirth}
-                                        style={{ width: "80px" }}
-                                    /> שנת עליה: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} שנת עליה: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1323,7 +1354,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="yearOfArrival"
                                         value={documentData.yearOfArrival}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1339,7 +1370,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="address"
                                         value={documentData.address}
-                                        style={{ width: "200px" }}
+                                        style={{ width: `${fontSize*11}px` }}
                                     /> מיקוד: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1349,7 +1380,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="zip"
                                         value={documentData.zip}
-                                        style={{ width: "60px" }}
+                                        style={{ width: `${fontSize*4}px` }}
                                     />
                                 </div>
                             </p>
@@ -1365,7 +1396,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother1"
                                         value={documentData.brother1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> 2. <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1375,8 +1406,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother2"
                                         value={documentData.brother2}
-                                        style={{ width: "80px" }}
-                                    />3. <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    />{windowWidth < 550 ? <br/>:null} 3. <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1385,7 +1416,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother3"
                                         value={documentData.brother3}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> 4.<input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1395,7 +1426,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother4"
                                         value={documentData.brother4}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1411,7 +1442,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentName1"
                                         value={documentData.parentName1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1421,8 +1452,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentId1"
                                         value={documentData.parentId1}
-                                        style={{ width: "80px" }}
-                                    /> מקצוע: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1431,7 +1462,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentJob1"
                                         value={documentData.parentJob1}
-                                        style={{ width: "120px" }}
+                                        style={{ width: `${fontSize*8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1447,7 +1478,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="phoneNumber1"
                                         value={documentData.phoneNumber1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1457,8 +1488,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentHomeNumber1"
                                         value={documentData.parentHomeNumber1}
-                                        style={{ width: "80px" }}
-                                    /> דוא"ל:<input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} דוא"ל:<input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1467,7 +1498,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentEmailAddress1"
                                         value={documentData.parentEmailAddress1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1483,7 +1514,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentName2"
                                         value={documentData.parentName2}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1493,8 +1524,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentId2"
                                         value={documentData.parentId2}
-                                        style={{ width: "80px" }}
-                                    /> מקצוע: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1503,7 +1534,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentJob2"
                                         value={documentData.parentJob2}
-                                        style={{ width: "120px" }}
+                                        style={{ width: `${fontSize*8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1519,7 +1550,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="phoneNumber2"
                                         value={documentData.phoneNumber2}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1529,8 +1560,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentHomeNumber2"
                                         value={documentData.parentHomeNumber2}
-                                        style={{ width: "80px" }}
-                                    /> דוא"ל:<input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} דוא"ל:<input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1539,12 +1570,12 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentEmailAddress2"
                                         value={documentData.parentEmailAddress2}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*8}px` }}
                                     />
                                 </div>
                             </p>
                             <br />
-                            <p>
+                            <p style={{ fontSize: `${fontSize+2}px` }}>
                                 שמות הרשאים לקחת את הילד מבית הילדים וליצירת קשר במידה ולא ניתן להשיג את ההורים:
                             </p>
                             <p className="row mx-auto">
@@ -1559,7 +1590,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeName1"
                                         value={documentData.relativeName1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> קרבת משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1569,8 +1600,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeStatus1"
                                         value={documentData.relativeStatus1}
-                                        style={{ width: "80px" }}
-                                    />טלפון: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} טלפון: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1579,11 +1610,11 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeNumber1"
                                         value={documentData.relativeNumber1}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />
                                 </div>
                             </p>
-                            <p className="row mx-auto">
+                            <p className="row mx-auto" style={{ fontSize: `${fontSize}px` }}>
                                 <div className="col-1 px-0"></div>
                                 <div className="col-11">
                                     שם:<input
@@ -1595,7 +1626,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeName2"
                                         value={documentData.relativeName2}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     /> קרבת משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1605,8 +1636,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeStatus2"
                                         value={documentData.relativeStatus2}
-                                        style={{ width: "80px" }}
-                                    />טלפון: <input
+                                        style={{ width: `${fontSize*5}px` }}
+                                    /> {windowWidth < 550 ? <br/>:null} טלפון: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1615,11 +1646,11 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeNumber2"
                                         value={documentData.relativeNumber2}
-                                        style={{ width: "80px" }}
+                                        style={{ width: `${fontSize*5}px` }}
                                     />
                                 </div>
                             </p>
-                            <p>
+                            <p >
                                 האם לילד ישנה בעיה רפואית או נפשית שעל הגננת והמטפלות לדעת עליה: כן/לא <FormControl>
                                     <RadioGroup
                                         onChange={updateDocumentData}
@@ -1628,8 +1659,8 @@ export default function Reception(props) {
                                         id="healthIssueExist"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>כן </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{  fontSize: `${fontSize}px` , fontFamily: "'David Libre', serif" }}>כן </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא</span>} />
                                     </RadioGroup>
                                 </FormControl>
                             </p>
@@ -1643,7 +1674,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="healthIssueAndSolution"
                                     value={documentData.healthIssueAndSolution}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*25}px` }}
                                     disabled={documentData.healthIssueExist === "false"}
                                 />
                             </p>
@@ -1661,8 +1692,8 @@ export default function Reception(props) {
                                         id="allergyToMedication"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>אין</span>} />
                                     </RadioGroup>
                                 </FormControl><input
                                     className="me-5"
@@ -1673,7 +1704,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergyToMedication"
                                     value={documentData.allergyToMedication}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={allergyExistance.allergyToMedication === "false"}
                                 />
                             </p>
@@ -1691,8 +1722,8 @@ export default function Reception(props) {
                                         id="allergyToFood"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>אין</span>} />
                                     </RadioGroup>
                                 </FormControl><input
                                     className="me-5"
@@ -1703,7 +1734,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergyToFood"
                                     value={documentData.allergyToFood}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={allergyExistance.allergyToFood === "false"}
                                 />
                             </p>
@@ -1721,8 +1752,8 @@ export default function Reception(props) {
                                         id="pastDiseases"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>יש </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>אין</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>יש </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>אין</span>} />
                                     </RadioGroup>
                                 </FormControl><input
                                     className="me-5"
@@ -1732,7 +1763,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="pastDiseases"
                                     value={documentData.pastDiseases}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={allergyExistance.pastDiseases === "false"}
                                 />
                             </p>
@@ -1750,8 +1781,8 @@ export default function Reception(props) {
                                         id="allergies"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>כן </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>כן </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא</span>} />
                                     </RadioGroup>
                                 </FormControl><input
                                     className="me-5"
@@ -1762,7 +1793,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergies"
                                     value={documentData.allergies}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={allergyExistance.allergies === "false"}
                                 />
                             </p>
@@ -1775,8 +1806,8 @@ export default function Reception(props) {
                                         id="receivedFullVaccination"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>כן </span>} />
-                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא</span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>כן </span>} />
+                                        <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא</span>} />
                                     </RadioGroup>
                                 </FormControl>
                             </p>
@@ -1790,7 +1821,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="nonReceivedVaccinations"
                                     value={documentData.nonReceivedVaccinations}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*25}px` }}
                                     disabled={documentData.receivedFullVaccination === "true"}
                                 />
                             </p>
@@ -1804,7 +1835,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="hmo"
                                     value={documentData.hmo}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*25}px` }}
                                 />
                             </p>
                             <p>
@@ -1817,7 +1848,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="remarks"
                                     value={documentData.remarks}
-                                    style={{ width: "300px" }}
+                                    style={{ width: `${fontSize*25}px` }}
                                 />
                             </p>
                             <br />
@@ -1849,7 +1880,7 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ד' ------------------------------------------ */}
                 <div>
-                    <div className=" px-3 pb-3 text-center david">
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                         <p className="">
                             נספח ד': להסכם חינוך מיום <input
                                 className=""
@@ -1860,7 +1891,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="attendanceStartingDate"
                                 value={documentData.attendanceStartingDate}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             />
                         </p>
                         <p className="">
@@ -1870,7 +1901,7 @@ export default function Reception(props) {
                     </div>
 
                     {/* ----------- ב  י  ן: ------------------------------------------ */}
-                    <div className="container   pb-3 david fixed-size">
+                    <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-2 px-0">בין:</div>
                             <div className="col-10">  תושבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ<br />
@@ -1891,7 +1922,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="childName"
                                 value={documentData.childName}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> ת"ז <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1901,7 +1932,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="childId"
                                     value={documentData.childId}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> <br />
                                 (להלן: "הילד") <br />
                                 1.	שםֹ  ההורה <input
@@ -1913,7 +1944,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentName1"
                                     value={documentData.parentName1}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 />   	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1923,8 +1954,8 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentId1"
                                     value={documentData.parentId1}
-                                    style={{ width: "80px" }}
-                                />  פלאפון  <input
+                                    style={{ width: `${fontSize*5}px` }}
+                                /> {windowWidth < 550 ? <br/>:null}  פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -1933,7 +1964,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="phoneNumber1"
                                     value={documentData.phoneNumber1}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> <br />
                                 2.	שםֹ  ההורה  <input
                                     className=""
@@ -1944,7 +1975,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentName2"
                                     value={documentData.parentName2}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> 	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1954,8 +1985,8 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentId2"
                                     value={documentData.parentId2}
-                                    style={{ width: "80px" }}
-                                /> פלאפון  <input
+                                    style={{ width: `${fontSize*5}px` }}
+                                />  {windowWidth < 550 ? <br/>:null} פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -1964,7 +1995,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="phoneNumber2"
                                     value={documentData.phoneNumber2}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> <br />
                                 מ <input
                                     className=""
@@ -1975,7 +2006,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="from"
                                     value={documentData.from}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*8}px` }}
                                 /> <br />
                                 (להלן: "ההורים") <br />
                                 <p className="text-start">מצד שני; </p>
@@ -1992,7 +2023,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="signingDate"
                                 value={documentData.signingDate}
-                                style={{ width: "80px" }}
+                                style={{ width: `${fontSize*5}px` }}
                             /> נחתם בין הצדדים הסכם חינוך לפיו הילד <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2002,7 +2033,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="childName"
                                     value={documentData.childName}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 />, נושא ת.ז. <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2012,7 +2043,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="childId"
                                     value={documentData.childId}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> (להלן: "הילד") ישהה בבית הילדים <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2022,7 +2053,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="className"
                                     value={documentData.className}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 /> באגודה בשנת הלימודים תשפ"ד (להלן: "ההסכם העיקרי"); </p>
                             </div>
                         </div>
@@ -2053,11 +2084,11 @@ export default function Reception(props) {
 
                         {/* ---------------------------------------------------------------------- */}
                     </div>
-                    <p className=" px-3 pb-3 text-center david">
+                    <p className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                         לפיכך, הוסכם, הוצהר והותנה בין הצדדים כדלקמן:
                     </p>
                     {/* --------- לפיכך ------------------------------------------------------------- */}
-                    <div className="px-3 pb-3 david fixed-size">
+                    <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-1 px-0"></div>
                             <div className="col-11 ">
@@ -2129,8 +2160,8 @@ export default function Reception(props) {
                                                     id="allowsPhotographingInternal"
                                                     row
                                                 >
-                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה </span>} />
-                                                    <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>תושבי חוץ</span>} />
+                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה </span>} />
+                                                    <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי חוץ</span>} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -2159,10 +2190,10 @@ export default function Reception(props) {
                                                     id="paymentMethod"
                                                     name="paymentMethod"
                                                 >
-                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. </span>} />
-                                                    <FormControlLabel sx={{ margin: 0 }} value="credit-card" control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>באמצעות חיוב כרטיס אשראי על שם ההורים בהתאם להוראת הקבע לתשלום באמצעות כרטיס אשראי בנוסח הרצ"ב להסכם זה שתיחתם על ידי ההורים ותימסר לאגודה במועד החתימה על הסכם זה. </span>} />
-                                                    <FormControlLabel sx={{ margin: 0 }} value="direct-debit" control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>על ידי הוראת קבע.</span>} />
-                                                    <FormControlLabel sx={{ margin: 0 }} value="billing-in-budget" control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>בחיוב בתקציב (חברי קיבוץ בלבד)</span>} />
+                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. </span>} />
+                                                    <FormControlLabel sx={{ margin: 0 }} value="credit-card" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות חיוב כרטיס אשראי על שם ההורים בהתאם להוראת הקבע לתשלום באמצעות כרטיס אשראי בנוסח הרצ"ב להסכם זה שתיחתם על ידי ההורים ותימסר לאגודה במועד החתימה על הסכם זה. </span>} />
+                                                    <FormControlLabel sx={{ margin: 0 }} value="direct-debit" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>על ידי הוראת קבע.</span>} />
+                                                    <FormControlLabel sx={{ margin: 0 }} value="billing-in-budget" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>בחיוב בתקציב (חברי קיבוץ בלבד)</span>} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </p>
@@ -2197,7 +2228,7 @@ export default function Reception(props) {
 
                     </div>
 
-                    <div className=" px-3 pb-3 text-center david">
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
                         ולראייה באו הצדדים על החתום ביום <input
                             className=""
                             onChange={updateDocumentData}
@@ -2207,11 +2238,11 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="signingDate"
                             value={documentData.signingDate}
-                            style={{ width: "80px" }}
+                            style={{ width: `${fontSize*5}px` }}
                         />
                     </div>
 
-                    <div className="px-3 row align-items-start text-center fixed-size david">
+                    <div className="px-3 row align-items-start text-center david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="col-4">
                             הורה <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
                         </div>
@@ -2227,13 +2258,13 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ה'------------------------------------------ */}
                 <div>
-                    <p className=" px-3 text-center david">
+                    <p className=" px-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
 
                         נספח ה' <br />
                         טופס אישור צילום
 
                     </p>
-                    <p className=" px-3  david fixed-size" >
+                    <p className=" px-3  david " style={{ fontSize: `${fontSize}px` }}>
                         אני מאשר / לא מאשר  לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
                         <FormControl>
                             <RadioGroup
@@ -2243,12 +2274,12 @@ export default function Reception(props) {
                                 id="allowsPhotographingInternal"
                                 row
                             >
-                                <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>מאשר </span>} />
-                                <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא מאשר</span>} />
+                                <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>מאשר </span>} />
+                                <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא מאשר</span>} />
                             </RadioGroup>
                         </FormControl>
                     </p>
-                    <p className=" px-3   david fixed-size" >
+                    <p className=" px-3   david " style={{ fontSize: `${fontSize}px` }}>
                         אני מאשר / לא מאשר לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
                         <FormControl>
                             <RadioGroup
@@ -2258,13 +2289,13 @@ export default function Reception(props) {
                                 id="allowsPhotographingExternal"
                                 row
                             >
-                                <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>מאשר </span>} />
-                                <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: '14px', fontFamily: "'David Libre', serif" }}>לא מאשר</span>} />
+                                <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>מאשר </span>} />
+                                <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא מאשר</span>} />
                             </RadioGroup>
                         </FormControl>
                     </p>
 
-                    <p className=" px-3  david fixed-size">
+                    <p className=" px-3  david " style={{ fontSize: `${fontSize}px` }}>
                         שם פרטי ושם משפחה של המאשר	 <input
                             className=""
                             onChange={updateDocumentData}
@@ -2274,7 +2305,7 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="approverName"
                             value={documentData.approverName}
-                            style={{ width: "80px" }}
+                            style={{ width: `${fontSize*5}px` }}
                         />  <br />
                         הקשר של המאשר לילד			 <input
                             className=""
@@ -2285,7 +2316,7 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="approverStatus"
                             value={documentData.approverStatus}
-                            style={{ width: "100px" }}
+                            style={{ width: `${fontSize*7}px` }}
                         />  <br />
                         כתובת המאשר 				 <input
                             className=""
@@ -2296,7 +2327,7 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="approverAddress"
                             value={documentData.approverAddress}
-                            style={{ width: "200px" }}
+                            style={{ width: `${fontSize*14}px` }}
                         />  <br />
                         מספר טלפון	 של המאשר 		<input
                             className=""
@@ -2307,12 +2338,12 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="approverPhoneNumber"
                             value={documentData.approverPhoneNumber}
-                            style={{ width: "80px" }}
+                            style={{ width: `${fontSize*5}px` }}
                         />  <br />
 
                     </p>
 
-                    <div className=" px-3  david fixed-size">
+                    <div className=" px-3  david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
                             <div className="col-2 px-0">חתימת ההורה: </div>
                             <div className="col-10">
@@ -2326,7 +2357,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="signingDate"
                                     value={documentData.signingDate}
-                                    style={{ width: "80px" }}
+                                    style={{ width: `${fontSize*5}px` }}
                                 />
                             </div>
                         </div>
