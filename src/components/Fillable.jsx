@@ -234,7 +234,9 @@ export default function Reception(props) {
     function MyComponent() {
         return (
             <div>
-                <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe>
+                
+                 {/* <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe> */}
+                <img src="/holidays.png" alt="My Image" width="90%" /> 
             </div>
         );
     }
@@ -1674,7 +1676,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="healthIssueAndSolution"
                                     value={documentData.healthIssueAndSolution}
-                                    style={{ width: `${fontSize*25}px` }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={documentData.healthIssueExist === "false"}
                                 />
                             </p>
@@ -1821,7 +1823,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="nonReceivedVaccinations"
                                     value={documentData.nonReceivedVaccinations}
-                                    style={{ width: `${fontSize*25}px` }}
+                                    style={{ width: `${fontSize*20}px` }}
                                     disabled={documentData.receivedFullVaccination === "true"}
                                 />
                             </p>
@@ -1835,7 +1837,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="hmo"
                                     value={documentData.hmo}
-                                    style={{ width: `${fontSize*25}px` }}
+                                    style={{ width: `${fontSize*20}px` }}
                                 />
                             </p>
                             <p>
@@ -1848,7 +1850,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="remarks"
                                     value={documentData.remarks}
-                                    style={{ width: `${fontSize*25}px` }}
+                                    style={{ width: `${fontSize*20}px` }}
                                 />
                             </p>
                             <br />
