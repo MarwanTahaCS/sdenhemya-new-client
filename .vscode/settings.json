@@ -1,0 +1,7 @@
+{
+    "emmet.includeLanguages": {
+        "jsx": "html",
+        "javascript": "html",
+        "vue": "html"
+    }
+}

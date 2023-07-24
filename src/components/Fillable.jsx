@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import '../index.css';
+import { Form, Button } from 'react-bootstrap';
+import Resizer from 'react-image-file-resizer';
 
 // imports for radio form
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormControl } from "@mui/material";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import SignatureModal from "./SignatureModal.jsx";
@@ -26,12 +30,56 @@ export default function Reception(props) {
 
     const navigate = useNavigate();
 
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    // const handleImageChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setSelectedImage(reader.result);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // };
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          Resizer.imageFileResizer(
+            file,
+            650, // Set the maximum width in pixels
+            650, // Set the maximum height in pixels
+            'JPEG', // Output format
+            70, // Compression quality (0-100)
+            0, // Rotation (0-360)
+            (uri) => {
+              setSelectedImage(uri);
+            },
+            'base64', // Output type ('base64', 'blob', or 'file')
+            400, // Set the maximum file size in bytes
+            400 // Set the maximum file size in bytes for iOS
+          );
+        }
+      };
+
     const options = [
         { value: "תינוקיית בית קשת", label: "תינוקיית בית קשת" },
         { value: "בית קשת - פעוטון", label: "בית קשת -פעוטון" },
         { value: "סנונית – גנון", label: "סנונית – גנון" },
         { value: "רימון – גן צעיר", label: "רימון – גן צעיר" },
         { value: "שיטה – גן בוגר", label: "שיטה – גן בוגר" },
+    ];
+
+    const yearOptions = [
+        { value: "", label: "בחר שנתון" },
+        { value: "2017", label: "2017" },
+        { value: "2018", label: "2018" },
+        { value: "2019", label: "2019" },
+        { value: "2020", label: "2020" },
+        { value: "2021", label: "2021" },
+        { value: "2022", label: "2022" },
+        { value: "2023", label: "2023" },
     ];
 
     function updateDocumentData(event) {
@@ -181,7 +229,7 @@ export default function Reception(props) {
             || documentData.dateOfBirth === '' || documentData.address === '' || documentData.zip === ''
             || documentData.relativeName1 === '' || documentData.relativeStatus1 === '' || documentData.relativeNumber1 === ''
             || documentData.hmo === '' || documentData.attendanceStartingDate === ''
-            || documentData.signingDate === '' || internal === '' || documentData.paymentMethod === '') {
+            || documentData.signingDate === '' || internal === '' || documentData.paymentMethod === '' || selectedImage === null) {
             alert('אנא מלא את כל שדות הקלט');
             return;
         } else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC"
@@ -190,7 +238,7 @@ export default function Reception(props) {
             return;
         }
 
-        props.saveData(documentData);
+        props.saveData(documentData, selectedImage);
 
         // PDF Modification
         // modifyPdf();
@@ -223,7 +271,7 @@ export default function Reception(props) {
     useEffect(() => {
 
         handleResize();
-        
+
         // Add event listener when the component mounts
         window.addEventListener('resize', handleResize);
 
@@ -236,9 +284,9 @@ export default function Reception(props) {
     function MyComponent() {
         return (
             <div>
-                
-                 {/* <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe> */}
-                <img src="/holidays.png" alt="My Image" width="90%" /> 
+
+                {/* <iframe src="https://api.myvarno.io/api/documentSign/schedual.pdf" width="100%" height="500px" title="PDF Viewer"></iframe> */}
+                <img src="/holidays.png" alt="My Image" width="90%" />
             </div>
         );
     }
@@ -251,59 +299,59 @@ export default function Reception(props) {
                 </button>
             </div>
             <div className="card m-1">
-                <h5 className="p-3 text-center">
-                    הסכם חינוך גיל רך  {/* {props.t("Reception.1")} */}
+                <h5 className="p-3 text-center david">
+                    <b> <u> הסכם חינוך גיל רך </u></b> {/* {props.t("Reception.1")} */}
                 </h5>
-                <div className=" px-1 pb-3 text-center david " style={{ fontSize: `${fontSize-1}px` }}  >
+                <div className=" px-1 pb-3 text-center david " style={{ fontSize: `${fontSize - 1}px` }}  >
 
                     {/* <div className="text-nowrap"> שנערך ונחתם בקיבוץ שדה נחמיה ביום </div> */}
-
-                    שנערך ונחתם בקיבוץ שדה נחמיה ביום <input
-                        className=""
-                        onChange={updateDocumentData}
-                        type="text"
-                        name="day"
-                        // placeholder={props.t("OrgDetails.3")}
-                        autoComplete="off"
-                        id="day"
-                        value={documentData.day}
-                        style={{ width: `${fontSize*2}px` }}
-                    /> לחודש <input
-                        className=""
-                        onChange={updateDocumentData}
-                        type="text"
-                        name="month"
-                        // placeholder={props.t("OrgDetails.3")}
-                        autoComplete="off"
-                        id="month"
-                        value={documentData.month}
-                        style={{ width: `${fontSize*2}px` }}
-                    /> שנת <input
-                        className=""
-                        onChange={updateDocumentData}
-                        type="text"
-                        name="year"
-                        // placeholder={props.t("OrgDetails.3")}
-                        autoComplete="off"
-                        id="year"
-                        value={documentData.year}
-                        style={{ width: `${fontSize*2}px` }}
-                    />
-
+                    <b>
+                        שנערך ונחתם בקיבוץ שדה נחמיה ביום <input
+                            className=""
+                            onChange={updateDocumentData}
+                            type="text"
+                            name="day"
+                            // placeholder={props.t("OrgDetails.3")}
+                            autoComplete="off"
+                            id="day"
+                            value={documentData.day}
+                            style={{ width: `${fontSize * 2}px` }}
+                        /> לחודש <input
+                            className=""
+                            onChange={updateDocumentData}
+                            type="text"
+                            name="month"
+                            // placeholder={props.t("OrgDetails.3")}
+                            autoComplete="off"
+                            id="month"
+                            value={documentData.month}
+                            style={{ width: `${fontSize * 2}px` }}
+                        /> שנת <input
+                            className=""
+                            onChange={updateDocumentData}
+                            type="text"
+                            name="year"
+                            // placeholder={props.t("OrgDetails.3")}
+                            autoComplete="off"
+                            id="year"
+                            value={documentData.year}
+                            style={{ width: `${fontSize * 2}px` }}
+                        />
+                    </b>
                 </div>
                 {/* ------- בין: ----------------------------------------------------------------- */}
-                < div className="container   pb-3 david " style={{ fontSize: `${fontSize+1}px` }}>
+                < div className="container   pb-3 david " style={{ fontSize: `${fontSize + 1}px` }}>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">בין:</div>
-                        <div className="col-10">מתיישבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ <br />
+                        <div className="col-2 px-0"><b> בין: </b></div>
+                        <div className="col-10"><b>מתיישבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ </b><br />
                             מקיבוץ שדה נחמיה <br />
                             ד.נ. גליל עליון <br />
-                            (להלן: "האגודה") <br />
-                            <p className="text-start">מצד אחד; </p>
+                            (להלן: <b>"האגודה"</b>) <br />
+                            <p className="text-start"> <b><u> מצד אחד; </u></b></p>
                         </div>
                     </div>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">לבין:</div>
+                        <div className="col-2 px-0"> <b>לבין: </b></div>
                         <div className="col-10">הורי הילד <input
                             className=""
                             onChange={updateDocumentData}
@@ -313,7 +361,7 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="childName"
                             value={documentData.childName}
-                            style={{ width: `${fontSize*5}px` }}
+                            style={{ width: `${fontSize * 5}px` }}
                         /> ת"ז <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -323,9 +371,9 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="childId"
                                 value={documentData.childId}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             /> <br />
-                            (להלן: "הילד") <br />
+                            (להלן: <b>"הילד"</b>) <br />
                             1.	שםֹ  ההורה <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -335,7 +383,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentName1"
                                 value={documentData.parentName1}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             />   	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -345,8 +393,8 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentId1"
                                 value={documentData.parentId1}
-                                style={{ width: `${fontSize*5}px` }}
-                            />  {windowWidth < 550 ? <br/>:null} פלאפון  <input
+                                style={{ width: `${fontSize * 5}px` }}
+                            />  {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -355,7 +403,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="phoneNumber1"
                                 value={documentData.phoneNumber1}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             /> <br />
                             2.	שםֹ  ההורה  <input
                                 className=""
@@ -366,7 +414,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentName2"
                                 value={documentData.parentName2}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             /> 	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -376,8 +424,8 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="parentId2"
                                 value={documentData.parentId2}
-                                style={{ width: `${fontSize*5}px` }}
-                            /> {windowWidth < 550 ? <br/>:null} פלאפון  <input
+                                style={{ width: `${fontSize * 5}px` }}
+                            /> {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -386,21 +434,41 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="phoneNumber2"
                                 value={documentData.phoneNumber2}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             /> <br />
-                            (להלן ביחד ולחוד: "ההורים") <br />
-                            <p className="text-start">מצד שני; </p>
+                            (להלן ביחד ולחוד: <b>"ההורים"</b>) <br />
+                            <p className="text-start"><b><u> מצד שני;</u></b> </p>
                         </div>
                     </div>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">הואיל</div>
-                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן "<select style={{ width: `${fontSize*11}px`, fontSize: `${fontSize+1}px` }} name="kindergarten" value={documentData.kindergarten} onChange={updateKindergarten} id="dropdown">
-                            {options.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>" גן המיועד לילדי שדה נחמיה לשנתון <input
+                        <div className="col-2 px-0"> <b>הואיל </b></div>
+                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן/פעוטון "
+                            <select style={{ fontSize: `${fontSize + 1}px` }}
+                                name="kindergarten"
+                                value={documentData.kindergarten}
+                                onChange={updateKindergarten}
+                                id="dropdown">
+                                {options.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>" המיועד לילדי שדה נחמיה לשנתון
+                            <>
+                                <select
+                                    style={{ fontSize: `${fontSize + 1}px` }}
+                                    name="hebrewYear"
+                                    value={documentData.hebrewYear}
+                                    onChange={updateDocumentData}
+                                    id="dropdown">
+                                    {yearOptions.map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </>
+                            {/* <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -409,20 +477,21 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="hebrewYear"
                                 value={documentData.hebrewYear}
-                                style={{ width: `${fontSize*5}px` }}
-                            /> (להלן: "בתי הילדים"); </div>
+                                style={{ width: `${fontSize * 5}px` }}
+                            /> */}
+                            (להלן: <b>"בתי הילדים"</b>); </div>
                         </div>
                     </div>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">והואיל</div>
+                        <div className="col-2 px-0"> <b> והואיל </b></div>
                         <div className="col-10">
                             <p className="">
-                                והשירותים הניתנים בבית הילדים רחבים מסל שירותים הבסיסיים בגני חובה לפי הכללים של משרד החינוך ו/או התקנים של משרד הכלכלה: מבחינת ימי ושעות הפעילות, לרבות הפעילות בחופשים; מבחינת סל התרבות והיצע הפעילויות הניתנים לילד; מבחינת ההיצע והאיכות של המזון המוגש לילד מדי יום; ומבחינת תוספת שעות טיפול במהלך יום הפעילות.
+                                והשירותים הניתנים בבית הילדים רחבים מסל שירותים הבסיסיים בגני חובה/פעוטונים לפי הכללים של משרד החינוך ו/או התקנים של משרד הכלכלה: מבחינת ימי ושעות הפעילות, לרבות הפעילות בחופשים; מבחינת סל התרבות והיצע הפעילויות הניתנים לילד; מבחינת ההיצע והאיכות של המזון המוגש לילד מדי יום; ומבחינת תוספת שעות טיפול במהלך יום הפעילות.
                             </p>
                         </div>
                     </div>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">הואיל</div>
+                        <div className="col-2 px-0"> <b> הואיל </b></div>
                         <div className="col-10">
                             <p>
                                 וההורים, פנו לאגודה בבקשה כי תתיר לילד לשהות בבית הילדים של האגודה בהתאם לגילו בשנה"ל תשפ"ד, לאחר ובכפוף להעברת פעילות החינוך לידי האגודה כאמור לעיל;
@@ -430,7 +499,7 @@ export default function Reception(props) {
                         </div>
                     </div>
                     <div className="row mx-auto">
-                        <div className="col-2 px-0">הואיל</div>
+                        <div className="col-2 px-0"> <b> הואיל </b> </div>
                         <div className="col-10">
                             <p>
                                 והאגודה הסכימה לקליטת הילד בבית הילדים לאחר ובכפוף להעברת פעילות החינוך לידי האגודה כאמור לעיל וזאת בהתאם להוראות הסכם זה;
@@ -440,8 +509,8 @@ export default function Reception(props) {
 
                     {/* ---------------------------------------------------------------------- */}
                 </div >
-                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+4}px` }}>
-                    על כן הותנה, הוצהר והוסכם כלהלן:
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 4}px` }}>
+                    <b> <u> על כן הותנה, הוצהר והוסכם כלהלן:</u></b>
                 </div>
 
                 {/* ------- על כן הותנה ----------------------------------------------------------------- */}
@@ -449,7 +518,7 @@ export default function Reception(props) {
                     {/* ---------- 1. --------------------------------------------------- */}
                     <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">1.   מבוא</div>
+                            <div className="col-12 px-0"><b>1.   <u>מבוא</u></b></div>
                         </div>
                         <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"></div>
@@ -480,7 +549,7 @@ export default function Reception(props) {
                     {/* --------- 2. ---------------------------------------------------------------- */}
                     <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">2.	אורחות חיים וחינוך</div>
+                            <div className="col-12 px-0"><b>2.	<u>אורחות חיים וחינוך</u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -505,13 +574,13 @@ export default function Reception(props) {
                     {/* -------- 3. ----------------------------------------------------------------- */}
                     <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">3.	אורחות חיים וחינוך</div>
+                            <div className="col-12 px-0"><b>3.	<u>מועדי שהייה בבית הילדים</u></b></div>
                         </div>
                         {/* ---------- 3.1. ---------------------------------------------------- */}
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                3.1.	ימי ושעות פעילות:
+                                3.1.	<u>ימי ושעות פעילות:</u>
                             </div>
                         </div>
                         <div className="row  mx-0">
@@ -548,7 +617,7 @@ export default function Reception(props) {
                                             <div className="row mx-auto">
                                                 <div className="col-2 px-0">3.1.5</div>
                                                 <div className="col-10">
-                                                    3.1.5.	ההורים מתבקשים לאסוף את ילדיהם 10 דקות לפני סגירת הגנים ובכל מקרה לא יאוחר מהאמור בשעות הפעילות.
+                                                    ההורים מתבקשים לאסוף את ילדיהם 10 דקות לפני סגירת הגנים ובכל מקרה לא יאוחר מהאמור בשעות הפעילות.
                                                 </div>
                                             </div>
                                         </div>
@@ -560,14 +629,14 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0" style={{ fontSize: `${fontSize}px` }}>
-                                3.2.	חגים:
+                                3.2.	<u>חגים:</u>
                             </div>
                         </div>
                         <div className="row  mx-0 " style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
                                 <p>
-                                    בית הילדים יהיה סגורים בחגים  עפ"י לוח החופשות המצורף בהסכם זה (נספח "א").
+                                    בית הילדים יהיה סגורים בחגים  עפ"י לוח החופשות המצורף בהסכם זה <b>(נספח "א")</b>.
                                 </p>
                             </div>
                         </div>
@@ -575,7 +644,7 @@ export default function Reception(props) {
                         <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                3.3.	סגירת בית הילדים:
+                                3.3.	<u>סגירת בית הילדים:</u>
                             </div>
                         </div>
                         <div className="row  mx-0 " style={{ fontSize: `${fontSize}px` }}>
@@ -620,7 +689,7 @@ export default function Reception(props) {
                                             <div className="row mx-auto">
                                                 <div className="col-2 px-0">3.3.5</div>
                                                 <div className="col-10">
-                                                    כל סיבה אחרת שלא תאפשר את פתיחת בית הילדים במתכונת מלאה, לרבות אילוץ מספר מטפלות להיעדר מעבודתן עקב הנחיות בידוד;
+                                                    כל סיבה אחרת שלא תאפשר את פתיחת בית הילדים במתכונת מלאה, (לרבות אילוץ היעדרות של מספר מטפלות מעבודתן עקב מחלה).
                                                 </div>
                                             </div>
                                         </div>
@@ -644,7 +713,7 @@ export default function Reception(props) {
                         <div className="row  mx-0">
                             <div className="col-1 px-0"> </div>
                             <div className="col-11 px-0">
-                                3.5.	חופשה:
+                                3.5.	<u>חופשה:</u>
                             </div>
                         </div>
                         <div className="row  mx-0">
@@ -675,7 +744,7 @@ export default function Reception(props) {
                     {/* ----------- 4. --------------------------------------------- */}
                     <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">4.	אוכל</div>
+                            <div className="col-12 px-0"><b>4.	<u>אוכל</u></b></div>
                         </div>
                         <div className="row  mx-0" style={{ fontSize: `${fontSize}px` }}>
                             <div className="col-1 px-0"></div>
@@ -706,34 +775,34 @@ export default function Reception(props) {
                     {/* ----------- 5. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}>5.</div>
+                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}><b>5.</b></div>
                             <div className="col-11 px-0" >
-                                <div style={{ fontSize: `${fontSize}px` }}>ביגוד והנעלה </div> <div style={{ fontSize: `${fontSize}px` }}>ההורים ידאגו להבאת בגדים ונעלים לילד, ללקיחתם ולניקיונם, לפי הנחיות האגודה. מומלץ לסמן את הבגדים נגד אובדן. </div>
+                                <div style={{ fontSize: `${fontSize}px` }}><b><u> ביגוד והנעלה </u></b></div> <div style={{ fontSize: `${fontSize}px` }}>ההורים ידאגו להבאת בגדים ונעלים לילד, ללקיחתם ולניקיונם, לפי הנחיות האגודה. מומלץ לסמן את הבגדים נגד אובדן. </div>
                             </div>
                         </div>
                     </div>
                     {/* ----------- 6. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}>6.</div>
+                            <div className="col-1 px-0" style={{ fontSize: `${fontSize}px` }}><b>6.</b></div>
                             <div className="col-11 px-0">
-                             <div style={{ fontSize: `${fontSize}px` }}> מגבות וכלי מיטה  </div><div style={{ fontSize: `${fontSize}px` }}> ההורים יביאו מגבת גדולה, מגבות קטנות, כלי מיטה ושמיכות לשימוש הילד באגודה וידאגו לניקיונם מעת לעת. </div>
+                                <div style={{ fontSize: `${fontSize}px` }}><b><u> מגבות וכלי מיטה </u></b> </div><div style={{ fontSize: `${fontSize}px` }}> ההורים יביאו מגבת גדולה, מגבות קטנות, כלי מיטה ושמיכות לשימוש הילד באגודה וידאגו לניקיונם מעת לעת. </div>
                             </div>
                         </div>
                     </div>
                     {/* ----------- 7. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">7.</div>
+                            <div className="col-1 px-0"><b>7.</b></div>
                             <div className="col-11 px-0">
-                                מנוחה <br /> האגודה תספק לילד מזרון ו/או מיטה למנוחת הצהריים לילד שזקוק לו.
+                                <b><u> מנוחה </u></b><br /> האגודה תספק לילד מזרון ו/או מיטה למנוחת הצהריים לילד שזקוק לו.
                             </div>
                         </div>
                     </div>
                     {/* ----------- 8. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">8.	בריאות</div>
+                            <div className="col-12 px-0"><b>8.    <u>בריאות</u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -742,13 +811,13 @@ export default function Reception(props) {
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">8.1.</div>
                                         <div className="col-11">
-                                            האגודה תספק לילד 2 ארוחות ו- אחת או שתי ארוחות ביניים במהלך יום פעילות מלא.
+                                            האחריות לשמירת בריאותו של הילד וכל הטיפול הרפואי בו, לרבות חיסונים, מעקב התפתחותי וטיפול שיניים, מוטלת על ההורים.
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
                                         <div className="col-1 px-0">8.2.</div>
                                         <div className="col-11">
-                                            בימי ו' ו/או ערבי חג, תספק האגודה לילד ארוחה אחת וארוחת ביניים אחת.
+                                            מוצהר במפורש כי השהייה בבית הילדים אינה כוללת טיפולים רפואיים, טיפולים פרה רפואיים, טיפולים מיוחדים וחיסונים.
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
@@ -794,9 +863,9 @@ export default function Reception(props) {
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
-                                        <div className="col-2 px-0">8.10.</div>
-                                        <div className="col-10">
-                                            הילד יימצא בבית הילדים רק במקרה שהוא בריא. בכל מקרה של חשש למחלה מדבקת או במקרה של חום גבוהה (מעל 38 מעלות) יישאר הילד בבית ההורים לשם קבלת טיפול רפואי נאות. הילד יוכל לחזור לבית הילדים רק לאחר קבלת אישור רופא כי הבריא מאותה מחלה והצגת אישרו זה בפני האגודה, פירוט ההנחיות בנוגע להכנסת ילדים חולים לבית הילדים מצ"ב בנספח "ב" להסכם זה.
+                                        <div className="col-1 px-0">8.10.</div>
+                                        <div className="col-11">
+                                            הילד יימצא בבית הילדים רק במקרה שהוא בריא. בכל מקרה של חשש למחלה מדבקת או במקרה של חום גבוהה (מעל 38 מעלות) יישאר הילד בבית ההורים לשם קבלת טיפול רפואי נאות. הילד יוכל לחזור לבית הילדים רק לאחר קבלת אישור רופא כי הבריא מאותה מחלה והצגת אישרו זה בפני האגודה, פירוט ההנחיות בנוגע להכנסת ילדים חולים לבית הילדים  מצ"ב <b>בנספח "ב"</b> להסכם זה.
                                         </div>
                                     </div>
                                 </div>
@@ -806,16 +875,16 @@ export default function Reception(props) {
                     {/* ----------- 9. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">9.</div>
+                            <div className="col-1 px-0"><b>9.</b></div>
                             <div className="col-11 px-0">
-                                קשר עם ההורים <br /> על ההורים ליידע את האגודה על מקום הימצאם במשך השעות בהן נמצא הילד בבית הילדים כדי שניתן יהיה למסור להם מידע דחוף הקשור בילד, לשם כך ימלאו ההורים את הפרטים כנדרש בנספח "ג".
+                                <b><u>  קשר עם ההורים </u></b><br /> על ההורים ליידע את האגודה על מקום הימצאם במשך השעות בהן נמצא הילד בבית הילדים כדי שניתן יהיה למסור להם מידע דחוף הקשור בילד, לשם כך ימלאו ההורים את הפרטים כנדרש <b>בנספח "ג"</b>.
                             </div>
                         </div>
                     </div>
                     {/* ----------- 10. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">10. ביטוח ונזקים </div>
+                            <div className="col-12 px-0"><b>10. <u>ביטוח ונזקים </u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -853,7 +922,7 @@ export default function Reception(props) {
                     {/* ----------- 11. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">11. תקופת ההסכם, סיומו והפסקתו</div>
+                            <div className="col-12 px-0"><b>11. <u>תקופת ההסכם, סיומו והפסקתו</u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -862,13 +931,13 @@ export default function Reception(props) {
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">11.1.</div>
                                         <div className="col-10">
-                                            ביטוח הבריאות של הילד יהיה במסגרת ביטוח הוריו בקופת חולים, ועל חשבונם.
+                                            הסכם זה ייכנס לתוקפו ביום 1.9.2023 ויעמוד בתוקפו עד ליום 21.8.2024.
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">11.2.</div>
                                         <div className="col-10">
-                                            האגודה תבטח את הילד לגבי שהותו בבית הילדים בביטוח תאונות אישיות לתלמידים כמקובל באגודה.
+                                            מובהר, למען הסר כל ספק כי הסכם זה מתייחס לשנת הלימודים תשפ"ד בלבד וכי אין בו כדי לחייב את האגודה לקליטת הילד בבתי הילדים של האגודה בשנות הלימודים הבאות. אפשרות קליטת הילד בבתי הילדים של האגודה תיבחן לגבי כל שנת לימודים בנפרד וייחתם בין הצדדים הסכם שהייה מתאים עבור כל שנת לימודים כאמור בנפרד.
                                         </div>
                                     </div>
                                     {/* ---------- 11.3.--------------------------------------------------- */}
@@ -920,7 +989,7 @@ export default function Reception(props) {
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">11.6.</div>
                                         <div className="col-10">
-                                            החליטו ההורים להוציא את הילד מבית הילדים לפני כן ולהביא הסכם זה לסיומו המוקדם, יודיעו על כך לאגודה בכתב לא פחות מחודשיים ימים לפני מועד היציאה (להלן: "תקופת ההודעה המוקדמת").
+                                            החליטו ההורים להוציא את הילד מבית הילדים לפני כן ולהביא הסכם זה לסיומו המוקדם, יודיעו על כך לאגודה בכתב לא פחות מחודשיים ימים לפני מועד היציאה (להלן: <b>"תקופת ההודעה המוקדמת</b>").
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
@@ -943,7 +1012,7 @@ export default function Reception(props) {
                     {/* ----------- 12. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">12. התמורה</div>
+                            <div className="col-12 px-0"><b>12. <u>התמורה</u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -952,7 +1021,7 @@ export default function Reception(props) {
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">12.1.</div>
                                         <div className="col-10">
-                                            דמי השהייה החודשיים במועד החתימה על הסכם זה הינם כמפורט בנספח "ד" להסכם זה (להלן: "דמי השהייה").
+                                            דמי השהייה החודשיים במועד החתימה על הסכם זה הינם כמפורט <b>בנספח "ד" </b>להסכם זה (להלן: <b>"דמי השהייה"</b>).
                                         </div>
                                     </div>
                                     <div className="row mx-auto">
@@ -981,9 +1050,9 @@ export default function Reception(props) {
                                     </div>
                                     <div className="row mx-auto">
                                         <div className="col-2 px-0">12.6.</div>
-                                        <div className="col-10">
+                                        <div className="col-10"><b>
                                             דמי השהייה ישולמו לאגודה גם במקרה של סגירת בתי הילדים מכל סיבה שהיא ו/או מפאת הוצאת המטפלות לבידוד בעקבות נגיף הקורונה (או כל מגיפה אחרת) ו/או במקרה שנכפה על האגודה להוציא את המטפלות לחל"ת עד 30 יום.
-                                        </div>
+                                        </b></div>
                                     </div>
 
                                 </div>
@@ -993,7 +1062,7 @@ export default function Reception(props) {
                     {/* ----------- 13. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">13. בוררות</div>
+                            <div className="col-12 px-0"><b>13. <u>בוררות</u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -1031,16 +1100,16 @@ export default function Reception(props) {
                     {/* ----------- 14. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">14.</div>
+                            <div className="col-1 px-0"><b>14.</b></div>
                             <div className="col-11 px-0">
-                                קיזוז <br /> האגודה תהא רשאית לקזז מההורים כל חוב לפי הסכם זה מכל סכום אשר יהיו זכאים לקבל מהאגודה.
+                                <b><u> קיזוז </u></b><br /> האגודה תהא רשאית לקזז מההורים כל חוב לפי הסכם זה מכל סכום אשר יהיו זכאים לקבל מהאגודה.
                             </div>
                         </div>
                     </div>
                     {/* ----------- 15. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">15. שונות </div>
+                            <div className="col-12 px-0"><b>15. <u>שונות </u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -1066,16 +1135,16 @@ export default function Reception(props) {
                     {/* ----------- 16. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row  mx-0">
-                            <div className="col-1 px-0">16.</div>
+                            <div className="col-1 px-0"><b>16.</b></div>
                             <div className="col-11 px-0">
-                                ניסוח ההסכם<br /> הסכם זה נחתם על דעת שני הצדדים ולפיכך לא יתפרש כנגד אחד מהם משום שהיה כביכול מנסחו.
+                                <b><u> ניסוח ההסכם</u></b><br /> הסכם זה נחתם על דעת שני הצדדים ולפיכך לא יתפרש כנגד אחד מהם משום שהיה כביכול מנסחו.
                             </div>
                         </div>
                     </div>
                     {/* ----------- 17. --------------------------------------------- */}
                     <div className="container   pb-3 david ">
                         <div className="row mx-auto">
-                            <div className="col-12 px-0">17. הודעות </div>
+                            <div className="col-12 px-0"><b>17. <u>הודעות </u></b></div>
                         </div>
                         <div className="row  mx-0">
                             <div className="col-1 px-0"></div>
@@ -1099,19 +1168,19 @@ export default function Reception(props) {
                         </div>
                     </div>
                 </div>
-                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                    ולראייה באו הצדדים על החתום
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                    <b> ולראייה באו הצדדים על החתום</b>
                 </div>
 
-                <div className="px-3 row align-items-start text-center  david"style={{ fontSize: `${fontSize+2}px` }}>
+                <div className="px-3 row align-items-start text-center  david" style={{ fontSize: `${fontSize + 2}px` }}>
                     <div className="col-4">
-                        <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> <br /> הורה
+                        <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> <br /><b> הורה</b>
                     </div>
                     <div className="col-4">
-                        <SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} /> <br /> הורה
+                        <SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} /> <br /><b> הורה</b>
                     </div>
                     <div className="col-4">
-                        ____________ <br /> האגודה
+                        ____________ <br /> <b>האגודה</b>
                     </div>
                 </div>
 
@@ -1120,38 +1189,38 @@ export default function Reception(props) {
 
                 <div className="container   pb-3 david ">
                     <div className="row mx-auto">
-                        <div className="col-12 px-0" style={{ fontSize: `${fontSize+3}px` }}>רשימת נספחים</div>
+                        <div className="col-12 px-0" style={{ fontSize: `${fontSize + 3}px` }}><b><u> רשימת נספחים</u></b></div>
                     </div>
-                    <div className="row  mx-0" style={{ fontSize: `${fontSize+2}px` }}>
+                    <div className="row  mx-0" style={{ fontSize: `${fontSize + 2}px` }}>
                         <div className="col-1 px-0"></div>
                         <div className="col-11 px-0">
                             <div className="mx-0   pb-3 david ">
                                 <div className="row mx-auto">
-                                    <div className="col-3 px-0">נספח א' -</div>
+                                    <div className="col-3 px-0"><b> נספח א' -</b></div>
                                     <div className="col-9 ">
                                         לוח חופשות תשפ"ד.
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-3 px-0">נספח ב' - </div>
+                                    <div className="col-3 px-0"><b> נספח ב' - </b></div>
                                     <div className="col-9 ">
                                         תקנון בריאות בבית הילדים.
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-3 px-0">נספח ג' - </div>
+                                    <div className="col-3 px-0"><b> נספח ג' - </b></div>
                                     <div className="col-9 ">
                                         שאלון פרטים על הילד וההורים.
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-3 px-0">נספח ד' - </div>
+                                    <div className="col-3 px-0"><b> נספח ד' - </b></div>
                                     <div className="col-9 ">
                                         נספח תשלום דמי שהייה.
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-3 px-0">נספח ה' - </div>
+                                    <div className="col-3 px-0"><b> נספח ה' - </b></div>
                                     <div className="col-9 ">
                                         טופס אישור צילום.
                                     </div>
@@ -1163,8 +1232,8 @@ export default function Reception(props) {
 
 
                 {/* ----------- נספח א'------------------------------------------ */}
-                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                    נספח א'- לוח חופשות תשפ"ד
+                <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                    <b><u> נספח א'- לוח חופשות תשפ"ד </u></b>
                     <br />
                     <br />
                     <MyComponent />
@@ -1173,22 +1242,22 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ב'------------------------------------------ */}
                 <div>
-                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                        נספח ב' <br />
-                        תקנון בריאות
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                        <b>נספח ב' <br />
+                            <u> תקנון בריאות</u></b>
                     </div>
 
-                    <div className=" px-3 pb-3  david " style={{ fontSize: `${fontSize+2}px` }} >
-                        הקדמה: המטפלות אינן רשאיות, על פי הוראות משרד התמ"ת ומשרד החינוך, לתת תרופות כלשהן לילדים בבתי הילדים ובכלל זה אקמול.
+                    <div className=" px-3 pb-3  david " style={{ fontSize: `${fontSize + 2}px` }} >
+                        <b><u> הקדמה: </u></b> המטפלות <b><u>אינן רשאיות</u></b>, על פי הוראות משרד התמ"ת ומשרד החינוך, לתת תרופות כלשהן לילדים בבתי הילדים ובכלל זה אקמול.
                     </div>
 
                     {/* ----------- הנחיות כלליות: ------------------------------------------ */}
 
                     <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
-                        <div className="row mx-auto" style={{ fontSize: `${fontSize+2}px` }}>
+                        <div className="row mx-auto" style={{ fontSize: `${fontSize + 2}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 ">
-                                הנחיות כלליות:
+                                <b><u>  הנחיות כלליות:</u></b>
                             </div>
                         </div>
                         <div className="row mx-auto">
@@ -1204,9 +1273,9 @@ export default function Reception(props) {
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-1 px-0">3.</div>
+                            <div className="col-1 px-0"><b>3.</b></div>
                             <div className="col-11 ">
-                                בכל מקרה בו ילד אינו חש בטוב צוות הגן יעריך את מצבו הספציפי ואת מידת יכולתו של הילד להשתתף במהלך סדר היום הרגיל . במקרה בו ילד יחוש ברע במידה בה צוות הגן יצטרך להצמיד אליו מטפלת, ההורים יתבקשו לקחתו מהגן.
+                                <b> בכל מקרה בו ילד אינו חש בטוב צוות הגן יעריך את מצבו הספציפי ואת מידת יכולתו של הילד להשתתף במהלך סדר היום הרגיל . במקרה בו ילד יחוש ברע במידה בה צוות הגן יצטרך להצמיד אליו מטפלת, ההורים יתבקשו לקחתו מהגן.</b>
                             </div>
                         </div>
                         <div className="row mx-auto">
@@ -1220,53 +1289,53 @@ export default function Reception(props) {
                     {/* ----------- הנחיות כלליות: ------------------------------------------ */}
 
                     <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
-                        <div className="row mx-auto" style={{ fontSize: `${fontSize+2}px` }}>
+                        <div className="row mx-auto" style={{ fontSize: `${fontSize + 2}px` }}>
                             <div className="col-1 px-0"></div>
                             <div className="col-11 ">
-                                הנחיות מפורטות:
+                                <b><u> הנחיות מפורטות:</u></b>
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-1 px-0">1.</div>
+                            <div className="col-1 px-0"><b>1.</b></div>
                             <div className="col-11 ">
-                                שלשולים - במידה וישנם שלושה שלשולים/יציאות רכות ומעלה במהלך שהות הילד בגן, ההורים יתבקשו לקחתו מהגן. חזרה לגן רק לאחר 24 שעות ללא שלשול. במידה ומדובר במגפה, ההורים יתבקשו לאסוף את ילדיהם לאחר שלשול אחד.
+                                <b>שלשולים</b> - במידה וישנם שלושה שלשולים/יציאות רכות ומעלה במהלך שהות הילד בגן, ההורים יתבקשו לקחתו מהגן. חזרה לגן רק לאחר 24 שעות ללא שלשול. במידה ומדובר במגפה, ההורים יתבקשו לאסוף את ילדיהם לאחר שלשול אחד.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">2.</div>
                             <div className="col-11 ">
-                                פצעים בפה ופריחה - ההורים יופנו עם הילד למרפאה, רק לאחר בדיקה במרפאה ווידוא כי לא מדובר במחלה מידבקת ניתן לחזור לגן, עם אישור בכתב מהמרפאה.
+                                <b>  פצעים בפה ופריחה</b> - ההורים יופנו עם הילד למרפאה, רק לאחר בדיקה במרפאה ווידוא כי לא מדובר במחלה מידבקת ניתן לחזור לגן, עם אישור בכתב מהמרפאה.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">3.</div>
                             <div className="col-11 ">
-                                דלקות עיניים - במידה והילד מאובחן בדלקת עיניים והוא מטופל רפואית, יוכל להגיע לגן רק לאחר קבלת טיפול רפואי של 24 שעות. במידה והילד אינו מטופל ובמהלך היום בגן, הצוות יבחין בהפרשה שנראית כדלקת, הצוות יפנה את ההורים למרפאה, ומשם המשך טיפול ע"פ הסעיף הקודם.
+                                <b>  דלקות עיניים </b>- במידה והילד מאובחן בדלקת עיניים והוא מטופל רפואית, יוכל להגיע לגן רק לאחר קבלת טיפול רפואי של 24 שעות. במידה והילד אינו מטופל ובמהלך היום בגן, הצוות יבחין בהפרשה שנראית כדלקת, הצוות יפנה את ההורים למרפאה, ומשם המשך טיפול ע"פ הסעיף הקודם.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">4.</div>
                             <div className="col-11 ">
-                                הקאות - במידה וישנן החל משתי הקאות ומעלה, צוות הגן יבקש לקחת את הילד הביתה ויחזור למסגרת רק לאחר 24 שעות ללא הקאות.
+                                <b> הקאות </b>- במידה וישנן החל משתי הקאות ומעלה, צוות הגן יבקש לקחת את הילד הביתה ויחזור למסגרת רק לאחר 24 שעות ללא הקאות.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">5.</div>
                             <div className="col-11 ">
-                                חום - במידה וילד חולה עם חום של 38 מעלות ומעלה במהלך היום בגן הצוות יבקש מההורים לקחתו הביתה ויחזור למסגרת רק לאחר 24 שעות ללא תסמינים.
+                                <b>   חום </b>- במידה וילד חולה עם חום של 38 מעלות ומעלה במהלך היום בגן הצוות יבקש מההורים לקחתו הביתה ויחזור למסגרת רק לאחר 24 שעות ללא תסמינים.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">6.</div>
                             <div className="col-11 ">
-                                תולעים - במידה והילד מאובחן בתולעים, הינו יכול להגיע לגן אך עליו לקבל טיפול רפואי.
+                                <b>    תולעים </b>- במידה והילד מאובחן בתולעים, הינו יכול להגיע לגן אך עליו לקבל טיפול רפואי.
                             </div>
                         </div>
                         <div className="row mx-auto">
                             <div className="col-1 px-0">7.</div>
                             <div className="col-11 ">
-                                מחלות מידבקות - במידה והילד מאובחן במחלה מידבקת כלשהי, יוכל להגיע לגן רק 24 שעות לאחר קבלת טיפול רפואי יחד עם אישור חתום מהרופא המטפל.
-                                <br /> ויטמינים ותוספי מזון - יינתנו על ידי ההורים בבית.
+                                <b>  מחלות מידבקות </b>- במידה והילד מאובחן במחלה מידבקת כלשהי, יוכל להגיע לגן רק 24 שעות לאחר קבלת טיפול רפואי יחד עם אישור חתום מהרופא המטפל.
+                                <br /><b> ויטמינים ותוספי מזון </b>- יינתנו על ידי ההורים בבית.
                             </div>
                         </div>
                     </div>
@@ -1276,10 +1345,10 @@ export default function Reception(props) {
                 {/* ----------- נספח ג'------------------------------------------ */}
                 <div>
                     <div>
-                        <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                            נספח ג' <br />
+                        <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                            <b><u> נספח ג' </u></b><br />
                             <p className="">
-                                שאלון עם כניסת הילד לבית הילדים
+                                <b>שאלון עם כניסת הילד לבית הילדים</b>
                             </p>
                             <ul className="">
                                 <li>אנא מלאו פרטים מדויקים כדי שיהיה קל יותר להכיר את הילד על צרכיו השונים</li>
@@ -1302,7 +1371,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childFirstName"
                                         value={documentData.childFirstName}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> שם משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1312,8 +1381,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childLastName"
                                         value={documentData.childLastName}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    />  {windowWidth < 550 ? <br/>:null} מס' ת.ז.: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    />  {windowWidth < 550 ? <br /> : null} מס' ת.ז.: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1322,7 +1391,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="childId"
                                         value={documentData.childId}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1338,7 +1407,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="dateOfBirth"
                                         value={documentData.dateOfBirth}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />  ארץ לידה:<input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1348,8 +1417,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="countryOfBirth"
                                         value={documentData.countryOfBirth}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} שנת עליה: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} שנת עליה: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1358,7 +1427,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="yearOfArrival"
                                         value={documentData.yearOfArrival}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1374,7 +1443,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="address"
                                         value={documentData.address}
-                                        style={{ width: `${fontSize*11}px` }}
+                                        style={{ width: `${fontSize * 11}px` }}
                                     /> מיקוד: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1384,7 +1453,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="zip"
                                         value={documentData.zip}
-                                        style={{ width: `${fontSize*4}px` }}
+                                        style={{ width: `${fontSize * 4}px` }}
                                     />
                                 </div>
                             </p>
@@ -1400,7 +1469,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother1"
                                         value={documentData.brother1}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> 2. <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1410,8 +1479,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother2"
                                         value={documentData.brother2}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    />{windowWidth < 550 ? <br/>:null} 3. <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    />{windowWidth < 550 ? <br /> : null} 3. <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1420,7 +1489,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother3"
                                         value={documentData.brother3}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> 4.<input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1430,7 +1499,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="brother4"
                                         value={documentData.brother4}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1446,7 +1515,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentName1"
                                         value={documentData.parentName1}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1456,8 +1525,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentId1"
                                         value={documentData.parentId1}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} מקצוע: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1466,7 +1535,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentJob1"
                                         value={documentData.parentJob1}
-                                        style={{ width: `${fontSize*8}px` }}
+                                        style={{ width: `${fontSize * 8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1482,7 +1551,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="phoneNumber1"
                                         value={documentData.phoneNumber1}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1492,8 +1561,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentHomeNumber1"
                                         value={documentData.parentHomeNumber1}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} דוא"ל:<input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} דוא"ל:<input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1502,7 +1571,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentEmailAddress1"
                                         value={documentData.parentEmailAddress1}
-                                        style={{ width: `${fontSize*8}px` }}
+                                        style={{ width: `${fontSize * 8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1518,7 +1587,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentName2"
                                         value={documentData.parentName2}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1528,8 +1597,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentId2"
                                         value={documentData.parentId2}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} מקצוע: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1538,7 +1607,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentJob2"
                                         value={documentData.parentJob2}
-                                        style={{ width: `${fontSize*8}px` }}
+                                        style={{ width: `${fontSize * 8}px` }}
                                     />
                                 </div>
                             </p>
@@ -1554,7 +1623,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="phoneNumber2"
                                         value={documentData.phoneNumber2}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1564,8 +1633,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentHomeNumber2"
                                         value={documentData.parentHomeNumber2}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} דוא"ל:<input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} דוא"ל:<input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1574,12 +1643,12 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="parentEmailAddress2"
                                         value={documentData.parentEmailAddress2}
-                                        style={{ width: `${fontSize*8}px` }}
+                                        style={{ width: `${fontSize * 8}px` }}
                                     />
                                 </div>
                             </p>
                             <br />
-                            <p style={{ fontSize: `${fontSize+2}px` }}>
+                            <p style={{ fontSize: `${fontSize + 2}px` }}>
                                 שמות הרשאים לקחת את הילד מבית הילדים וליצירת קשר במידה ולא ניתן להשיג את ההורים:
                             </p>
                             <p className="row mx-auto">
@@ -1594,7 +1663,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeName1"
                                         value={documentData.relativeName1}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> קרבת משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1604,8 +1673,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeStatus1"
                                         value={documentData.relativeStatus1}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} טלפון: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} טלפון: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1614,7 +1683,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeNumber1"
                                         value={documentData.relativeNumber1}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1630,7 +1699,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeName2"
                                         value={documentData.relativeName2}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     /> קרבת משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
@@ -1640,8 +1709,8 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeStatus2"
                                         value={documentData.relativeStatus2}
-                                        style={{ width: `${fontSize*5}px` }}
-                                    /> {windowWidth < 550 ? <br/>:null} טלפון: <input
+                                        style={{ width: `${fontSize * 5}px` }}
+                                    /> {windowWidth < 550 ? <br /> : null} טלפון: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1650,7 +1719,7 @@ export default function Reception(props) {
                                         autoComplete="off"
                                         id="relativeNumber2"
                                         value={documentData.relativeNumber2}
-                                        style={{ width: `${fontSize*5}px` }}
+                                        style={{ width: `${fontSize * 5}px` }}
                                     />
                                 </div>
                             </p>
@@ -1663,7 +1732,7 @@ export default function Reception(props) {
                                         id="healthIssueExist"
                                         row
                                     >
-                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{  fontSize: `${fontSize}px` , fontFamily: "'David Libre', serif" }}>כן </span>} />
+                                        <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>כן </span>} />
                                         <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>לא</span>} />
                                     </RadioGroup>
                                 </FormControl>
@@ -1678,7 +1747,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="healthIssueAndSolution"
                                     value={documentData.healthIssueAndSolution}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={documentData.healthIssueExist === "false"}
                                 />
                             </p>
@@ -1708,7 +1777,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergyToMedication"
                                     value={documentData.allergyToMedication}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={allergyExistance.allergyToMedication === "false"}
                                 />
                             </p>
@@ -1738,7 +1807,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergyToFood"
                                     value={documentData.allergyToFood}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={allergyExistance.allergyToFood === "false"}
                                 />
                             </p>
@@ -1767,7 +1836,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="pastDiseases"
                                     value={documentData.pastDiseases}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={allergyExistance.pastDiseases === "false"}
                                 />
                             </p>
@@ -1797,7 +1866,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="allergies"
                                     value={documentData.allergies}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={allergyExistance.allergies === "false"}
                                 />
                             </p>
@@ -1825,7 +1894,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="nonReceivedVaccinations"
                                     value={documentData.nonReceivedVaccinations}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                     disabled={documentData.receivedFullVaccination === "true"}
                                 />
                             </p>
@@ -1839,7 +1908,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="hmo"
                                     value={documentData.hmo}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                 />
                             </p>
                             <p>
@@ -1852,7 +1921,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="remarks"
                                     value={documentData.remarks}
-                                    style={{ width: `${fontSize*20}px` }}
+                                    style={{ width: `${fontSize * 20}px` }}
                                 />
                             </p>
                             <br />
@@ -1863,14 +1932,29 @@ export default function Reception(props) {
                                 במידה ויהיו שינויים באחד מהפרטים-אודיע עליו מיד.
                             </p>
                             <br />
-                            <div className="row mx-auto">
-                                <div className="col-1 px-0"></div>
-                                <div className="col-11">
-                                    <div className="row mx-auto">
-                                        <div className="col-2 px-0">חתימת ההורה: </div>
-                                        <div className="col-10">
-                                            <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
+
+                            <div >
+                                <Form>
+                                    <Form.Group controlId="formImage">
+                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה)</u></b></Form.Label>
+                                        <Form.Control type="file" accept="image/*" onChange={handleImageChange}
+                                            style={{ width: `${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px` }} />
+                                    </Form.Group>
+                                    {selectedImage && (
+                                        <div className="mt-3">
+                                            <img src={selectedImage} alt="Selected" width={`${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px`} />
                                         </div>
+                                    )}
+                                </Form>
+                            </div>
+
+                            <br />
+
+                            <div className="row mx-auto">
+                                <div className="row mx-auto">
+                                    <div className="col-2 px-0">חתימת ההורה: </div>
+                                    <div className="col-10">
+                                        <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
                                     </div>
                                 </div>
                             </div>
@@ -1884,9 +1968,9 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ד' ------------------------------------------ */}
                 <div>
-                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
                         <p className="">
-                            נספח ד': להסכם חינוך מיום <input
+                            <b><u>  נספח ד': להסכם חינוך מיום <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -1895,11 +1979,11 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="attendanceStartingDate"
                                 value={documentData.attendanceStartingDate}
-                                style={{ width: `${fontSize*5}px` }}
-                            />
+                                style={{ width: `${fontSize * 5}px` }}
+                            /></u></b>
                         </p>
                         <p className="">
-                            הסדר תשלום דמי השהייה
+                            <b><u> הסדר תשלום דמי השהייה</u></b>
                         </p>
 
                     </div>
@@ -1907,38 +1991,17 @@ export default function Reception(props) {
                     {/* ----------- ב  י  ן: ------------------------------------------ */}
                     <div className="container   pb-3 david " style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">בין:</div>
-                            <div className="col-10">  תושבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ<br />
+                            <div className="col-2 px-0"><b>בין:</b></div>
+                            <div className="col-10"> <b> תושבי שדה נחמיה אגודה שיתופית להתיישבות קהילתית בע"מ</b><br />
                                 מקיבוץ שדה נחמיה <br />
                                 ד.נ. גליל עליון <br />
-                                (להלן: "האגודה") <br />
-                                <p className="text-start">מצד אחד; </p>
+                                (להלן: <b>"האגודה"</b>) <br />
+                                <p className="text-start"><b><u> מצד אחד; </u></b></p>
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">לבין:</div>
-                            <div className="col-10">הורי הילד <input
-                                className=""
-                                onChange={updateDocumentData}
-                                type="text"
-                                name="childName"
-                                // placeholder={props.t("OrgDetails.3")}
-                                autoComplete="off"
-                                id="childName"
-                                value={documentData.childName}
-                                style={{ width: `${fontSize*5}px` }}
-                            /> ת"ז <input
-                                    className=""
-                                    onChange={updateDocumentData}
-                                    type="text"
-                                    name="childId"
-                                    // placeholder={props.t("OrgDetails.3")}
-                                    autoComplete="off"
-                                    id="childId"
-                                    value={documentData.childId}
-                                    style={{ width: `${fontSize*5}px` }}
-                                /> <br />
-                                (להלן: "הילד") <br />
+                            <div className="col-2 px-0"><b> לבין: </b></div>
+                            <div className="col-10">
                                 1.	שםֹ  ההורה <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1948,7 +2011,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentName1"
                                     value={documentData.parentName1}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 />   	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1958,8 +2021,8 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentId1"
                                     value={documentData.parentId1}
-                                    style={{ width: `${fontSize*5}px` }}
-                                /> {windowWidth < 550 ? <br/>:null}  פלאפון  <input
+                                    style={{ width: `${fontSize * 5}px` }}
+                                /> {windowWidth < 550 ? <br /> : null}  פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -1968,7 +2031,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="phoneNumber1"
                                     value={documentData.phoneNumber1}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 /> <br />
                                 2.	שםֹ  ההורה  <input
                                     className=""
@@ -1979,7 +2042,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentName2"
                                     value={documentData.parentName2}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 /> 	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -1989,8 +2052,8 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="parentId2"
                                     value={documentData.parentId2}
-                                    style={{ width: `${fontSize*5}px` }}
-                                />  {windowWidth < 550 ? <br/>:null} פלאפון  <input
+                                    style={{ width: `${fontSize * 5}px` }}
+                                />  {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -1999,7 +2062,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="phoneNumber2"
                                     value={documentData.phoneNumber2}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 /> <br />
                                 מ <input
                                     className=""
@@ -2010,14 +2073,14 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="from"
                                     value={documentData.from}
-                                    style={{ width: `${fontSize*8}px` }}
+                                    style={{ width: `${fontSize * 8}px` }}
                                 /> <br />
                                 (להלן: "ההורים") <br />
-                                <p className="text-start">מצד שני; </p>
+                                <p className="text-start"><b><u> מצד שני; </u></b></p>
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">הואיל</div>
+                            <div className="col-2 px-0"> <b>הואיל</b></div>
                             <div className="col-10"><p> וביום <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -2027,7 +2090,7 @@ export default function Reception(props) {
                                 autoComplete="off"
                                 id="signingDate"
                                 value={documentData.signingDate}
-                                style={{ width: `${fontSize*5}px` }}
+                                style={{ width: `${fontSize * 5}px` }}
                             /> נחתם בין הצדדים הסכם חינוך לפיו הילד <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2037,7 +2100,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="childName"
                                     value={documentData.childName}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 />, נושא ת.ז. <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2047,8 +2110,8 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="childId"
                                     value={documentData.childId}
-                                    style={{ width: `${fontSize*5}px` }}
-                                /> (להלן: "הילד") ישהה בבית הילדים <input
+                                    style={{ width: `${fontSize * 5}px` }}
+                                /> (להלן: <b>"הילד"</b>) ישהה בבית הילדים <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2057,12 +2120,12 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="className"
                                     value={documentData.className}
-                                    style={{ width: `${fontSize*5}px` }}
-                                /> באגודה בשנת הלימודים תשפ"ד (להלן: "ההסכם העיקרי"); </p>
+                                    style={{ width: `${fontSize * 5}px` }}
+                                /> באגודה בשנת הלימודים תשפ"ד (להלן: <b>"ההסכם העיקרי"</b>); </p>
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">והואיל</div>
+                            <div className="col-2 px-0"><b> והואיל</b></div>
                             <div className="col-10">
                                 <p className="">
                                     וההורים מחויבים בתשלום דמי שהייה חודשיים לאגודה תמורת שהיית הילד בבית הילדים, כהגדרתם בהסכם העיקרי;
@@ -2070,7 +2133,7 @@ export default function Reception(props) {
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">הואיל</div>
+                            <div className="col-2 px-0"> <b> הואיל </b></div>
                             <div className="col-10">
                                 <p>
                                     והאגודה הקהילתית מוכרת ופועלת כמוסד ללא כוונת רווח ששירותיו אינם חייבים במע"מ;
@@ -2078,7 +2141,7 @@ export default function Reception(props) {
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">הואיל</div>
+                            <div className="col-2 px-0"> <b> הואיל</b> </div>
                             <div className="col-10">
                                 <p>
                                     וברצון הצדדים להסדיר את אופן תשלום דמי השהייה של הילד בבית הילדים בכלל ובהתייחס לנושא החיוב במע"מ כאמור לעיל בפרט;
@@ -2088,8 +2151,8 @@ export default function Reception(props) {
 
                         {/* ---------------------------------------------------------------------- */}
                     </div>
-                    <p className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                        לפיכך, הוסכם, הוצהר והותנה בין הצדדים כדלקמן:
+                    <p className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                        <b><u>  לפיכך, הוסכם, הוצהר והותנה בין הצדדים כדלקמן:</u></b>
                     </p>
                     {/* --------- לפיכך ------------------------------------------------------------- */}
                     <div className="px-3 pb-3 david " style={{ fontSize: `${fontSize}px` }}>
@@ -2164,7 +2227,7 @@ export default function Reception(props) {
                                                     id="allowsPhotographingInternal"
                                                     row
                                                 >
-                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה </span>} />
+                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה (מגורי קבע ורישום בתעודת זהות) </span>} />
                                                     <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי חוץ</span>} />
                                                 </RadioGroup>
                                             </FormControl>
@@ -2183,6 +2246,14 @@ export default function Reception(props) {
                                     <div className="col-1 px-0">5.</div>
                                     <div className="col-11 ">
                                         <p>
+                                            תינתן הנחת אח שני במערכת בסך 3% על המחיר הנמוך מבינהם.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="row mx-auto">
+                                    <div className="col-1 px-0">6.</div>
+                                    <div className="col-11 ">
+                                        <p>
                                             <p>
                                                 תשלום דמי השהייה יתבצע כדלקמן (סמן  את האפשרות המתאימה):
                                             </p>
@@ -2194,9 +2265,9 @@ export default function Reception(props) {
                                                     id="paymentMethod"
                                                     name="paymentMethod"
                                                 >
-                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. בכל שיק יוסף סכום של 14.5 ₪, עבור עמלת טיפול בשיק דחוי). </span>} />
-                                                    <FormControlLabel sx={{ margin: 0 }} value="credit-card" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות חיוב כרטיס אשראי על שם ההורים בהתאם להוראת הקבע לתשלום באמצעות כרטיס אשראי בנוסח הרצ"ב להסכם זה שתיחתם על ידי ההורים ותימסר לאגודה במועד החתימה על הסכם זה. </span>} />
-                                                    <FormControlLabel sx={{ margin: 0 }} value="direct-debit" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>על ידי הוראת קבע.</span>} />
+                                                    <FormControlLabel sx={{ margin: "10px 0px 10px auto" }} value="12-checks" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>באמצעות 12 המחאות דחויות, שיעבירו ההורים לידי האגודה במועד החתימה על ההסכם העיקרי, המתוארכות כל אחת ליום ה-5 של החודש בגינו ניתנה. (בכל שיק יוסף סכום של 12 ₪, עבור עמלת טיפול בכל שיק דחוי). </span>} />
+                                                    <FormControlLabel sx={{ margin: 0 }} value="credit-card" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>	באמצעות חיוב כרטיס אשראי, דרך משרד הנהלת החשבונות של  האגודה. <br />  <b>•</b>	על כל חיוב, תוסף עמלה בסך 1 אחוז מהסכום. </span>} />
+                                                    <FormControlLabel sx={{ margin: 0 }} value="direct-debit" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>	הוראת קבע ללא עמלת גביה בסמל מוסד 29359.</span>} />
                                                     <FormControlLabel sx={{ margin: 0 }} value="billing-in-budget" control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>בחיוב בתקציב (חברי קיבוץ בלבד)</span>} />
                                                 </RadioGroup>
                                             </FormControl>
@@ -2204,7 +2275,7 @@ export default function Reception(props) {
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-1 px-0">6.</div>
+                                    <div className="col-1 px-0">7.</div>
                                     <div className="col-11 ">
                                         <p>
                                             האגודה תוציא להורים חשבונית בגין תשלום דמי השהייה אחת לחודש.
@@ -2212,7 +2283,7 @@ export default function Reception(props) {
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-1 px-0">7.</div>
+                                    <div className="col-1 px-0">8.</div>
                                     <div className="col-11 ">
                                         <p>
                                             מוסכם כי ספרי הנהלת החשבונות של האגודה יהוו ראיה לביצוע או אי ביצוע תשלום דמי השהייה על ידי ההורים.
@@ -2220,7 +2291,7 @@ export default function Reception(props) {
                                     </div>
                                 </div>
                                 <div className="row mx-auto">
-                                    <div className="col-1 px-0">8.</div>
+                                    <div className="col-1 px-0">9.</div>
                                     <div className="col-11 ">
                                         <p>
                                             מוסכם ומוצהר בזאת כי כל שירות נוסף שיינתן לילד ו/או להורים מהאגודה, מעבר לשירותים הכלולים בשהיית הילד בבית הילדים - יהיה בתשלום נוסף כמקובל באגודה ביחס לשירותים מאותו סוג ותשלום דמי השהייה לא ייחשב בשום אופן כתשלום עבור שירותים נוספים אלו.
@@ -2232,8 +2303,8 @@ export default function Reception(props) {
 
                     </div>
 
-                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
-                        ולראייה באו הצדדים על החתום ביום <input
+                    <div className=" px-3 pb-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
+                        <b>ולראייה באו הצדדים על החתום ביום </b><input
                             className=""
                             onChange={updateDocumentData}
                             type="text"
@@ -2242,19 +2313,19 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="signingDate"
                             value={documentData.signingDate}
-                            style={{ width: `${fontSize*5}px` }}
+                            style={{ width: `${fontSize * 5}px` }}
                         />
                     </div>
 
                     <div className="px-3 row align-items-start text-center david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="col-4">
-                            הורה <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
+                            <b>הורה </b><SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
                         </div>
                         <div className="col-4">
-                            הורה <SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} />
+                            <b> הורה </b><SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} />
                         </div>
                         <div className="col-4">
-                            ____________ <br /> האגודה
+                            ____________ <br /><b> האגודה</b>
                         </div>
                     </div>
                 </div>
@@ -2262,14 +2333,14 @@ export default function Reception(props) {
 
                 {/* ----------- נספח ה'------------------------------------------ */}
                 <div>
-                    <p className=" px-3 text-center david" style={{ fontSize: `${fontSize+2}px` }}>
+                    <p className="pt-4 px-3 text-center david" style={{ fontSize: `${fontSize + 2}px` }}>
 
-                        נספח ה' <br />
-                        טופס אישור צילום
+                        <b> נספח ה' <br />
+                            <u>  טופס אישור צילום</u></b>
 
                     </p>
                     <p className=" px-3  david " style={{ fontSize: `${fontSize}px` }}>
-                        אני מאשר / לא מאשר  לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
+                        <u><b> אני מאשר / לא מאשר</b></u>  לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
@@ -2284,7 +2355,7 @@ export default function Reception(props) {
                         </FormControl>
                     </p>
                     <p className=" px-3   david " style={{ fontSize: `${fontSize}px` }}>
-                        אני מאשר / לא מאשר לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
+                        <u><b> אני מאשר / לא מאשר</b></u> לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך.
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
@@ -2300,7 +2371,7 @@ export default function Reception(props) {
                     </p>
 
                     <p className=" px-3  david " style={{ fontSize: `${fontSize}px` }}>
-                        שם פרטי ושם משפחה של המאשר	 <input
+                        <b>  שם פרטי ושם משפחה של המאשר	 <input
                             className=""
                             onChange={updateDocumentData}
                             type="text"
@@ -2309,50 +2380,56 @@ export default function Reception(props) {
                             autoComplete="off"
                             id="approverName"
                             value={documentData.approverName}
-                            style={{ width: `${fontSize*5}px` }}
+                            style={{ width: `${fontSize * 5}px` }}
                         />  <br />
-                        הקשר של המאשר לילד			 <input
-                            className=""
-                            onChange={updateDocumentData}
-                            type="text"
-                            name="approverStatus"
-                            // placeholder={props.t("OrgDetails.3")}
-                            autoComplete="off"
-                            id="approverStatus"
-                            value={documentData.approverStatus}
-                            style={{ width: `${fontSize*7}px` }}
-                        />  <br />
-                        כתובת המאשר 				 <input
-                            className=""
-                            onChange={updateDocumentData}
-                            type="text"
-                            name="approverAddress"
-                            // placeholder={props.t("OrgDetails.3")}
-                            autoComplete="off"
-                            id="approverAddress"
-                            value={documentData.approverAddress}
-                            style={{ width: `${fontSize*14}px` }}
-                        />  <br />
-                        מספר טלפון	 של המאשר 		<input
-                            className=""
-                            onChange={updateDocumentData}
-                            type="text"
-                            name="approverPhoneNumber"
-                            // placeholder={props.t("OrgDetails.3")}
-                            autoComplete="off"
-                            id="approverPhoneNumber"
-                            value={documentData.approverPhoneNumber}
-                            style={{ width: `${fontSize*5}px` }}
-                        />  <br />
-
+                            הקשר של המאשר לילד			 <input
+                                className=""
+                                onChange={updateDocumentData}
+                                type="text"
+                                name="approverStatus"
+                                // placeholder={props.t("OrgDetails.3")}
+                                autoComplete="off"
+                                id="approverStatus"
+                                value={documentData.approverStatus}
+                                style={{ width: `${fontSize * 7}px` }}
+                            />  <br />
+                            כתובת המאשר 				 <input
+                                className=""
+                                onChange={updateDocumentData}
+                                type="text"
+                                name="approverAddress"
+                                // placeholder={props.t("OrgDetails.3")}
+                                autoComplete="off"
+                                id="approverAddress"
+                                value={documentData.approverAddress}
+                                style={{ width: `${fontSize * 14}px` }}
+                            />  <br />
+                            מספר טלפון	 של המאשר 		<input
+                                className=""
+                                onChange={updateDocumentData}
+                                type="text"
+                                name="approverPhoneNumber"
+                                // placeholder={props.t("OrgDetails.3")}
+                                autoComplete="off"
+                                id="approverPhoneNumber"
+                                value={documentData.approverPhoneNumber}
+                                style={{ width: `${fontSize * 5}px` }}
+                            />  <br />
+                        </b>
                     </p>
 
                     <div className=" px-3  david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0">חתימת ההורה: </div>
+                            <div className="col-2 px-0"><b> חתימת ההורה: </b></div>
                             <div className="col-10">
                                 <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
-                                תאריך <input
+
+                            </div>
+                        </div>
+                        <div className="row mx-auto">
+                            <div className="col-2 px-0"><b>  תאריך </b></div>
+                            <div className="col-10">
+                                <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2361,7 +2438,7 @@ export default function Reception(props) {
                                     autoComplete="off"
                                     id="signingDate"
                                     value={documentData.signingDate}
-                                    style={{ width: `${fontSize*5}px` }}
+                                    style={{ width: `${fontSize * 5}px` }}
                                 />
                             </div>
                         </div>

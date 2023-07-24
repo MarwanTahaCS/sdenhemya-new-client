@@ -10,6 +10,7 @@ export default function App(props) {
 
   const [childId, setChildId] = useState("");
   const [documentURL, setDocumentURL] = useState('');
+  const [idImage, setIdImage] = useState(null);
 
   useEffect(() => {
     // handleClick("he");
@@ -31,13 +32,16 @@ export default function App(props) {
   // const localUrl = "http://localhost:3001/api/documentSign";
   const localUrl = "https://api.myvarno.io/api/documentSign";
 
-  async function saveData(newDocumentData) {
+  async function saveData(newDocumentData, selectedImage) {
     setIsLoading(true);
 
     try {
       console.log("in save data class")
       setChildId(newDocumentData.childId);
-      const response = await Axios.post(localUrl, newDocumentData)
+      const response = await Axios.post(localUrl, {
+        image: selectedImage,
+        data: newDocumentData,
+      });
       // console.log(localUrl);
       setDocumentURL(response.data.documentURL);
       console.log(response.data.documentURL);
@@ -126,7 +130,7 @@ export default function App(props) {
       <Router>
         <Routes>
           <Route exact path="/" element={<div>
-            {<Fillable documentData={documentData} saveData={saveData} />}
+            {<Fillable documentData={documentData} setIdImage={setIdImage} saveData={saveData} />}
           </div>} />
           <Route path="/success" element={
             <SentPage childId={childId} documentURL={documentURL} isLoading={isLoading} />
