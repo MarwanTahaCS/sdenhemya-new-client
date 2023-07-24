@@ -442,7 +442,7 @@ export default function Reception(props) {
                     </div>
                     <div className="row mx-auto">
                         <div className="col-2 px-0"> <b>הואיל </b></div>
-                        <div className="col-10 mb-3"><div>והאגודה מנהל ומחזיק בתחום קיבוץ שדה נחמיה בתי ילדים וגנים המותאמים לילדי הגיל הרך ובהם גן/פעוטון "
+                        <div className="col-10 mb-3"><div>והאגודה מנהלת ומחזיקה בתחום קיבוץ שדה נחמיה בתי ילדים ובהם גן/פעוטון "
                             <select style={{ fontSize: `${fontSize + 1}px` }}
                                 name="kindergarten"
                                 value={documentData.kindergarten}
