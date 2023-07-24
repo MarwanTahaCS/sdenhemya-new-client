@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SignatureCanvas from 'react-signature-canvas';
+import '../index.css';
 
 export default function SignatureModal(props) {
 
@@ -18,12 +19,7 @@ export default function SignatureModal(props) {
   }
 
   return (
-    <div>
-
-
-      {/* <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#exampleModal${props.id}`}>
-        לחץ כאן כדי לחתום/לעדכן חתימה <br/>
-      </button> */}
+    <>
 
       <div className="fixed-size" data-bs-toggle="modal" data-bs-target={`#exampleModal${props.index}`}>
 
@@ -40,28 +36,20 @@ export default function SignatureModal(props) {
             <h6> לחץ כאן כדי לחתום  </h6>
           </div>
         </div>
-
-        {/* <figure>
-          <img src={props.url} alt="signature" width="100%" />
-          <figcaption>לחץ כאן כדי לחתום </figcaption>
-        </figure> */}
-
-        {/* <h6 style={{ position: 'absolute' }} > לחץ כאן כדי לחתום </h6>   <br />
-        <img src={props.url} alt="signature" width="100%" /> */}
       </div>
 
 
 
 
-      <div class="modal fade" id={`exampleModal${props.index}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+      <div key={props.index} class="modal fade" id={`exampleModal${props.index}`} tabIndex="-1" aria-labelledby={`exampleModalLabel${props.index}`} aria-hidden="true">
+        <div key={props.index} class="modal-dialog">
+          <div key={props.index} class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 " id="exampleModalLabel"> <span className="ms-5"> נא לחתום כאן (באצבע או בעט מגע) </span></h1>
+              <h1 class="modal-title fs-5 " id={`exampleModalLabel${props.index}`}> <span className="ms-5"> נא לחתום כאן (באצבע או בעט מגע) </span></h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center bg-light">
-              <SignatureCanvas penColor='green'
+              <SignatureCanvas key={props.index} penColor='green'
                 canvasProps={{ width: 340, height: 200, className: 'sigCanvas' }}
                 ref={data => setSign(data)}
                 backgroundColor={'rgba(0,0,0,0.05)'} />
@@ -75,6 +63,6 @@ export default function SignatureModal(props) {
         </div>
       </div>
 
-    </div >
+    </ >
   );
 }

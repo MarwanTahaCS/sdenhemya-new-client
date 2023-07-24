@@ -41,7 +41,7 @@ export default function AddFormFieldsToPDF(props) {
   const pdfFile = 'parents_agreement_fixed.pdf';
   const fontFileUrl = 'DavidLibre-Regular.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -86,7 +86,7 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
   }, [pdfFile]);
 
-  useEffect(() => {
+  useEffect( () => {
     const fetchNumPages = async () => {
       try {
         const existingPdfBytes = await selectedFile.arrayBuffer();
@@ -108,6 +108,7 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
 
     setWindowWidth(window.visualViewport.width);
+
   }, [selectedFile]);
 
 
@@ -358,7 +359,7 @@ export default function AddFormFieldsToPDF(props) {
     SetAddingSignatureInputField(true);
   }
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnter = (event ,index) => {
     setHoveredIndex(index);
   };
 
@@ -481,18 +482,22 @@ export default function AddFormFieldsToPDF(props) {
     props.handleInputFieldsChange(inputFields);
   }
 
+  function handlePdfLoadSuccess(){
+    setWindowWidth(window.visualViewport.width);
+  }
+
   // Use the documentBytes as needed, e.g., display the PDF
   return (
-    <div>
+    <>
       <h1> הוספת טופס</h1>
-      {selectedFile && <div>
+      {selectedFile && <>
         <BootstrapButton variant="contained" onClick={handleAddingTextInputField} disableRipple>
           הוסף שדה קלט
         </BootstrapButton>
         <BootstrapButton variant="contained" onClick={handleAddingSignatureInputField} disableRipple>
           הוסף לוח חתימה
         </BootstrapButton>
-      </div>}
+      </>}
 
 
       {!selectedFile && <div className="m-3">
@@ -501,20 +506,20 @@ export default function AddFormFieldsToPDF(props) {
       </div>}
 
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingSignatureInputField ? (event) => handleMouseMove(event, 2) : null}>
-        <Document file={selectedFile}>
+        <Document file={selectedFile}  >
           {/* {Array.from(new Array(numPages), (el, index) => (
             <Page key={index} pageNumber={index + 1} onClick={handlePageClick} width={containerRef.current?.clientWidth} />
           ))} */}
           <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
 
-            <Page key={currentPage - 1} pageNumber={currentPage} onClick={addingTextInputField ? (event) => handlePageClick(event, 1) : addingSignatureInputField ? (event) => handlePageClick(event, 2) : null} width={containerRef.current?.clientWidth} />
+            <Page onLoadSuccess={handlePdfLoadSuccess} key={currentPage - 1} pageNumber={currentPage} onClick={addingTextInputField ? (event) => handlePageClick(event, 1) : addingSignatureInputField ? (event) => handlePageClick(event, 2) : null} width={containerRef.current?.clientWidth} />
 
 
           </div>
         </Document>
         {inputFields.map((inputField, index) => (
           (inputField.page === currentPage) ?
-            <div>
+            <>
               {
                 inputField.editor.inputType.value === 'signature1' ? (
                   <div key={index}
@@ -525,10 +530,10 @@ export default function AddFormFieldsToPDF(props) {
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       padding: '4px',
                     }}
-                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseEnter={(event) => handleMouseEnter(event, index)}
                     onMouseLeave={handleMouseLeave}>
 
-                    <SignatureModal updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                    <SignatureModal key={index} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
                   </div>) : (<input
                     key={index}
@@ -714,7 +719,7 @@ export default function AddFormFieldsToPDF(props) {
 
                 </div>
               )}
-            </div> : <div></div>
+            </> : <></>
 
         ))}
 
@@ -749,7 +754,7 @@ export default function AddFormFieldsToPDF(props) {
 
 
 
-    </div>
+    </>
   );
 
 }
