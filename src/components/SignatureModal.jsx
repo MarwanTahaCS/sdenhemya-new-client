@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SignatureCanvas from 'react-signature-canvas';
 import '../index.css';
+import '../SlideInOverlay.css'; 
 
 export default function SignatureModal(props) {
 
@@ -16,12 +17,22 @@ export default function SignatureModal(props) {
     console.log(signatureBlob);
 
     props.updateSignature(props.index, signatureBlob);
+    handleToggleOverlay();
   }
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggleOverlay = () => {
+    const oldState = isOpen;
+    props.setHoveredIndex(oldState);
+    setIsOpen(!oldState);
+    props.setSignatureOpen(!oldState);
+  };
 
   return (
     <>
 
-      <div className="fixed-size" data-bs-toggle="modal" data-bs-target={`#exampleModal${props.index}`}>
+      <div className="fixed-size" onClick={handleToggleOverlay}>
 
         <div style={{ position: 'relative' }}>
           <img src={props.url} alt="signature" width="100%" />
@@ -41,26 +52,24 @@ export default function SignatureModal(props) {
 
 
 
-      <div key={props.index} class="modal fade" id={`exampleModal${props.index}`} tabIndex="-1" aria-labelledby={`exampleModalLabel${props.index}`} aria-hidden="true">
-        <div key={props.index} class="modal-dialog">
-          <div key={props.index} class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5 " id={`exampleModalLabel${props.index}`}> <span className="ms-5"> נא לחתום כאן (באצבע או בעט מגע) </span></h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className={`overlay ${isOpen ? 'open' : ''} box1`} tabIndex={3} >
+          <div class="card">
+            <div class="card-header">
+              <h1 class="modal-title fs-5 " > <span className="ms-5"> נא לחתום כאן (באצבע או בעט מגע) </span></h1>
+              <button type="button" class="btn-close" onClick={handleToggleOverlay} aria-label="Close"></button>
             </div>
-            <div class="modal-body d-flex justify-content-center bg-light">
-              <SignatureCanvas key={props.index} penColor='green'
+            <div class="card-body d-flex justify-content-center bg-light">
+              <SignatureCanvas  penColor='green'
                 canvasProps={{ width: 340, height: 200, className: 'sigCanvas' }}
                 ref={data => setSign(data)}
                 backgroundColor={'rgba(0,0,0,0.05)'} />
             </div>
-            <div class="modal-footer">
+            <div class="card-footer ">
               {/* <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">סגור</button> */}
-              <button type="button" class="btn btn-success" onClick={handleGenerate} data-bs-dismiss="modal">שמור </button>
+              <button type="button" class="btn btn-success" onClick={handleGenerate} >שמור </button>
               <button type="button" class="btn btn-warning" onClick={handleClear} >נקה</button>
             </div>
           </div>
-        </div>
       </div>
 
     </ >

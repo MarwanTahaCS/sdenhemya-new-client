@@ -65,3 +65,15 @@ li {
 .text-fields{
   z-index: 1;
 }
+
+.box1 {
+  z-index: 3;
+}
+
+.box2 {
+  z-index: 2;
+}
+
+.box3 {
+  z-index: 1;
+}

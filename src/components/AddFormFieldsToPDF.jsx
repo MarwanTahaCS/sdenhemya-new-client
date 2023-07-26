@@ -11,7 +11,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete  } from '@mui/material';
+import { Typography, TextField, Autocomplete } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -30,8 +30,9 @@ export default function AddFormFieldsToPDF(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageWidth, setPageWidth] = useState(null);
   const [pageHeight, setPageHeight] = useState(null);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [signatureOpen, setSignatureOpen] = useState(false);
 
   const emptySignature = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
 
@@ -86,7 +87,7 @@ export default function AddFormFieldsToPDF(props) {
     fetchNumPages();
   }, [pdfFile]);
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchNumPages = async () => {
       try {
         const existingPdfBytes = await selectedFile.arrayBuffer();
@@ -144,10 +145,12 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'אחר', value: 'other' },
-        }
+        },
+        hovered: false
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
+
 
       SetAddingTextInputField(false);
 
@@ -211,7 +214,8 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'אחר', value: 'other' },
-        }
+        },
+        hovered: false
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -230,7 +234,8 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'חתימה', value: 'signature1' },
-        }
+        },
+        hovered: false
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -240,8 +245,15 @@ export default function AddFormFieldsToPDF(props) {
   };
 
   const handleInputChange = (event, index) => {
+    console.log(inputFields[index].editor.inputType.label);
+
     const updatedInputFields = [...inputFields];
-    updatedInputFields[index].value = event.target.value;
+
+    inputFields.forEach((field, index2) => {
+      if(field.editor.inputType.value === inputFields[index].editor.inputType.value){
+        updatedInputFields[index2].value = event.target.value;
+      }
+    })
     setInputFields(updatedInputFields);
   };
 
@@ -359,12 +371,16 @@ export default function AddFormFieldsToPDF(props) {
     SetAddingSignatureInputField(true);
   }
 
-  const handleMouseEnter = (event ,index) => {
-    setHoveredIndex(index);
+  const handleMouseEnter = (event, index) => {
+    if (!signatureOpen) {
+      setHoveredIndex(index);
+    }
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    if (!signatureOpen) {
+      setHoveredIndex(null);
+    }
   };
 
   const switchEditorState = (index) => {
@@ -469,9 +485,14 @@ export default function AddFormFieldsToPDF(props) {
   }
 
   function updateSignature(index, url) {
+
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
-      updatedInputFields[index].value = url;
+      inputFields.forEach((field, index2) => {
+        if(field.editor.inputType.value === inputFields[index].editor.inputType.value){
+          updatedInputFields[index2].value = url;
+        }
+      })
       // console.log(updatedInputFields);
       return updatedInputFields; // Set the updated array as the new state
     });
@@ -482,7 +503,7 @@ export default function AddFormFieldsToPDF(props) {
     props.handleInputFieldsChange(inputFields);
   }
 
-  function handlePdfLoadSuccess(){
+  function handlePdfLoadSuccess() {
     setWindowWidth(window.visualViewport.width);
   }
 
@@ -524,16 +545,17 @@ export default function AddFormFieldsToPDF(props) {
                 inputField.editor.inputType.value === 'signature1' ? (
                   <div key={index}
                     style={{
-                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                       position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       fontSize: `${windowWidth / 40}px`,
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       padding: '4px',
                     }}
                     onMouseEnter={(event) => handleMouseEnter(event, index)}
-                    onMouseLeave={handleMouseLeave}>
+                    onMouseLeave={handleMouseLeave}
+                  >
 
-                    <SignatureModal key={index} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                    <SignatureModal key={index} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
                   </div>) : (<input
                     key={index}
@@ -541,7 +563,7 @@ export default function AddFormFieldsToPDF(props) {
                     value={inputField.value}
                     onChange={(event) => handleInputChange(event, index)}
                     style={{
-                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                       position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       height: `${windowWidth * inputField.editor.height / 40}px`,
@@ -554,7 +576,7 @@ export default function AddFormFieldsToPDF(props) {
                       //   padding: '2px',
                       // }),
                     }}
-                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseEnter={(event) => handleMouseEnter(event, index)}
                     onMouseLeave={handleMouseLeave}
                   // className="input-field"
                   />)
@@ -564,7 +586,7 @@ export default function AddFormFieldsToPDF(props) {
 
               {hoveredIndex === index && (
                 <FaEdit
-                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseEnter={(event) => handleMouseEnter(event, index)}
                   onMouseLeave={handleMouseLeave}
                   onClick={() => switchEditorState(index)}
                   style={{
@@ -742,8 +764,8 @@ export default function AddFormFieldsToPDF(props) {
         ))} */}
       </div>
       {selectedFile && <div className="m-1">
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon  /></button>
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon  /></button>
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
 
         <br />
         <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button>
