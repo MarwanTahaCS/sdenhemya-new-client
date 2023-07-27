@@ -53,7 +53,7 @@ export default function PdfSign(props) {
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
-  const pdfFile = `https://yelotapi.myvarno.io/api/documentSign/first_document_o9oh6o1d.pdf`;
+  const pdfFile = `first_document.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
   const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
