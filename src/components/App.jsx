@@ -43,7 +43,6 @@ export default function App(props) {
     <div className="bg-light">
       {/* <Header switchLanguage={handleClick} /> */}
 
-      <Router>
         <Routes>
           <Route exact path="/" element=
             {
@@ -54,7 +53,6 @@ export default function App(props) {
           
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
-      </Router>
 
     </div>
   );
