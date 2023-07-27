@@ -13,21 +13,25 @@ import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
 import { Typography, TextField, Autocomplete } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import axios from "axios";
+import { useParams } from 'react-router-dom';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function PdfSign(props) {
   const [inputFields, setInputFields] = useState([
-    {x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 1, isCursor: false, editor: {state: false, width: 0.25, height: 1, font: 1, inputType : {label: 'חתימה', value: 'signature1'}}},
-    {x: 0.24397031539888683, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.12, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.3562152133580705, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.07, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.45640074211502785, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.05, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.2894248608534323, y: 0.2845206093189964, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.25, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.49165120593692024, y: 0.2845206093189964, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.23, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.512987012987013, y: 0.3275313620071685, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.17, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.3395176252319109, y: 0.3282482078853047, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.16, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.18274582560296845, y: 0.3268145161290323, value: '', page: 1, isCursor: false, editor: {state: false, width: 0.15, height: 1, font: 1, inputType: {label: 'השנה', value: 'year'}}},
-{x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 2, isCursor: false, editor: {state: false, width: 0.25, height: 1, font: 1, inputType : {label: 'חתימה', value: 'signature1'}}},
+    // { x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 1, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'חתימה', value: 'signature1' } } },
+    // { x: 0.24397031539888683, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.12, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.3562152133580705, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.07, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.45640074211502785, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.05, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.2894248608534323, y: 0.2845206093189964, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.49165120593692024, y: 0.2845206093189964, value: '', page: 2, isCursor: false, editor: { state: false, width: 0.23, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.512987012987013, y: 0.3275313620071685, value: '', page: 2, isCursor: false, editor: { state: false, width: 0.17, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.3395176252319109, y: 0.3282482078853047, value: '', page: 3, isCursor: false, editor: { state: false, width: 0.16, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.18274582560296845, y: 0.3268145161290323, value: '', page: 3, isCursor: false, editor: { state: false, width: 0.15, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
+    // { x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 2, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'חתימה', value: 'signature1' } } },
   ]);
   const [signatures, setSignatures] = useState([]);
   const [containerBounds, setContainerBounds] = useState([]);
@@ -40,12 +44,17 @@ export default function PdfSign(props) {
   const [pageWidth, setPageWidth] = useState(null);
   const [pageHeight, setPageHeight] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [signatureOpen, setSignatureOpen] = useState(false);
+  const [documentLoaded, setDocumentLoaded] = useState(false);
+
+  // Access the parameter using useParams
+  const { key } = useParams();
 
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
-  const pdfFile = 'parents_agreement_fixed.pdf';
-  const fontFileUrl = 'DavidLibre-Regular.ttf';
+  const pdfFile = `https://yelotapi.myvarno.io/api/documentSign/${key}.pdf`;
+  const fontFileUrl = '../Alef-Regular.ttf';
 
   const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
 
@@ -86,31 +95,54 @@ export default function PdfSign(props) {
     };
 
     fetchNumPages();
-  }, [pdfFile]);
+  }, []);
+
+  useEffect(() => {
+    // Function to fetch data from the backend server
+    const fetchData = async () => {
+      try {
+        // Make the GET request using Axios
+        const response = await axios.get(`https://yelotapi.myvarno.io/api/documentSign/document-input-fields/${key}`);
+        setInputFields(response.data.inputFields); // Update the state with the fetched data
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    // Call the fetchData function when the component mounts
+    fetchData();
+  }, []); 
 
 
   const handleInputChange = (event, index) => {
+    console.log(inputFields[index].editor.inputType.label);
+
     const updatedInputFields = [...inputFields];
-    updatedInputFields[index].value = event.target.value;
+
+    inputFields.forEach((field, index2) => {
+      if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
+        updatedInputFields[index2].value = event.target.value;
+      }
+    })
     setInputFields(updatedInputFields);
   };
 
   const handlePageChange = (newPage) => {
+    console.log(newPage);
     setCurrentPage(newPage);
-    setClickY(null); // Reset clickY when the page changes
+    // setClickY(null); // Reset clickY when the page changes
   };
 
   const handleOpenPDF = async () => {
 
-
+    
 
     console.log(inputFields);
     try {
       // Load the existing PDF document
-  
       var existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
-  
 
+      console.log("after fetch");
       const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
 
       // Register the fontkit instance
@@ -180,55 +212,72 @@ export default function PdfSign(props) {
 
 
 
-  const handleMouseEnter = (index) => {
-    setHoveredIndex(index);
+  const handleMouseEnter = (event, index) => {
+    if (!signatureOpen) {
+      setHoveredIndex(index);
+    }
   };
 
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    if (!signatureOpen) {
+      setHoveredIndex(null);
+    }
   };
 
   function updateSignature(index, url) {
+
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
-      updatedInputFields[index].value = url;
+      inputFields.forEach((field, index2) => {
+        if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
+          updatedInputFields[index2].value = url;
+        }
+      })
+      // console.log(updatedInputFields);
       return updatedInputFields; // Set the updated array as the new state
     });
 
   }
 
+  async function handlePdfLoadSuccess() {
+    setWindowWidth(window.visualViewport.width);
+
+    setDocumentLoaded(true);
+  }
+
   // Use the documentBytes as needed, e.g., display the PDF
   return (
     <div>
-
+      <h1 className="text-center david"> הגשת מסמכים דיגיטלית </h1>
 
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} >
-        <Document file={pdfFile}>
-
+        <Document file={pdfFile}  >
           <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
 
-            <Page key={currentPage - 1} pageNumber={currentPage}  width={containerRef.current?.clientWidth} />
+            <Page onLoadSuccess={handlePdfLoadSuccess} key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />
 
 
           </div>
         </Document>
-        {inputFields.map((inputField, index) => (
+        {documentLoaded && 
+        <>{inputFields.map((inputField, index) => (
           (inputField.page === currentPage) ?
-            <div>
+            <>
               {
                 inputField.editor.inputType.value === 'signature1' ? (
                   <div key={index}
                     style={{
-                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                       position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       fontSize: `${windowWidth / 40}px`,
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       padding: '4px',
                     }}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onMouseLeave={handleMouseLeave}>
+                    onMouseEnter={(event) => handleMouseEnter(event, index)}
+                    onMouseLeave={handleMouseLeave}
+                  >
 
-                    <SignatureModal updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                    <SignatureModal key={index} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
                   </div>) : (<input
                     key={index}
@@ -236,29 +285,39 @@ export default function PdfSign(props) {
                     value={inputField.value}
                     onChange={(event) => handleInputChange(event, index)}
                     style={{
-                      opacity: `${hoveredIndex || inputField.editor.state ? 0.8 : 1}`,
+                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                       position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       height: `${windowWidth * inputField.editor.height / 40}px`,
                       fontSize: `${windowWidth / 60}px`,
                       padding: '4px',
+                      // ...(windowWidth <= 768 && {
+                      //   width: '50px',
+                      //   height: '14px',
+                      //   fontSize: '8px',
+                      //   padding: '2px',
+                      // }),
                     }}
-                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseEnter={(event) => handleMouseEnter(event, index)}
                     onMouseLeave={handleMouseLeave}
+                  // className="input-field"
                   />)
               }
 
 
-            </div> : <div></div>
+            </> : <div></div>
 
-        ))}
+        ))}</>}
+
 
       </div>
 
-      <button onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}>Previous Page</button>
-      <button onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}>Next Page</button>
+      <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
+      <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
 
-      <button className="btn btn-primary" onClick={handleOpenPDF}>Open PDF</button>
+      <br />
+      <button className="btn btn-primary m-1" onClick={handleOpenPDF}>הגש מסמך</button>
+
 
     </div>
   );

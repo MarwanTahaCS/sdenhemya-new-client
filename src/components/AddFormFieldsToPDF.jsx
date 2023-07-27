@@ -15,6 +15,7 @@ import { Typography, TextField, Autocomplete } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import axios from "axios";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -136,7 +137,7 @@ export default function AddFormFieldsToPDF(props) {
       const newInputField = {
         x: clickXtemp,
         y: clickYtemp,
-        value: `שדה קלט`,
+        value: "",
         page: currentPage,
         isCursor: false,
         editor: {
@@ -145,8 +146,7 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'אחר', value: 'other' },
-        },
-        hovered: false
+        }
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -214,8 +214,7 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'אחר', value: 'other' },
-        },
-        hovered: false
+        }
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -234,8 +233,7 @@ export default function AddFormFieldsToPDF(props) {
           height: 1,
           font: 1,
           inputType: { label: 'חתימה', value: 'signature1' },
-        },
-        hovered: false
+        }
       };
 
       setInputFields([...inputFields.filter(field => !field.isCursor), newInputField]);
@@ -250,7 +248,7 @@ export default function AddFormFieldsToPDF(props) {
     const updatedInputFields = [...inputFields];
 
     inputFields.forEach((field, index2) => {
-      if(field.editor.inputType.value === inputFields[index].editor.inputType.value){
+      if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
         updatedInputFields[index2].value = event.target.value;
       }
     })
@@ -275,7 +273,7 @@ export default function AddFormFieldsToPDF(props) {
       var existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
 
       if (selectedFile) {
-        existingPdfBytes = await selectedFile.arrayBuffer();
+        // existingPdfBytes = await selectedFile.arrayBuffer();
       }
 
       const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
@@ -477,7 +475,7 @@ export default function AddFormFieldsToPDF(props) {
       if (value.value === 'signature1') {
         updatedInputFields[index].value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
       } else {
-        updatedInputFields[index].value = value.label;
+        updatedInputFields[index].value = "";
       }
       console.log(updatedInputFields);
       return updatedInputFields; // Set the updated array as the new state
@@ -489,7 +487,7 @@ export default function AddFormFieldsToPDF(props) {
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
       inputFields.forEach((field, index2) => {
-        if(field.editor.inputType.value === inputFields[index].editor.inputType.value){
+        if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
           updatedInputFields[index2].value = url;
         }
       })
@@ -501,7 +499,35 @@ export default function AddFormFieldsToPDF(props) {
 
   function saveInputFields() {
     props.handleInputFieldsChange(inputFields);
+
+    handleSubmit();
   }
+
+  const handleSubmit = async () => {
+    // const localUrl = "http://localhost:3001/api/documentSign/";
+  const localUrl = "https://yelotapi.myvarno.io/api/documentSign";
+
+  console.log(inputFields);
+
+    const data = new FormData();
+    data.append('pdf', selectedFile);
+    data.append('data', JSON.stringify(inputFields));
+    data.append('templateName', selectedFile.name);
+    // Add more fields as needed
+
+    try {
+      const response = await axios.post(localUrl, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('Response:', response.data);
+      // Do something with the response if needed
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   function handlePdfLoadSuccess() {
     setWindowWidth(window.visualViewport.width);
@@ -519,7 +545,6 @@ export default function AddFormFieldsToPDF(props) {
           הוסף לוח חתימה
         </BootstrapButton>
       </>}
-
 
       {!selectedFile && <div className="m-3">
         <label for="formFile" className="form-label">בחר קובץ PDF</label>

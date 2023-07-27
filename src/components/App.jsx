@@ -17,7 +17,7 @@ export default function App(props) {
   }, [inputFields])
 
   // const localUrl = "http://localhost:3001/api/documentSign/";
-  const localUrl = "https://api.myvarno.io/api/documentSign";
+  const localUrl = "https://yelotapi.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData) {
     try {
@@ -50,7 +50,7 @@ export default function App(props) {
               <AddFormFieldToPdf handleInputFieldsChange={handleInputFieldsChange}  />
             } />
 
-            {inputFields && <Route path="/FillDocument" element={<PdfSign inputs={inputFields} />} />}
+            {inputFields && <Route path="/FillDocument/:key" element={<PdfSign inputFields={inputFields} />} />}
           
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
