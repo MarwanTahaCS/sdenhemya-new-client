@@ -46,10 +46,10 @@ export default function App(props) {
         <Routes>
           <Route exact path="/" element=
             {
-              <AddFormFieldToPdf handleInputFieldsChange={handleInputFieldsChange}  />
+               <PdfSign inputFields={inputFields} />
             } />
 
-            {inputFields && <Route path="/FillDocument/:key" element={<PdfSign inputFields={inputFields} />} />}
+            {/* {inputFields && <Route path="/FillDocument/:key" element={<PdfSign inputFields={inputFields} />} />} */}
           
           {/* <Route path="/success" element={<SentPage t={t} />} /> */}
         </Routes>
