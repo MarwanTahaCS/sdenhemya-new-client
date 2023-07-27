@@ -102,7 +102,7 @@ export default function PdfSign(props) {
     const fetchData = async () => {
       try {
         // Make the GET request using Axios
-        const response = await axios.get(`https://yelotapi.myvarno.io/api/documentSign/document-input-fields/first_document_o9oh6o1d`);
+        const response = await axios.get(`https://yelotapi.myvarno.io/api/documentSign/document-input-fields/first_document_gol8ed4w`);
         setInputFields(response.data.inputFields); // Update the state with the fetched data
       } catch (error) {
         console.error('Error fetching data:', error);
