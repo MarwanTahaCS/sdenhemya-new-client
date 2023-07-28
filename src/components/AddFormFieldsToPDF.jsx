@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from 'react-router-dom';
 import { PDFDocument as PDFLibDocument, rgb, StandardFonts } from 'pdf-lib';
 import { Document, Page, pdfjs } from 'react-pdf';
 import '@react-pdf/renderer';
@@ -11,15 +12,24 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete } from '@mui/material';
+import { Typography, TextField, Autocomplete, Snackbar } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
+import SimpleSnackbar from './SimpleSnackbar.jsx';
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function AddFormFieldsToPDF(props) {
+
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const currentProtocol = window.location.protocol;
+  const currentDomain = window.location.hostname;
+  const currentPort = window.location.port;
+
   const [inputFields, setInputFields] = useState([]);
   const [signatures, setSignatures] = useState([]);
   const [containerBounds, setContainerBounds] = useState([]);
@@ -34,6 +44,8 @@ export default function AddFormFieldsToPDF(props) {
   const [hoveredIndex, setHoveredIndex] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [signatureOpen, setSignatureOpen] = useState(false);
+  const [templateLink, setTemplateLink] = useState(null);
+  const [linkFetched, setLinkFetched] = useState(false);
 
   const emptySignature = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
 
@@ -497,17 +509,25 @@ export default function AddFormFieldsToPDF(props) {
 
   }
 
+  const [open, setOpen] = useState(false);
+  const openClipboard = () => {
+    setOpen(true)
+    navigator.clipboard.writeText(templateLink);
+  }
+
   function saveInputFields() {
     props.handleInputFieldsChange(inputFields);
 
     handleSubmit();
+
+    openClipboard();
   }
 
   const handleSubmit = async () => {
-    // const localUrl = "http://localhost:3001/api/documentSign/";
-  const localUrl = "https://yelotapi.myvarno.io/api/documentSign";
+    const localUrl = "http://localhost:3001/api/documentSign/";
+    // const localUrl = "https://yelotapi.myvarno.io/api/documentSign";
 
-  console.log(inputFields);
+    console.log(inputFields);
 
     const data = new FormData();
     data.append('pdf', selectedFile);
@@ -522,7 +542,10 @@ export default function AddFormFieldsToPDF(props) {
         },
       });
 
-      console.log('Response:', response.data);
+      console.log(`${currentProtocol}//${currentDomain}:${currentPort}${currentPath}${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
+      setTemplateLink(`${currentProtocol}//${currentDomain}:${currentPort}${currentPath}${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      setLinkFetched(true);
       // Do something with the response if needed
     } catch (error) {
       console.error('Error:', error);
@@ -796,6 +819,36 @@ export default function AddFormFieldsToPDF(props) {
         <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button>
 
         <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
+
+        {linkFetched && (
+          <div className="modal-backdrop">
+            <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header" style={{ direction: 'ltr' }}>
+                    <h5 className="modal-title">קישור המסמך</h5>
+                    <button type="button" className="btn-close" onClick={() => setLinkFetched(false)}>
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body" style={{ direction: 'rtl' }}>
+                    <SimpleSnackbar templateLink={templateLink} />
+                    <p className="david pt-3">
+                    הקישור שסופק מציע גרסה שניתן למלא ולחתום על המסמך ה-PDF שיצת לפני רגע. <br/>
+באפשרותך לשתף קישור זה בקלות עם הלקוחות שלך. <br/>
+כאשר הלקוחות משלמים את המסמך על ידי מילוי הפרטים הנדרשים וחתימתו, העותק המלא של המסמך, יחד עם השדות שהוזנו, נשמר באופן אוטומטי בלוח ההגשות שלך.
+                    </p>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={() => setLinkFetched(false)}>
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>}
 
