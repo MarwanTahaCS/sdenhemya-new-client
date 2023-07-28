@@ -509,18 +509,10 @@ export default function AddFormFieldsToPDF(props) {
 
   }
 
-  const [open, setOpen] = useState(false);
-  const openClipboard = () => {
-    setOpen(true)
-    navigator.clipboard.writeText(templateLink);
-  }
-
   function saveInputFields() {
     props.handleInputFieldsChange(inputFields);
 
     handleSubmit();
-
-    openClipboard();
   }
 
   const handleSubmit = async () => {

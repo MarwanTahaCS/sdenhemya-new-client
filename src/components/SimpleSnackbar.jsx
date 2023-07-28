@@ -9,6 +9,10 @@ export default function SimpleSnackbar(props) {
 
   const handleClick = () => {
     setOpen(true);
+
+
+        navigator.clipboard.writeText(props.templateLink);
+  
   };
 
   const handleClose = (event, reason) => {
