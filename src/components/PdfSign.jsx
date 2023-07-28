@@ -53,8 +53,8 @@ export default function PdfSign(props) {
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
-  // const pdfFile = `https://yelotapi.myvarno.io/api/documentSign/${key}.pdf`;
-  const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
+  const pdfFile = `https://templates-api.myvarno.io/api/documentSign/${key}.pdf`;
+  // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
   const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
@@ -103,8 +103,8 @@ export default function PdfSign(props) {
     const fetchData = async () => {
       try {
         // Make the GET request using Axios
-        // const response = await axios.get(`https://yelotapi.myvarno.io/api/documentSign/document-input-fields/${key}`);
-        const response = await axios.get(`http://localhost:3001/api/documentSign/document-input-fields/${key}`);
+        const response = await axios.get(`https://templates-api.myvarno.io/api/documentSign/document-input-fields/${key}`);
+        // const response = await axios.get(`http://localhost:3001/api/documentSign/document-input-fields/${key}`);
         setInputFields(response.data.inputFields); // Update the state with the fetched data
       } catch (error) {
         console.error('Error fetching data:', error);

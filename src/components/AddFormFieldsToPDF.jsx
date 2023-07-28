@@ -524,8 +524,8 @@ export default function AddFormFieldsToPDF(props) {
   }
 
   const handleSubmit = async () => {
-    const localUrl = "http://localhost:3001/api/documentSign/";
-    // const localUrl = "https://yelotapi.myvarno.io/api/documentSign";
+    // const localUrl = "http://localhost:3001/api/documentSign/";
+    const localUrl = "https://templates-api.myvarno.io/api/documentSign";
 
     console.log(inputFields);
 
