@@ -525,7 +525,7 @@ export default function AddFormFieldsToPDF(props) {
 
   const handleSubmit = async () => {
     // const localUrl = "http://localhost:3001/api/documentSign/";
-    const localUrl = "https://templates-api.myvarno.io/api/documentSign";
+    const localUrl = "https://templates-api.myvarno.io/api/documentSign/";
 
     console.log(inputFields);
 
@@ -542,9 +542,16 @@ export default function AddFormFieldsToPDF(props) {
         },
       });
 
-      console.log(`${currentProtocol}//${currentDomain}:${currentPort}${currentPath}${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      // console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      // console.log(`${currentProtocol}//${currentDomain}:${currentPort}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
 
-      setTemplateLink(`${currentProtocol}//${currentDomain}:${currentPort}${currentPath}${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      // setTemplateLink(`${currentProtocol}//${currentDomain}:${currentPort}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
+      console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      console.log(`${currentProtocol}//${currentDomain}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
+      setTemplateLink(`${currentProtocol}//${currentDomain}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
       setLinkFetched(true);
       // Do something with the response if needed
     } catch (error) {
@@ -820,7 +827,7 @@ export default function AddFormFieldsToPDF(props) {
 
         <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
 
-        {linkFetched && (
+        {(linkFetched && templateLink !== null) && (
           <div className="modal-backdrop">
             <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
               <div className="modal-dialog" role="document">
@@ -834,7 +841,7 @@ export default function AddFormFieldsToPDF(props) {
                   <div className="modal-body" style={{ direction: 'rtl' }}>
                     <SimpleSnackbar templateLink={templateLink} />
                     <p className="david pt-3">
-                    הקישור שסופק מציע גרסה שניתן למלא ולחתום על המסמך ה-PDF שיצת לפני רגע. <br/>
+                    הקישור לעיל מספק גרסת מהסמך שניתן למלא ולחתום על ידי הלקוח. <br/>
 באפשרותך לשתף קישור זה בקלות עם הלקוחות שלך. <br/>
 כאשר הלקוחות משלמים את המסמך על ידי מילוי הפרטים הנדרשים וחתימתו, העותק המלא של המסמך, יחד עם השדות שהוזנו, נשמר באופן אוטומטי בלוח ההגשות שלך.
                     </p>

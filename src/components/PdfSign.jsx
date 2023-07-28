@@ -264,7 +264,7 @@ export default function PdfSign(props) {
         {documentLoaded && 
         <>{inputFields.map((inputField, index) => (
           (inputField.page === currentPage) ?
-            <>
+            <div key={index}>
               {
                 inputField.editor.inputType.value === 'signature1' ? (
                   <div key={index}
@@ -307,7 +307,7 @@ export default function PdfSign(props) {
               }
 
 
-            </> : <div></div>
+            </div> : <div></div>
 
         ))}</>}
 
