@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { PDFDocument as PDFLibDocument, rgb, StandardFonts } from 'pdf-lib';
 import { Document, Page, pdfjs } from 'react-pdf';
 import '@react-pdf/renderer';
@@ -23,7 +23,7 @@ import AtomicSpinner from 'atomic-spinner';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-export default function AddFormFieldsToPDF(props) {
+export default function CreateTemplate(props) {
 
   const location = useLocation();
   const currentPath = location.pathname;
@@ -56,6 +56,9 @@ export default function AddFormFieldsToPDF(props) {
 
   const pdfFile = 'parents_agreement_fixed.pdf';
   const fontFileUrl = 'DavidLibre-Regular.ttf';
+
+  const navigate = useNavigate();
+  const { key } = useParams();
 
   const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
 
@@ -304,7 +307,7 @@ export default function AddFormFieldsToPDF(props) {
       // Add the input field values as text on each page
       const pages = pdfDoc.getPages();
       inputFields.forEach(async inputField => {
-        if (inputField.editor.inputType.value !== 'signature1') {
+        if (inputField.editor.inputType.value !== 'signature1' && inputField.editor.inputType.value !== 'signature2') {
           const { value } = inputField;
           const { x, y } = inputField;
           pages.forEach((page, index) => {
@@ -315,7 +318,7 @@ export default function AddFormFieldsToPDF(props) {
               page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
             }
           });
-        } else if (inputField.editor.inputType.value === 'signature1') {
+        } else if (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') {
           console.log(inputField.value);
           // Embed the image in the PDF document
           // const imageBytes = await fetch(inputField.value).then(res => res.arrayBuffer());
@@ -486,7 +489,7 @@ export default function AddFormFieldsToPDF(props) {
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
       updatedInputFields[index].editor.inputType = value;
-      if (value.value === 'signature1') {
+      if (value.value === 'signature1' || value.value === 'signature2') {
         updatedInputFields[index].value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
       } else {
         updatedInputFields[index].value = "";
@@ -518,8 +521,8 @@ export default function AddFormFieldsToPDF(props) {
   }
 
   const handleSubmit = async () => {
-    const localUrl = "http://localhost:3001/api/documentSign/";
-    // const localUrl = "https://templates-api.myvarno.io/api/documentSign/";
+    // const localUrl = "http://localhost:3001/api/organzations/create-template/";
+    const localUrl = "https://templates-api.myvarno.io/api/organzations/create-template/";
 
     console.log(inputFields);
 
@@ -527,6 +530,7 @@ export default function AddFormFieldsToPDF(props) {
     data.append('pdf', selectedFile);
     data.append('data', JSON.stringify(inputFields));
     data.append('templateName', selectedFile.name);
+    data.append('orgID', key);
     // Add more fields as needed
 
     try {
@@ -536,15 +540,15 @@ export default function AddFormFieldsToPDF(props) {
         },
       });
 
-      // console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-      // console.log(`${currentProtocol}//${currentDomain}:${currentPort}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-
-      // setTemplateLink(`${currentProtocol}//${currentDomain}:${currentPort}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-
       console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-      console.log(`${currentProtocol}//${currentDomain}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      console.log(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
 
-      setTemplateLink(`${currentProtocol}//${currentDomain}/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
+      // console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      // console.log(`${currentProtocol}//${currentDomain}:3000/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+
+      // setTemplateLink(`${currentProtocol}//${currentDomain}:3000/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
 
       setLinkFetched(true);
       // Do something with the response if needed
@@ -574,7 +578,7 @@ export default function AddFormFieldsToPDF(props) {
         <label for="formFile" className="form-label">בחר קובץ PDF</label>
         <input className="form-control" id="formFile" type="file" accept="application/pdf" onChange={handleFileChange} />
       </div>}
-
+        
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingSignatureInputField ? (event) => handleMouseMove(event, 2) : null}>
         <Document file={selectedFile}  >
           {/* {Array.from(new Array(numPages), (el, index) => (
@@ -591,7 +595,7 @@ export default function AddFormFieldsToPDF(props) {
           (inputField.page === currentPage) ?
             <>
               {
-                inputField.editor.inputType.value === 'signature1' ? (
+                inputField.editor.inputType.value === 'signature1' ||inputField.editor.inputType.value === 'signature2'  ? (
                   <div key={index}
                     style={{
                       opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
@@ -924,7 +928,8 @@ const BootstrapButton = styled(Button)({
 const options = [
   { label: 'שם הילד', value: 'childName' },
   { label: 'מספר תעודת תלמיד', value: 'childId' },
-  { label: 'חתימה', value: 'signature1' },
+  { label: 'חתימה 1', value: 'signature1' },
+  { label: 'חתימה 2', value: 'signature2' },
   { label: 'היום', value: 'day' },
   { label: 'החודש', value: 'month' },
   { label: 'השנה', value: 'year' },
@@ -939,50 +944,49 @@ const options = [
   { label: 'שם ילד פרטי', value: 'childFirstName' },
   { label: 'שם משפחה', value: 'childLastName' },
   { label: 'יום הולדת', value: 'dateOfBirth' },
-  { label: '1', value: 'countryOfBirth' },
-  { label: '2', value: 'yearOfArrival' },
-  { label: '3', value: 'address' },
-  { label: '4', value: 'zip' },
-  { label: '5', value: 'dateOfBirth' },
-  { label: '6', value: 'brother1' },
-  { label: '7', value: 'brother2' },
-  { label: '8', value: 'brother3' },
-  { label: '9', value: 'brother4' },
-  { label: '10', value: 'parentJob1' },
-  { label: '11', value: 'parentHomeNumber1' },
-  { label: '12', value: 'parentEmailAddress1' },
-  { label: '13', value: 'parentJob2' },
-  { label: '14', value: 'parentHomeNumber2' },
-  { label: '15', value: 'parentEmailAddress2' },
-  { label: '16', value: 'relativeName1' },
-  { label: '17', value: 'relativeStatus1' },
-  { label: '18', value: 'relativeNumber1' },
-  { label: '19', value: 'relativeName2' },
-  { label: '20', value: 'relativeStatus2' },
-  { label: '21', value: 'relativeNumber2' },
-  { label: '22', value: 'healthIssueExist' },
-  { label: '23', value: 'healthIssueAndSolution' },
-  { label: '24', value: 'allergyToMedication' },
-  { label: '25', value: 'allergyToFood' },
-  { label: '26', value: 'pastDiseases' },
-  { label: '27', value: 'allergies' },
-  { label: '28', value: 'receivedFullVaccination' },
-  { label: '29', value: 'nonReceivedVaccinations' },
-  { label: '30', value: 'hmo' },
-  { label: '31', value: 'remarks' },
-  { label: '32', value: 'attendanceStartingDate' },
-  { label: '33', value: 'from' },
-  { label: '34', value: 'signingDate' },
-  { label: '35', value: 'className' },
-  { label: '36', value: 'monthlyPayment' },
-  { label: '37', value: 'paymentMethod' },
-  { label: '38', value: 'allowsPhotographingInternal' },
-  { label: '39', value: 'allowsPhotographingExternal' },
-  { label: '40', value: 'approverName' },
-  { label: '41', value: 'approverStatus' },
-  { label: '42', value: 'approverAddress' },
-  { label: '43', value: 'approverPhoneNumber' },
-  { label: '45', value: 'signature2' },
+  { label: 'ארץ לידה', value: 'countryOfBirth' },
+  { label: 'שנת עליה', value: 'yearOfArrival' },
+  { label: 'כתובת', value: 'address' },
+  { label: 'מיקוד - ZIP', value: 'zip' },
+  { label: 'תאריך לידה', value: 'dateOfBirth' },
+  { label: 'אח ראשון', value: 'brother1' },
+  { label: 'אח שני', value: 'brother2' },
+  { label: 'אח שלישי', value: 'brother3' },
+  { label: 'אח רביעי', value: 'brother4' },
+  { label: 'מקצוע הורה ראשון', value: 'parentJob1' },
+  { label: 'מספר פלפון הורה ראשון', value: 'parentHomeNumber1' },
+  { label: 'אימייל הורה ראשון', value: 'parentEmailAddress1' },
+  { label: 'מקצוע הורה שני', value: 'parentJob2' },
+  { label: 'מספר פלפון הורה שני', value: 'parentHomeNumber2' },
+  { label: 'אימייל הורה שני', value: 'parentEmailAddress2' },
+  { label: 'שם קרוב משפחה ראשון', value: 'relativeName1' },
+  { label: 'סטטוס קרבות משפחה ראשון', value: 'relativeStatus1' },
+  { label: 'מספר פ. קרוב משפחה ראשון', value: 'relativeNumber1' },
+  { label: 'שם קרוב משפחה שני', value: 'relativeName2' },
+  { label: 'סטטוס קרבות משפחה שני', value: 'relativeStatus2' },
+  { label: 'מספר פ. קרוב משפחה שני', value: 'relativeNumber2' },
+  { label: 'האם קיימת בעיה בריאותית', value: 'healthIssueExist' },
+  { label: 'בעיה בריאותית וטיפול בה', value: 'healthIssueAndSolution' },
+  { label: 'אלרגיה לתרופות', value: 'allergyToMedication' },
+  { label: 'אלרגיה לאוכל', value: 'allergyToFood' },
+  { label: 'מחלות קודמות', value: 'pastDiseases' },
+  { label: 'אלרגיות', value: 'allergies' },
+  { label: 'האם קיבל חיסונים מלאים', value: 'receivedFullVaccination' },
+  { label: 'חיסונים שלא קיבל הילד', value: 'nonReceivedVaccinations' },
+  { label: 'קופת חולים', value: 'hmo' },
+  { label: 'הערות', value: 'remarks' },
+  { label: 'תאריך התחלת הנוכחות', value: 'attendanceStartingDate' },
+  { label: 'מ- (כתובת)', value: 'from' },
+  { label: 'תאריך חתימה (היום)', value: 'signingDate' },
+  { label: 'שם כיתה', value: 'className' },
+  { label: 'סכום תשלום חודשה', value: 'monthlyPayment' },
+  { label: 'אמצעי תשלום', value: 'paymentMethod' },
+  { label: 'האם ההורים מאשרים לצילום הילד פנימי', value: 'allowsPhotographingInternal' },
+  { label: 'האם ההורים מאשרים לצילום הילד חוץ', value: 'allowsPhotographingExternal' },
+  { label: 'שם החותם', value: 'approverName' },
+  { label: 'סטטוס קרבות החותם', value: 'approverStatus' },
+  { label: 'כתובת החותם', value: 'approverAddress' },
+  { label: 'מס. פלפון החותם', value: 'approverPhoneNumber' },
   { label: 'אחר', value: 'other' },
 ];
 
