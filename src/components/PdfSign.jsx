@@ -213,7 +213,7 @@ export default function PdfSign(props) {
 
       //------------------------------------------
       // send pdf to server
-      submitSignedData(modifiedPdfBlob);
+      await submitSignedData(modifiedPdfBlob);
       //------------------------------------------
 
       // Create a URL for the Blob object
