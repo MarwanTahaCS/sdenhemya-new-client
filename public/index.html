@@ -51,6 +51,13 @@
 
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
 
+    <script>
+      // Disable pinch zooming on mobile devices
+      document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+      });
+    </script>
+
     <title>Varno - Template Creator</title>
   </head>
   <body dir="rtl">
