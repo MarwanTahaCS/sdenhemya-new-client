@@ -60,11 +60,11 @@ export default function PdfSign(props) {
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(window.visualViewport.width);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 
   const handleResize = () => {
-    setWindowWidth(window.visualViewport.width);
+    setWindowWidth(window.innerWidth);
   };
 
   // Add event listener to handle window resize
@@ -81,7 +81,7 @@ export default function PdfSign(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(window.visualViewport.width);
+        setWindowWidth(window.innerWidth);
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -300,7 +300,7 @@ export default function PdfSign(props) {
   }
 
   async function handlePdfLoadSuccess() {
-    setWindowWidth(window.visualViewport.width);
+    setWindowWidth(window.innerWidth);
 
     setDocumentLoaded(true);
   }
