@@ -12,7 +12,7 @@ const CreateOrg = () => {
     e.preventDefault();
 
     // const localUrl = "http://localhost:3001/api/organzations/createorg/";
-    const localUrl = "https://templates-api.myvarno.io/api/organzations/createorg/";
+    const localUrl = `${window.AppConfig.serverDomain}/api/organzations/createorg/`;
 
     const formData = {
         orgName: orgName,
@@ -25,7 +25,7 @@ const CreateOrg = () => {
 
       console.log(response.data.orgID);
       
-      navigate('/orgs/');
+      navigate('/');
 
       // Do something with the response if needed
     } catch (error) {

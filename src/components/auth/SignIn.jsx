@@ -16,7 +16,7 @@ export default function SignIn(props) {
         setLoading(true);
         console.log(props.ph);
         // Make the GET request using Axios
-        const response = await axios.get(`https://templates-api.myvarno.io/api/organzations/get-orgs/+972${props.ph}`);
+        const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-orgs/+972${props.ph}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/get-orgs/+972${props.ph}`);
         console.log(response.data);
         if ( response.data.length > 0) {
@@ -34,11 +34,6 @@ export default function SignIn(props) {
     };
 
     fetchData();
-
-
-
-
-
   }
 
   function handleSentCodeClick(event) {

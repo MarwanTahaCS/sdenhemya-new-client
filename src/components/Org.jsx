@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
-import { Typography, Card, CardContent } from '@mui/material';
+import { Typography, Card, CardContent, Button, Modal, Box, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 
@@ -13,6 +13,10 @@ export default function Org(props) {
     const [loading, setLoading] = useState(false);
     const [newMember, setNewMember] = useState("");
     const [count, setCount] = useState(0);
+    const [openBundleCreator, setOpenBundleCreator] = useState(false);
+    const [bundleName, setBundleName] = useState([""]);
+    const [selectedTemplates, setSelectedTemplates] = useState([]);
+
 
     const navigate = useNavigate();
     const { key } = useParams();
@@ -30,10 +34,15 @@ export default function Org(props) {
             try {
                 setLoading(true);
                 // Make the GET request using Axios
-                const response = await axios.get(`https://templates-api.myvarno.io/api/organzations/get-org/${key}`);
+                const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org/${key}`);
                 // const response = await axios.get(`http://localhost:3001/api/organzations/get-org/${key}`);
                 console.log(response.data);
                 setOrg(response.data); // Update the state with the fetched data
+                setSelectedTemplates(response.data.templates.map((item, index) => ({
+                    ...item, // Spread the original item's properties
+                    index: index, // Add the 'age' field with a default value (you can change this as needed)
+                    selected: false, // Add the 'city' field with a default value (you can change this as needed)
+                })))
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -60,7 +69,7 @@ export default function Org(props) {
         console.log(newMember);
 
         // const localUrl = "http://localhost:3001/api/organzations/add-member/";
-        const localUrl = "https://templates-api.myvarno.io/api/organzations/add-member/";
+        const localUrl = `${window.AppConfig.serverDomain}/api/organzations/add-member/`;
 
         const formData = {
             orgID: orgID,
@@ -80,7 +89,7 @@ export default function Org(props) {
         }
         setNewMember("");
 
-        setCount(count+1);
+        setCount(count + 1);
 
     }
 
@@ -90,7 +99,7 @@ export default function Org(props) {
             try {
                 setLoading(true);
                 // Make the GET request using Axios
-                const response = await axios.get(`https://templates-api.myvarno.io/api/organzations/submitted/${templateID}`);
+                const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${templateID}`);
                 // const response = await axios.get(`http://localhost:3001/api/organzations/submitted/${templateID}`);
                 console.log(response.data);
                 const buffer = await generateExcelFile(response.data);
@@ -123,6 +132,50 @@ export default function Org(props) {
 
         const buffer = await workbook.xlsx.writeBuffer();
         return buffer;
+    };
+
+
+    const handleOpen = () => setOpenBundleCreator(true);
+    const handleClose = () => setOpenBundleCreator(false);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const localUrl = `${window.AppConfig.serverDomain}/api/organzations/create-bundle/`;
+
+        const extractedSelectedTemplates = selectedTemplates.filter((option) => option.selected).map(({ index, selected, ...rest }) => rest);
+
+        const formData = {
+            bundleName: bundleName,
+            bundleTemplates: extractedSelectedTemplates,
+            orgID: org.orgID
+        };
+        // Add more fields as needed
+
+        try {
+            const response = await axios.post(localUrl, formData);
+
+            console.log(response.data);
+
+            setCount(count + 1);
+
+            // Do something with the response if needed
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        handleClose();
+    };
+
+    const handleInputChange = (event) => {
+        setBundleName(event.target.value);
+    };
+    const handleOptionChange = (optionId) => {
+        setSelectedTemplates((prevOptions) =>
+            prevOptions.map((option) =>
+                option.index === optionId ? { ...option, selected: !option.selected } : option
+            )
+        );
     };
 
     return (
@@ -160,7 +213,7 @@ export default function Org(props) {
                                         <ul className="list-group">
                                             <li className="list-group-item">id: <b>{template.id}</b></li>
                                             <li className="list-group-item">name: <b>{template.name}</b></li>
-                                            <li className="list-group-item">Template Link: <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}:${currentPort}/template/${template.name.split('.')[0]}_${template.id}`} /></li>
+                                            <li className="list-group-item">Template Link: <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}/template/${template.name.split('.')[0]}_${template.id}`} /></li>
                                             <li className="list-group-item"><button className="btn btn-primary btn-sm" onClick={(event) => showSubmittedData(event, template.id)}>view submitted data</button></li>
                                         </ul>
                                     </Typography>
@@ -170,6 +223,70 @@ export default function Org(props) {
                         )
                         )}
                     <button className="btn btn-primary btn-sm" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> Create New Template </button>
+                    <br />
+                    <h3>Org Bundles:</h3>
+                        {org.bundles.map((bundle, index) => (
+                            <Card key={index} style={{ marginBottom: '10px' }}>
+                                <CardContent>
+                                    <Typography variant="h5" component="div">
+                                        <ul className="list-group">
+                                            <li className="list-group-item">id: <b>{bundle.bundleID}</b></li>
+                                            <li className="list-group-item">name: <b>{bundle.bundleName}</b></li>
+                                            <li className="list-group-item">Bundle link: <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}/bundle/${bundle.bundleID}`} /></li>
+                                            <li className="list-group-item">templates: <b><ul className="list-group">{bundle.bundleTemplates.map((template, index) => <li className="list-group-item"><div key={index}>{`${index}: ${template.name} (id: ${template.id})`}<br /></div></li>)}</ul></b></li>
+                                        </ul>
+                                    </Typography>
+                                    {/* Add more card content based on your item data */}
+                                </CardContent>
+                            </Card>
+                        )
+                        )}
+                    <>
+                        <Button variant="contained" color="primary" onClick={handleOpen}>
+                            Create Bundle
+                        </Button>
+                        <Modal open={openBundleCreator} onClose={handleClose}>
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    width: 400,
+                                    bgcolor: 'background.paper',
+                                    boxShadow: 24,
+                                    p: 4,
+                                }}
+                            >
+                                <form onSubmit={handleSubmit} style={{ direction: 'ltr' }}>
+                                    <TextField
+                                        label={"Bundle Name"}
+                                        value={bundleName}
+                                        onChange={handleInputChange}
+                                        fullWidth
+                                        variant="outlined"
+                                        sx={{ mt: 2 }}
+                                    />
+                                    {selectedTemplates.map((template, index) => (
+                                        <FormControlLabel
+                                            key={template.index}
+                                            control={
+                                                <Checkbox
+                                                    checked={template.selected}
+                                                    onChange={() => handleOptionChange(template.index)}
+                                                />
+                                            }
+                                            label={`${template.name} (${template.id})`}
+                                        />
+                                    ))}
+                                    {/* Add more form fields here */}
+                                    <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                                        Submit
+                                    </Button>
+                                </form>
+                            </Box>
+                        </Modal>
+                    </>
                 </div>
             )}
         </div>

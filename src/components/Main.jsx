@@ -21,6 +21,7 @@ import CreateOrg from "./CreateOrg";
 import OrgsBoard from "./OrgsBoard";
 import LoggedIn from "./LoggedIn";
 import Org from "./Org";
+import Bundle from "./Bundle";
 import CreateTemplate from "./CreateNewTemplate";
 
 export default function Main(props) {
@@ -42,7 +43,7 @@ export default function Main(props) {
           setLoading(false);
         });
 
-        
+
       } catch (err) {
         console.error(err);
         setLoading(false);
@@ -101,10 +102,10 @@ export default function Main(props) {
   }
 
   return (
-    <div className="bg-light" style={{ height: '100%' , textAlign: 'left'}}>
+    <div className="bg-light" style={{ height: '100%', textAlign: 'left' }}>
       {/* <Header switchLanguage={handleClick} /> */}
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
-      <nav dir="ltr" className="navbar navbar-expand-lg navbar-light bg-light">
+      {user && <nav dir="ltr" className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
           <NavLink className="navbar-brand" to="/">Template Manager</NavLink>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,13 +120,13 @@ export default function Main(props) {
                 <NavLink className="nav-link" to="/create-org">Create new organization</NavLink>
               </li>
               <li className="nav-item">
-              <button className="btn btn-danger btn-sm mx-3" onClick={() => signOut(auth)} >Log out</button>
+                <button className="btn btn-danger btn-sm mx-3" onClick={() => signOut(auth)} >Log out</button>
 
               </li>
             </ul>
           </div>
         </div>
-      </nav>
+      </nav>}
 
       <Routes>
         {/* <Redirect exact from="/" to="/auth" /> */}
@@ -167,7 +168,7 @@ export default function Main(props) {
           </>}
         />
 
-<Route path="/" element=
+        <Route path="/" element=
           {<>
             {user ?
               <OrgsBoard phoneNumber={user.phoneNumber} /> :
@@ -201,6 +202,7 @@ export default function Main(props) {
             }
           </>}
         />
+
         <Route path="/create-template/:key" element=
           {<>
             {user ?
@@ -226,6 +228,7 @@ export default function Main(props) {
         <Route path="/create-template/:key" element={<CreateTemplate />} /> */}
 
         <Route path="/template/:key" element={<PdfSign />} />
+        <Route path="/bundle/:key" element={<Bundle />} />
 
 
 

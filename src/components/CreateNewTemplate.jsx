@@ -522,7 +522,7 @@ export default function CreateTemplate(props) {
 
   const handleSubmit = async () => {
     // const localUrl = "http://localhost:3001/api/organzations/create-template/";
-    const localUrl = "https://templates-api.myvarno.io/api/organzations/create-template/";
+    const localUrl = `${window.AppConfig.serverDomain}/api/organzations/create-template/`;
 
     console.log(inputFields);
 

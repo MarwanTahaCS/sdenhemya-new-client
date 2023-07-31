@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
-import { Typography, Card, CardContent } from '@mui/material';
+import { Typography, Card, CardContent} from '@mui/material';
 
 const OrgsBoard = (props) => {
   const [orgs, setOrgs] = useState([]);
@@ -17,7 +17,7 @@ const OrgsBoard = (props) => {
       try {
         setLoading(true);
         // Make the GET request using Axios
-        const response = await axios.get(`https://templates-api.myvarno.io/api/organzations/get-orgs/${props.phoneNumber}`);
+        const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-orgs/${props.phoneNumber}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/get-orgs/${props.phoneNumber}`);
         console.log(response.data);
         setOrgs(response.data); // Update the state with the fetched data
@@ -38,13 +38,13 @@ const OrgsBoard = (props) => {
 
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
 
-      
+
 
       <div className="container">
-      <h1>Organizations</h1>
+        <h1>Organizations</h1>
         {
           orgs.map((org, index) => (
-            <Card key={index} style={{ marginBottom: '10px' }} onClick={()=>navigate(`/org/${org.orgID}`)}>
+            <Card key={index} style={{ marginBottom: '10px' }} onClick={() => navigate(`/org/${org.orgID}`)}>
               <CardContent>
                 <Typography variant="h5" component="div">
                   {org.orgName}
@@ -57,6 +57,7 @@ const OrgsBoard = (props) => {
                 {/* Add more card content based on your item data */}
               </CardContent>
             </Card>
+
           )
           )}
       </div>

@@ -56,7 +56,7 @@ export default function PdfSign(props) {
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
-  const pdfFile = `https://templates-api.myvarno.io/api/documentSign/${key}.pdf`;
+  const pdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${key}.pdf`;
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
@@ -106,7 +106,7 @@ export default function PdfSign(props) {
     const fetchData = async () => {
       try {
         // Make the GET request using Axios
-        const response = await axios.get(`https://templates-api.myvarno.io/api/organzations/document-input-fields/${key}`);
+        const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
         setInputFields(response.data.inputFields); // Update the state with the fetched data
         console.log(response.data.inputFields);
@@ -243,7 +243,7 @@ export default function PdfSign(props) {
 
   const submitSignedData = async (modifiedPdfBlob) => {
     // const localUrl = "http://localhost:3001/api/organzations/submit/";
-    const localUrl = "https://templates-api.myvarno.io/api/organzations/submit/";
+    const localUrl = `${window.AppConfig.serverDomain}/api/organzations/submit/`;
 
     console.log(inputFields);
 

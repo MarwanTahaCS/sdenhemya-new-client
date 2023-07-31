@@ -4,7 +4,10 @@ import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import AppConfig from './config';
 
+// Make the configuration available globally
+window.AppConfig = AppConfig;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
