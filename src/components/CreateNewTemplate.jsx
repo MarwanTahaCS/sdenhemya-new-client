@@ -62,7 +62,7 @@ export default function CreateTemplate(props) {
   const navigate = useNavigate();
   const { key } = useParams();
 
-  const [windowWidth, setWindowWidth] = useState((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
+  const [windowWidth, setWindowWidth] = useState(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -70,7 +70,7 @@ export default function CreateTemplate(props) {
   };
 
   const handleResize = () => {
-    setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -87,7 +87,7 @@ export default function CreateTemplate(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
+        setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -128,7 +128,7 @@ export default function CreateTemplate(props) {
 
     fetchNumPages();
 
-    setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
 
   }, [selectedFile]);
 
@@ -574,7 +574,7 @@ export default function CreateTemplate(props) {
   };
 
   function handlePdfLoadSuccess() {
-    setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
   }
 
   // Use the documentBytes as needed, e.g., display the PDF
