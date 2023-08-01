@@ -60,11 +60,11 @@ export default function PdfSign(props) {
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
 
 
   const handleResize = () => {
-    setWindowWidth(window.innerWidth);
+    setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -84,7 +84,7 @@ export default function PdfSign(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(window.innerWidth);
+        setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -271,10 +271,6 @@ export default function PdfSign(props) {
     }
   };
 
-
-
-
-
   const handleMouseEnter = (event, index) => {
     if (!signatureOpen) {
       setHoveredIndex(index);
@@ -303,7 +299,7 @@ export default function PdfSign(props) {
   }
 
   async function handlePdfLoadSuccess() {
-    setWindowWidth(window.innerWidth);
+    setWindowWidth((!(window.innerWidth - window.visualViewport.width > 1)? window.innerWidth: window.visualViewport.width));
 
     setDocumentLoaded(true);
   }
@@ -314,7 +310,7 @@ export default function PdfSign(props) {
       <h1 className="text-center david"> הגשת מסמכים דיגיטלית </h1>
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
 
-      <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} >
+      <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
         <Document file={pdfFile}  >
           <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
 
