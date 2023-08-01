@@ -32,7 +32,7 @@ export default function SignatureModal(props) {
   return (
     <>
 
-      <div className="fixed-size" onClick={handleToggleOverlay}>
+      <div className="" onClick={handleToggleOverlay}>
 
         <div style={{ position: 'relative' }}>
           <img src={props.url} alt="signature" width="100%" />
@@ -44,7 +44,7 @@ export default function SignatureModal(props) {
             // transform: 'translate(-100%, -100%)',
             textAlign: 'center'
           }}>
-            <h6> לחץ כאן כדי לחתום  </h6>
+            <p style={{fontSize: `${props.windowWidth / 60}px`}}> לחץ כאן כדי לחתום  </p>
           </div>
         </div>
       </div>
