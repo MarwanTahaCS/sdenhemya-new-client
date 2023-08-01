@@ -581,6 +581,10 @@ export default function CreateTemplate(props) {
   return (
     <>
       <h1> הוספת טופס</h1>
+      <div className="m-3">
+        <label for="formFile" className="form-label">בחר קובץ PDF</label>
+        <input className="form-control" id="formFile" type="file" accept="application/pdf" onChange={handleFileChange} />
+      </div>
       {selectedFile && <>
         <BootstrapButton variant="contained" onClick={handleAddingTextInputField} disableRipple>
           הוסף שדה קלט קבוע
@@ -592,11 +596,6 @@ export default function CreateTemplate(props) {
           הוסף לוח חתימה
         </BootstrapButton> */}
       </>}
-
-      {!selectedFile && <div className="m-3">
-        <label for="formFile" className="form-label">בחר קובץ PDF</label>
-        <input className="form-control" id="formFile" type="file" accept="application/pdf" onChange={handleFileChange} />
-      </div>}
         
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingExtraTextInputField ? (event) => handleMouseMove(event, 2) : null}>
         <Document file={selectedFile}  >
@@ -627,7 +626,7 @@ export default function CreateTemplate(props) {
                     onMouseLeave={handleMouseLeave}
                   >
 
-                    <SignatureModal key={index} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                    <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
                   </div>) : (<input
                     key={index}
