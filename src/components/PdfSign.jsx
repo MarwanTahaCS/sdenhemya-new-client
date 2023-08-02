@@ -468,11 +468,19 @@ export default function PdfSign(props) {
       <br />
 
       {/* {selectedImage && <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />} */}
-      <div className="d-flex justify-content-center">
-        {requireID && <input type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />}
-        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="Enter a phone number" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+      <div className="d-flex justify-content-center p-3">
 
-        <button className="btn btn-primary m-1" onClick={handleOpenPDF}>הגש מסמך</button>
+        {requireID && <div className="form-group" style={{ direction: 'rtl', textAlign: 'right' }}>
+          <label htmlFor="customFile" style={{ direction: 'rtl' }}> בחר צילום תעודה מזהה שמראה את פרטי הילד/ה: </label>
+          {/* <input type="file" className="form-control-file" id="fileInput" /> */}
+          <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
+        </div>}
+      </div>
+      <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
+
+        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="הכנס מספר פלפון" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+
+        <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
       </div>
 
     </div>
