@@ -12,7 +12,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete, Snackbar } from '@mui/material';
+import { Typography, TextField, Autocomplete, Snackbar,Checkbox ,FormControlLabel  } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -49,6 +49,7 @@ export default function CreateTemplate(props) {
   const [signatureOpen, setSignatureOpen] = useState(false);
   const [templateLink, setTemplateLink] = useState("");
   const [linkFetched, setLinkFetched] = useState(false);
+  const [requireID, setRequireID] = useState(false);
 
   const emptySignature = useState("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC");
 
@@ -106,6 +107,24 @@ export default function CreateTemplate(props) {
 
     fetchNumPages();
   }, [pdfFile]);
+
+  // useEffect(() => {
+  //   // Function to fetch data from the backend server
+  //   const fetchData = async () => {
+  //     try {
+  //       // Make the GET request using Axios
+  //       const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/4prde6j4`);
+  //       // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
+  //       setInputFields(response.data.inputFields); // Update the state with the fetched data
+  //       console.log(response.data.inputFields);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   // Call the fetchData function when the component mounts
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     const fetchNumPages = async () => {
@@ -547,6 +566,7 @@ export default function CreateTemplate(props) {
     // data.append('extraData', JSON.stringify(extraInputFields));
     data.append('templateName', selectedFile.name);
     data.append('orgID', key);
+    data.append('requireID', requireID);
     // Add more fields as needed
 
     try {
@@ -576,6 +596,11 @@ export default function CreateTemplate(props) {
   function handlePdfLoadSuccess() {
     setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
   }
+
+  const handleCheckboxChange = (event) => {
+    setRequireID(event.target.checked);
+    console.log(event.target.checked);
+  };
 
   // Use the documentBytes as needed, e.g., display the PDF
   return (
@@ -839,7 +864,20 @@ export default function CreateTemplate(props) {
         <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
 
         <br />
-        <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button>
+        {/* <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button> */}
+
+        <div>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={requireID}
+              onChange={handleCheckboxChange}
+              color="primary"
+            />
+          }
+          label="דרוש תעודה מזהה"
+        />
+      </div>
 
         <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
 

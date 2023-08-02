@@ -23,6 +23,7 @@ import LoggedIn from "./LoggedIn";
 import Org from "./Org";
 import Bundle from "./Bundle";
 import CreateTemplate from "./CreateNewTemplate";
+import SentPage from './SentPage';
 
 export default function Main(props) {
 
@@ -129,26 +130,6 @@ export default function Main(props) {
       </nav>}
 
       <Routes>
-        {/* <Redirect exact from="/" to="/auth" /> */}
-
-        {/* <Route exact path="/" element=
-          {<>
-            {user ?
-              <LoggedIn /> :
-              <>
-                {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
-                <>
-                  <Toaster toastOptions={{ duration: 4000 }} />
-                  <div id="recaptcha-container" ></div>
-                  <SignIn onClick={onSignup} ph={ph} setPh={setPh}
-                    otp={otp} setOtp={setOtp}
-                    showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} />
-                </></>
-            }
-          </>
-
-          } /> */}
 
         <Route path="/create-org" element=
           {<>
@@ -229,6 +210,8 @@ export default function Main(props) {
 
         <Route path="/template/:key" element={<PdfSign />} />
         <Route path="/bundle/:key" element={<Bundle />} />
+        <Route path="/success/:key" element={ <SentPage />
+          } />
 
 
 

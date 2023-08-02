@@ -16,7 +16,7 @@ import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -49,9 +49,12 @@ export default function PdfSign(props) {
   const [documentLoaded, setDocumentLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [approverPhoneNumber, setApproverPhoneNumner] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [requireID, setRequireID] = useState(false);
 
   // Access the parameter using useParams
   const { key } = useParams();
+  const navigate = useNavigate();
 
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
@@ -60,11 +63,11 @@ export default function PdfSign(props) {
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+  const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
 
   const handleResize = () => {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -84,7 +87,7 @@ export default function PdfSign(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+        setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -112,6 +115,9 @@ export default function PdfSign(props) {
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
         setInputFields(response.data.inputFields); // Update the state with the fetched data
+        if (response.data.inputFields) {
+          setRequireID(response.data.requireID);
+        }
         console.log(response.data.inputFields);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -142,14 +148,77 @@ export default function PdfSign(props) {
     // setClickY(null); // Reset clickY when the page changes
   };
 
+  const isAllowedFileType = (file) => {
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    return allowedTypes.includes(file.type);
+  };
+
+  const compressImage = (image, maxWidth, maxHeight, quality) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = image;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const aspectRatio = width / height;
+          if (width > maxWidth) {
+            width = maxWidth;
+            height = width / aspectRatio;
+          }
+          if (height > maxHeight) {
+            height = maxHeight;
+            width = height * aspectRatio;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob((blob) => {
+          resolve(URL.createObjectURL(blob));
+        }, 'image/jpeg', quality);
+      };
+    });
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file && isAllowedFileType(file)) {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        const compressedImage = await compressImage(reader.result, 1500, 1200, 0.9);
+        setSelectedImage(compressedImage);
+        // setSelectedImage(reader.result);
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    } else {
+      // Show an error message if the selected file is not a JPEG or PNG image
+      alert('Please select a JPEG or PNG image file.');
+      e.target.value = null; // Clear the file input to allow selecting another file
+    }
+  };
+
   const handleOpenPDF = async () => {
 
-    if(approverPhoneNumber.length <9 ){
+    if (approverPhoneNumber.length < 9) {
       alert('אנא הכנס את מספר הפלפון שלך בשדה מתחתית חלון זה.');
       return;
     }
 
-
+    if (requireID && !selectedImage) {
+      alert('Please select an image first.');
+      return;
+    }
 
     console.log(inputFields);
     try {
@@ -208,6 +277,24 @@ export default function PdfSign(props) {
         }
       });
 
+      if (requireID) {
+        const imageBytes = await fetch(selectedImage).then((res) => res.arrayBuffer());
+        const page = pdfDoc.addPage();
+        const pageWidth2 = page.getWidth();
+        const jpgImage = await pdfDoc.embedJpg(imageBytes);
+        const { width, height } = jpgImage.scale(0.9);
+        const width2 = width > page.getWidth() ? page.getWidth() : width;
+        const height2 = width > page.getWidth() ? height * (page.getWidth() / width) : height;
+        page.drawImage(jpgImage, {
+          x: page.getWidth() / 2 - width2 / 2,
+          y: page.getHeight() / 2 - height2 / 2,
+          width: width2,
+          height: height2,
+        });
+      }
+
+
+
       // Generate the modified PDF document
       const modifiedPdfBytes = await pdfDoc.save();
 
@@ -219,12 +306,14 @@ export default function PdfSign(props) {
       await submitSignedData(modifiedPdfBlob);
       //------------------------------------------
 
-      // Create a URL for the Blob object
-      const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
+      navigate(`/success/${key.split('_').pop()}_${approverPhoneNumber}`);
 
-      // Open the modified PDF in a new window
-      const pdfWindow = window.open(modifiedPdfUrl);
-      pdfWindow.focus();
+      // Create a URL for the Blob object
+      // const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
+
+      // // Open the modified PDF in a new window
+      // const pdfWindow = window.open(modifiedPdfUrl);
+      // pdfWindow.focus();
       setLoading(false);
     } catch (error) {
       console.log('Error opening PDF:', error);
@@ -299,7 +388,7 @@ export default function PdfSign(props) {
   }
 
   async function handlePdfLoadSuccess() {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
     setDocumentLoaded(true);
   }
@@ -308,6 +397,7 @@ export default function PdfSign(props) {
   return (
     <div>
       <h1 className="text-center david"> הגשת מסמכים דיגיטלית </h1>
+
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
 
       <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
@@ -372,14 +462,17 @@ export default function PdfSign(props) {
 
       </div>
       <div className="d-flex justify-content-center">
-      <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
-      <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
+        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
       </div>
       <br />
-      <div className="d-flex justify-content-center">
-      <input  type="text" style={{ maxWidth:"200px"}}value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="Enter a phone number" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
 
-      <button className="btn btn-primary m-1" onClick={handleOpenPDF}>הגש מסמך</button>
+      {/* {selectedImage && <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />} */}
+      <div className="d-flex justify-content-center">
+        {requireID && <input type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />}
+        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="Enter a phone number" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+
+        <button className="btn btn-primary m-1" onClick={handleOpenPDF}>הגש מסמך</button>
       </div>
 
     </div>
