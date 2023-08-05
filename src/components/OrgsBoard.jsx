@@ -34,25 +34,25 @@ const OrgsBoard = (props) => {
   }, []);
 
   return (
-    <div style={{ direction: 'ltr' }}>
+    <div style={{ direction: 'rtl',textAlign:"right" }}>
 
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
 
 
 
       <div className="container">
-        <h1>Organizations</h1>
+        <h1>ארגונים</h1>
+        <h6>בחר ארגון:</h6>
         {
           orgs.map((org, index) => (
             <Card key={index} style={{ marginBottom: '10px' }} onClick={() => navigate(`/org/${org.orgID}`)}>
               <CardContent>
                 <Typography variant="h5" component="div">
-                  {org.orgName}
+                  {org.orgName} <span> ({org.orgID}) </span>
                 </Typography>
                 <Typography color="text.secondary">
-                  <b>Org ID:</b> {org.orgID}<br /><br />
-                  <b>Members:</b> {org.members.map((member, index) => <div key={index}>{`${index}: ${member}`}<br /></div>)}<br />
-                  <b>Templates:</b> {org.templates.map((template, index) => <div key={index}>{`${index}: ${template.name}`}<br /></div>)}
+                  <b>משתמשים:</b> {org.members.map((member, index) => <div key={index}>{` ${member}`}<br /></div>)}<br />
+                  {/* <b>Templates:</b> {org.templates.map((template, index) => <div key={index}>{` ${template.name}`}<br /></div>)} */}
                 </Typography>
                 {/* Add more card content based on your item data */}
               </CardContent>

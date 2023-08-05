@@ -149,7 +149,7 @@ export default function Org(props) {
                 console.log(response.data);
                 const buffer = await generateExcelFile(response.data);
                 const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                saveAs(blob, 'data.xlsx');
+                saveAs(blob, `${templateID}.xlsx`);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -283,7 +283,7 @@ export default function Org(props) {
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
-                                                <b>{index + 1}. {template.name.split('.')[0]}</b> <span>({template.id})</span>
+                                                <b>{index + 1}. {template.name.split('.')[0]}</b> <span>({template.id})</span> <b>[מספר הגשות: {template.submitCount}]</b>
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
                                                 <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}_${template.id}`} />

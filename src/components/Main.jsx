@@ -105,28 +105,32 @@ export default function Main(props) {
   }
 
   return (
-    <div className="bg-light" style={{ height: '100%', textAlign: 'left' }}>
+    <div className="bg-light" style={{ height: '100%' }}>
       {/* <Header switchLanguage={handleClick} /> */}
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
-      {user && <nav dir="ltr" className="navbar navbar-expand-lg navbar-light bg-light">
+      {user && <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <NavLink className="navbar-brand" to="/">Template Manager</NavLink>
+          <NavLink className="navbar-brand" to="/">דף ראשי</NavLink>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <NavLink exact className="nav-link" to="/">Organizations</NavLink>
+                <NavLink exact className="nav-link" to="/">ארגונים</NavLink>
               </li>
               {manager && <li className="nav-item">
-                <NavLink className="nav-link" to="/create-org">Create new organization</NavLink>
+                <NavLink className="nav-link" to="/create-org">צור ארגון חדש</NavLink>
               </li>}
+
+            </ul>
+            <ul class="navbar-nav me-auto">
               <li className="nav-item">
-                <button className="btn btn-danger btn-sm mx-3" onClick={() => signOut(auth)} >Log out</button>
+                <button className="btn btn-danger btn-sm mx-1" onClick={() => signOut(auth)} >התנתק</button>
 
               </li>
             </ul>
+
           </div>
         </div>
       </nav>}
