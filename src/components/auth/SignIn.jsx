@@ -19,11 +19,12 @@ export default function SignIn(props) {
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-orgs/+972${props.ph}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/get-orgs/+972${props.ph}`);
         console.log(response.data);
-        if ( response.data.length > 0) {
+        if ( response.data.result.length > 0) {
           props.onClick();
           props.setShowOTP(true);
+          props.setManager(response.data.manager);
         } else {
-          alert('מספר זה אינו עדכני במערכת, אנא פנו אלינו במייל או בפלפון');
+          alert('מספר זה אינו עדכני במערכת, אנא פנו אלינו במייל או בפלפון (0543257745)');
         }
         setLoading(false);
 

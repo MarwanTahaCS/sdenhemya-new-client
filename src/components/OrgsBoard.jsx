@@ -19,8 +19,8 @@ const OrgsBoard = (props) => {
         // Make the GET request using Axios
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-orgs/${props.phoneNumber}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/get-orgs/${props.phoneNumber}`);
-        console.log(response.data);
-        setOrgs(response.data); // Update the state with the fetched data
+        console.log(response.data.result);
+        setOrgs(response.data.result); // Update the state with the fetched data
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);

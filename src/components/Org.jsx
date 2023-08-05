@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
-import { Typography, Card, CardContent, Button, Modal, Box, TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { Typography, Card, CardContent, Button, ButtonGroup, Modal, Box, TextField, Checkbox, FormControlLabel, CardActions } from '@mui/material';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import SimpleSnackbar from './SimpleSnackbar';
 
@@ -16,6 +17,8 @@ export default function Org(props) {
     const [openBundleCreator, setOpenBundleCreator] = useState(false);
     const [bundleName, setBundleName] = useState([""]);
     const [selectedTemplates, setSelectedTemplates] = useState([]);
+    const [selectedDiv, setSelectedDiv] = useState(2);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 
     const navigate = useNavigate();
@@ -54,6 +57,20 @@ export default function Org(props) {
         fetchData();
 
     }, [count]);
+
+    useEffect(() => {
+        // Update windowWidth whenever the window is resized
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     function handleCreateTemplate(event, orgID) {
 
@@ -99,6 +116,34 @@ export default function Org(props) {
             try {
                 setLoading(true);
                 // Make the GET request using Axios
+                // const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${templateID}`);
+                // const result = response.data.map((submitted) => {
+                //     const { staticFields, signedPdf, submitterPhone } = submitted;
+                //     const { childId, childName, parentName1, parentName2 } = staticFields;
+                //     return { childId, childName, submitterPhone, parentName1, parentName2, signedPdf };
+                // });
+                // console.log(result);
+
+                setLoading(false);
+                navigate(`/submitted/${templateID}`);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+
+        // Call the fetchData function when the component mounts
+        fetchSubmittedData();
+
+    }
+
+
+    function downloadSubmittedData(event, templateID) {
+        // Function to fetch data from the backend server
+        const fetchSubmittedData = async () => {
+            try {
+                setLoading(true);
+                // Make the GET request using Axios
                 const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${templateID}`);
                 // const response = await axios.get(`http://localhost:3001/api/organzations/submitted/${templateID}`);
                 console.log(response.data);
@@ -121,9 +166,9 @@ export default function Org(props) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet1');
 
-        console.log(Object.keys(data).map(key => ({ header: key, key: key, width: key.length * 2 })));
+        console.log(Object.keys(data).map(key => ({ header: key, key: key, width: key.length * 1.3 })));
 
-        worksheet.columns = Object.keys(data).map(key => ({ header: key, key: key, width: key.length * 2 }));
+        worksheet.columns = Object.keys(data).map(key => ({ header: key, key: key, width: key.length * 1.3 }));
 
 
         submittedData.forEach((submittedDocument, index) => {
@@ -178,115 +223,163 @@ export default function Org(props) {
         );
     };
 
+    const port = window.AppConfig.serverDomain.includes('localhost') ? ":" + currentPort : "";
+
+    const handleDivChange = (divNumber) => {
+        setSelectedDiv(divNumber);
+    };
+
+    const calculateFontSize = () => {
+        // Calculate the font size based on the window width
+        // You can customize the formula according to your preference
+        // Here, we set the font size to be 1% of the window width
+        return Math.max(windowWidth * 0.015, 12); // Minimum font size of 12px
+    };
+
     return (
-        <div style={{ direction: 'ltr' }}>
+        <div style={{ direction: 'rtl' }}>
 
             {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
 
             {org && (
 
-                <div className="container" style={{ textAlign: 'left' }}>
+                <div className="container" style={{ textAlign: 'right' }}>
                     <h1>{org.orgName} ({org.orgID})</h1>
-                    <h3>Org members:</h3>
-                    {
-                        org.members.map((member, index) => (
-                            <Card key={index} style={{ marginBottom: '10px' }}>
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        {member}
-                                    </Typography>
-                                    {/* Add more card content based on your item data */}
-                                </CardContent>
-                            </Card>
-                        )
-                        )}
-                    <input type="text" style={{ maxWidth: "200px" }} value={newMember} className="form-control" id="numberInput" placeholder="Enter phone number" onChange={(event) => setNewMember(event.target.value)} />
-                    <button className="btn btn-primary btn-sm" onClick={(event) => handleAddMember(event, `${org.orgID}`)}> Add new member </button>
-                    <br />
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', direction: 'ltr' }}>
+                            <ButtonGroup variant="contained" >
+                                <Button onClick={() => handleDivChange(1)} color={selectedDiv === 1 ? 'primary' : 'inherit'}>
+                                    משתמשים
+                                </Button>
+                                <Button onClick={() => handleDivChange(3)} color={selectedDiv === 3 ? 'primary' : 'inherit'}>
+                                    קבוצת מסמכים
+                                </Button>
+                                <Button onClick={() => handleDivChange(2)} color={selectedDiv === 2 ? 'primary' : 'inherit'}>
+                                    מסמכים
+                                </Button>
+                            </ButtonGroup>
+                        </div>
 
-                    <h3>Org Templates:</h3>
-                    {
-                        org.templates.map((template, index) => (
-                            <Card key={index} style={{ marginBottom: '10px' }}>
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        <ul className="list-group">
-                                            <li className="list-group-item">id: <b>{template.id}</b></li>
-                                            <li className="list-group-item">name: <b>{template.name}</b></li>
-                                            <li className="list-group-item">Template Link: <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}/template/${template.name.split('.')[0]}_${template.id}`} /></li>
-                                            <li className="list-group-item"><button className="btn btn-primary btn-sm" onClick={(event) => showSubmittedData(event, template.id)}>view submitted data</button></li>
-                                        </ul>
-                                    </Typography>
-                                    {/* Add more card content based on your item data */}
-                                </CardContent>
-                            </Card>
-                        )
-                        )}
-                    <button className="btn btn-primary btn-sm" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> Create New Template </button>
-                    <br />
-                    <h3>Org Bundles:</h3>
-                        {org.bundles.map((bundle, index) => (
-                            <Card key={index} style={{ marginBottom: '10px' }}>
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        <ul className="list-group">
-                                            <li className="list-group-item">id: <b>{bundle.bundleID}</b></li>
-                                            <li className="list-group-item">name: <b>{bundle.bundleName}</b></li>
-                                            <li className="list-group-item">Bundle link: <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}/bundle/${bundle.bundleID}`} /></li>
-                                            <li className="list-group-item">templates: <b><ul className="list-group">{bundle.bundleTemplates.map((template, index) => <li className="list-group-item"><div key={index}>{`${index}: ${template.name} (id: ${template.id})`}<br /></div></li>)}</ul></b></li>
-                                        </ul>
-                                    </Typography>
-                                    {/* Add more card content based on your item data */}
-                                </CardContent>
-                            </Card>
-                        )
-                        )}
-                    <>
-                        <Button variant="contained" color="primary" onClick={handleOpen}>
-                            Create Bundle
-                        </Button>
-                        <Modal open={openBundleCreator} onClose={handleClose}>
-                            <Box
-                                sx={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                    width: 400,
-                                    bgcolor: 'background.paper',
-                                    boxShadow: 24,
-                                    p: 4,
-                                }}
-                            >
-                                <form onSubmit={handleSubmit} style={{ direction: 'ltr' }}>
-                                    <TextField
-                                        label={"Bundle Name"}
-                                        value={bundleName}
-                                        onChange={handleInputChange}
-                                        fullWidth
-                                        variant="outlined"
-                                        sx={{ mt: 2 }}
-                                    />
-                                    {selectedTemplates.map((template, index) => (
-                                        <FormControlLabel
-                                            key={template.index}
-                                            control={
-                                                <Checkbox
-                                                    checked={template.selected}
-                                                    onChange={() => handleOptionChange(template.index)}
-                                                />
-                                            }
-                                            label={`${template.name} (${template.id})`}
-                                        />
-                                    ))}
-                                    {/* Add more form fields here */}
-                                    <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                                        Submit
+                        <Box mt={2}>
+                            {selectedDiv === 1 && <div >{
+                                org.members.map((member, index) => (
+                                    <Card key={index} style={{ marginBottom: '10px' }}>
+                                        <CardContent>
+                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                                {member}
+                                            </Typography>
+                                            {/* Add more card content based on your item data */}
+                                        </CardContent>
+                                    </Card>
+                                )
+                                )}
+                                <div className="input-group" style={{ direction: 'ltr', fontSize: calculateFontSize() }}>
+                                    <input style={{ fontSize: calculateFontSize() }} type="text" value={newMember} className="form-control" id="numberInput" placeholder="הכנס מספר פלפון" onChange={(event) => setNewMember(event.target.value)} />
+                                    <button style={{ fontSize: calculateFontSize() }} className="btn btn-primary btn-sm  " onClick={(event) => handleAddMember(event, `${org.orgID}`)}> הוסף משתמש </button>
+                                </div>
+                                <br /></div>}
+                            {selectedDiv === 2 && <div>{
+                                org.templates.map((template, index) => (
+                                    <Card key={index} style={{ marginBottom: '10px' }}>
+                                        <CardContent>
+                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                                <b>{index + 1}. {template.name.split('.')[0]}</b> <span>({template.id})</span>
+                                            </Typography>
+                                            <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}_${template.id}`} />
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
+                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id)}> הורד הגשות </Button>
+                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
+                                            <a style={{ fontSize: calculateFontSize() }} className="btn btn-outline-secondary btn-sm ms-3"> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                        </CardActions>
+                                    </Card>
+                                )
+                                )}
+                                <button className="btn btn-primary btn-sm mb-5" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </button>
+                                <br /></div>}
+                            {selectedDiv === 3 && <div>{org.bundles.map((bundle, index) => (
+                                <Card key={index} style={{ marginBottom: '10px' }}>
+                                    {/* <CardContent>
+                                        <Typography variant="h5" component="div">
+                                            <ul className="list-group px-0">
+                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }} >שם: <b>{bundle.bundleName.split('.')[0]}</b> ({bundle.bundleID})</li>
+                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }} >קישור לקבוצה:
+                                                    <a style={{ fontSize: calculateFontSize() }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} className="btn btn-outline-secondary btn-sm ms-3">פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                                    <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} /></li>
+                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }}>מסמכי הקבוצה: <b><ol className="px-0">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} (id: ${template.id})`}</li>)}</ol></b></li>
+                                            </ul>
+                                        </Typography>
+                                    </CardContent> */}
+                                    <CardContent style={{ fontSize: calculateFontSize() }}>
+                                        <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                            <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b> ({bundle.bundleID})
+                                        </Typography>
+                                        <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
+                                            <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} />
+                                        </Typography>
+                                    </CardContent>
+                                    <CardContent style={{ fontSize: calculateFontSize(), padding:'0px' }}>
+                                        <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px'}} style={{ fontSize: calculateFontSize() }}>
+                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} (id: ${template.id})`}</li>)}</ol></b>
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>
+                                        <a style={{ fontSize: calculateFontSize() }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} className="btn btn-outline-secondary btn-sm ms-3">פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                    </CardActions>
+                                </Card>
+                            )
+                            )}
+                                <>
+                                    <Button className="mb-5" variant="contained" color="primary" onClick={handleOpen}>
+                                        צור קבוצה חדשה
                                     </Button>
-                                </form>
-                            </Box>
-                        </Modal>
-                    </>
+                                    <Modal open={openBundleCreator} onClose={handleClose}>
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: '50%',
+                                                transform: 'translate(-50%, -50%)',
+                                                width: 400,
+                                                bgcolor: 'background.paper',
+                                                boxShadow: 24,
+                                                p: 4,
+                                            }}
+                                        >
+                                            <form onSubmit={handleSubmit} style={{ direction: 'ltr' }}>
+                                                <TextField
+                                                    label={"Bundle Name"}
+                                                    value={bundleName}
+                                                    onChange={handleInputChange}
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    sx={{ mt: 2 }}
+                                                />
+                                                {selectedTemplates.map((template, index) => (
+                                                    <FormControlLabel
+                                                        key={template.index}
+                                                        control={
+                                                            <Checkbox
+                                                                checked={template.selected}
+                                                                onChange={() => handleOptionChange(template.index)}
+                                                            />
+                                                        }
+                                                        label={`${template.name} (${template.id})`}
+                                                    />
+                                                ))}
+                                                {/* Add more form fields here */}
+                                                <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                                                    הגש
+                                                </Button>
+                                            </form>
+                                        </Box>
+                                    </Modal>
+                                </></div>}
+                        </Box>
+                    </div>
+
                 </div>
             )}
         </div>

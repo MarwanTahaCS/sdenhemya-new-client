@@ -24,6 +24,7 @@ import Org from "./Org";
 import Bundle from "./Bundle";
 import CreateTemplate from "./CreateNewTemplate";
 import SentPage from './SentPage';
+import Submitted from './Submitted';
 
 export default function Main(props) {
 
@@ -32,6 +33,7 @@ export default function Main(props) {
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
+  const [manager, setManager] = useState(false);
 
   useEffect(() => {
     async function fetchAuth() {
@@ -117,9 +119,9 @@ export default function Main(props) {
               <li className="nav-item">
                 <NavLink exact className="nav-link" to="/">Organizations</NavLink>
               </li>
-              <li className="nav-item">
+              {manager && <li className="nav-item">
                 <NavLink className="nav-link" to="/create-org">Create new organization</NavLink>
-              </li>
+              </li>}
               <li className="nav-item">
                 <button className="btn btn-danger btn-sm mx-3" onClick={() => signOut(auth)} >Log out</button>
 
@@ -143,7 +145,7 @@ export default function Main(props) {
                   <SignIn onClick={onSignup} ph={ph} setPh={setPh}
                     otp={otp} setOtp={setOtp}
                     showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} />
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
                 </></>
             }
           </>}
@@ -161,7 +163,7 @@ export default function Main(props) {
                   <SignIn onClick={onSignup} ph={ph} setPh={setPh}
                     otp={otp} setOtp={setOtp}
                     showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} />
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
                 </></>
             }
           </>}
@@ -178,7 +180,25 @@ export default function Main(props) {
                   <SignIn onClick={onSignup} ph={ph} setPh={setPh}
                     otp={otp} setOtp={setOtp}
                     showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} />
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
+                </></>
+            }
+          </>}
+        />
+
+        <Route path="/submitted/:key" element=
+          {<>
+            {user ?
+              <Submitted /> :
+              <>
+                {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
+                <>
+                  <Toaster toastOptions={{ duration: 4000 }} />
+                  <div id="recaptcha-container" ></div>
+                  <SignIn onClick={onSignup} ph={ph} setPh={setPh}
+                    otp={otp} setOtp={setOtp}
+                    showOTP={showOTP} setShowOTP={setShowOTP}
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
                 </></>
             }
           </>}
@@ -196,7 +216,7 @@ export default function Main(props) {
                   <SignIn onClick={onSignup} ph={ph} setPh={setPh}
                     otp={otp} setOtp={setOtp}
                     showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} />
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
                 </></>
             }
           </>}
@@ -210,8 +230,8 @@ export default function Main(props) {
 
         <Route path="/template/:key" element={<PdfSign />} />
         <Route path="/bundle/:key" element={<Bundle />} />
-        <Route path="/success/:key" element={ <SentPage />
-          } />
+        <Route path="/success/:key" element={<SentPage />
+        } />
 
 
 
