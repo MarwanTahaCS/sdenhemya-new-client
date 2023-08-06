@@ -138,7 +138,7 @@ export default function Org(props) {
     }
 
 
-    function downloadSubmittedData(event, templateID) {
+    function downloadSubmittedData(event, templateID, templateName) {
         // Function to fetch data from the backend server
         const fetchSubmittedData = async () => {
             try {
@@ -149,7 +149,7 @@ export default function Org(props) {
                 console.log(response.data);
                 const buffer = await generateExcelFile(response.data);
                 const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                saveAs(blob, `${templateID}.xlsx`);
+                saveAs(blob, `${templateName}.xlsx`);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -236,6 +236,14 @@ export default function Org(props) {
         return Math.max(windowWidth * 0.015, 12); // Minimum font size of 12px
     };
 
+    function removeAfterLastUnderscore(str) {
+        const lastUnderscoreIndex = str.lastIndexOf('_');
+        if (lastUnderscoreIndex !== -1) {
+          return str.substring(0, lastUnderscoreIndex);
+        }
+        return str;
+      }
+
     return (
         <div style={{ direction: 'rtl' }}>
 
@@ -283,14 +291,14 @@ export default function Org(props) {
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
-                                                <b>{index + 1}. {template.name.split('.')[0]}</b> <span>({template.id})</span> <b>[מספר הגשות: {template.submitCount}]</b>
+                                                <b>{index + 1}. {removeAfterLastUnderscore(template.name.split('.')[0])}</b> <span>({template.id})</span> <b>[מספר הגשות: {template.submitCount}]</b>
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
                                                 <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}`} />
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id)}> הורד הגשות </Button>
+                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}> הורד הגשות </Button>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
                                             <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
                                         </CardActions>
@@ -322,7 +330,7 @@ export default function Org(props) {
                                     </CardContent>
                                     <CardContent style={{ fontSize: calculateFontSize(), padding:'0px' }}>
                                         <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px'}} style={{ fontSize: calculateFontSize() }}>
-                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} (id: ${template.id})`}</li>)}</ol></b>
+                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${removeAfterLastUnderscore(template.name.split('.')[0])} (id: ${template.id})`}</li>)}</ol></b>
                                         </Typography>
                                     </CardContent>
                                     <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>
