@@ -5,6 +5,7 @@ import AtomicSpinner from 'atomic-spinner';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 import SimpleSnackbar from './SimpleSnackbar';
 
@@ -71,7 +72,7 @@ export default function Submitted(props) {
                                         <TableCell>{row.submitterPhone}</TableCell>
                                         <TableCell>{row.parentName1}</TableCell>
                                         <TableCell>{row.parentName2}</TableCell>
-                                        <TableCell>{row.signedPdf}</TableCell>
+                                        <TableCell><a target="_blank" href={row.signedPdf}> {row.signedPdf}<LaunchIcon fontSize="small" /></a></TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

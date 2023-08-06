@@ -77,20 +77,36 @@ export default function Org(props) {
         navigate(`/create-template/${orgID}`);
     }
 
+    function convertToInternationalFormat(phoneNumber) {
+        // Remove any non-digit characters from the phone number
+        const cleanedNumber = phoneNumber.replace(/\D/g, '');
+      
+        // Check if the cleanedNumber starts with "0" (local format)
+        if (cleanedNumber.startsWith('0')) {
+          // Replace the leading "0" with the country code "+972"
+          return '+972' + cleanedNumber.slice(1);
+        }
+      
+        // If the cleanedNumber does not start with "0", return it as is
+        return cleanedNumber;
+      }
+
     async function handleAddMember(event, orgID) {
+
+
 
         if (newMember.length < 10) {
             alert('אנא הכנס את מספר הפלפון בשלימותו בשדה שמעל כפתור ההוספה.');
             return;
         }
-        console.log(newMember);
+        const formatted = convertToInternationalFormat(newMember);
 
         // const localUrl = "http://localhost:3001/api/organzations/add-member/";
         const localUrl = `${window.AppConfig.serverDomain}/api/organzations/add-member/`;
 
         const formData = {
             orgID: orgID,
-            newMember: newMember,
+            newMember: formatted,
         };
         // Add more fields as needed
         try {
@@ -239,10 +255,12 @@ export default function Org(props) {
     function removeAfterLastUnderscore(str) {
         const lastUnderscoreIndex = str.lastIndexOf('_');
         if (lastUnderscoreIndex !== -1) {
-          return str.substring(0, lastUnderscoreIndex);
+            return str.substring(0, lastUnderscoreIndex);
         }
         return str;
-      }
+    }
+
+ 
 
     return (
         <div style={{ direction: 'rtl' }}>
@@ -274,7 +292,7 @@ export default function Org(props) {
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize(), direction: 'ltr' }}>
-                                                {member}
+                                                { '0' + member.slice(4)}
                                             </Typography>
                                             {/* Add more card content based on your item data */}
                                         </CardContent>
@@ -291,7 +309,7 @@ export default function Org(props) {
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
-                                                <b>{index + 1}. {removeAfterLastUnderscore(template.name.split('.')[0])}</b> <span>({template.id})</span> <b>[מספר הגשות: {template.submitCount}]</b>
+                                                <b>{index + 1}. {removeAfterLastUnderscore(template.name.split('.')[0])}</b>  [מספר הגשות: {template.submitCount}]
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
                                                 <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`} />
@@ -322,15 +340,15 @@ export default function Org(props) {
                                     </CardContent> */}
                                     <CardContent style={{ fontSize: calculateFontSize() }}>
                                         <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
-                                            <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b> ({bundle.bundleID})
+                                            <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b> 
                                         </Typography>
                                         <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
                                             <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} />
                                         </Typography>
                                     </CardContent>
-                                    <CardContent style={{ fontSize: calculateFontSize(), padding:'0px' }}>
-                                        <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px'}} style={{ fontSize: calculateFontSize() }}>
-                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} (id: ${template.id})`}</li>)}</ol></b>
+                                    <CardContent style={{ fontSize: calculateFontSize(), padding: '0px' }}>
+                                        <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px' }} style={{ fontSize: calculateFontSize() }}>
+                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} `}</li>)}</ol></b>
                                         </Typography>
                                     </CardContent>
                                     <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>

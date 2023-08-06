@@ -48,10 +48,10 @@ const OrgsBoard = (props) => {
             <Card key={index} style={{ marginBottom: '10px' }} onClick={() => navigate(`/org/${org.orgID}`)}>
               <CardContent>
                 <Typography variant="h5" component="div">
-                  {org.orgName} <span> ({org.orgID}) </span>
+                  {org.orgName} 
                 </Typography>
                 <Typography color="text.secondary">
-                  <b>משתמשים:</b> {org.members.map((member, index) => <div style={{direction: 'ltr'}} key={index}>{` ${member}`}<br /></div>)}<br />
+                  <b>משתמשים:</b> {org.members.map((member, index) => <div style={{direction: 'ltr'}} key={index}>{` ${'0' + member.slice(4)}`}<br /></div>)}<br />
                   {/* <b>Templates:</b> {org.templates.map((template, index) => <div key={index}>{` ${template.name}`}<br /></div>)} */}
                 </Typography>
                 {/* Add more card content based on your item data */}

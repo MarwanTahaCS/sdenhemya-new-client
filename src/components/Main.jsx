@@ -110,7 +110,8 @@ export default function Main(props) {
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
       {user && <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <NavLink className="navbar-brand" to="/">דף ראשי</NavLink>
+
+          <NavLink className="navbar-brand" to="/"><img src="/logo-transparent.png"  height="50" alt="varno logo" /></NavLink>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>

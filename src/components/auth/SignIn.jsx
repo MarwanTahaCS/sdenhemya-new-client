@@ -51,8 +51,15 @@ export default function SignIn(props) {
   return (
     <div>
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
-      <div className="centered-container">
+      <div className="d-flex justify-content-center align-items-start vh-50 bg-light">
+      <div>
+      <img src="/large-logo.png" width="66%" alt="varno logo" />
+      </div>
+    </div>
+
+    <div className="d-flex justify-content-center align-items-start vh-50 bg-light">
         <div className="m-3">
+        
           {!props.showOTP && (<>
             <TextField
               style={{ direction: 'ltr' }}
