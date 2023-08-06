@@ -265,7 +265,7 @@ export default function Org(props) {
                                 org.members.map((member, index) => (
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
-                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize(), direction: 'ltr' }}>
                                                 {member}
                                             </Typography>
                                             {/* Add more card content based on your item data */}
@@ -286,18 +286,18 @@ export default function Org(props) {
                                                 <b>{index + 1}. {template.name.split('.')[0]}</b> <span>({template.id})</span> <b>[מספר הגשות: {template.submitCount}]</b>
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}_${template.id}`} />
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}`} />
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id)}> הורד הגשות </Button>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
-                                            <a style={{ fontSize: calculateFontSize() }} className="btn btn-outline-secondary btn-sm ms-3"> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.name.split('.')[0]}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
                                         </CardActions>
                                     </Card>
                                 )
                                 )}
-                                <button className="btn btn-primary btn-sm mb-5" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </button>
+                                <Button size="small" variant="contained" color="primary" className="mb-5" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </Button>
                                 <br /></div>}
                             {selectedDiv === 3 && <div>{org.bundles.map((bundle, index) => (
                                 <Card key={index} style={{ marginBottom: '10px' }}>

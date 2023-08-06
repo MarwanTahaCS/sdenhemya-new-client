@@ -51,7 +51,7 @@ const OrgsBoard = (props) => {
                   {org.orgName} <span> ({org.orgID}) </span>
                 </Typography>
                 <Typography color="text.secondary">
-                  <b>משתמשים:</b> {org.members.map((member, index) => <div key={index}>{` ${member}`}<br /></div>)}<br />
+                  <b>משתמשים:</b> {org.members.map((member, index) => <div style={{direction: 'ltr'}} key={index}>{` ${member}`}<br /></div>)}<br />
                   {/* <b>Templates:</b> {org.templates.map((template, index) => <div key={index}>{` ${template.name}`}<br /></div>)} */}
                 </Typography>
                 {/* Add more card content based on your item data */}

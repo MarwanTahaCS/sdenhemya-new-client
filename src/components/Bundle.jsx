@@ -55,6 +55,14 @@ export default function Bundle(props) {
         navigate(`/template/${templateName.split('.')[0]}_${templateID}`);
     }
 
+    function removeAfterLastUnderscore(str) {
+        const lastUnderscoreIndex = str.lastIndexOf('_');
+        if (lastUnderscoreIndex !== -1) {
+          return str.substring(0, lastUnderscoreIndex);
+        }
+        return str;
+      }
+
     return (
         <div style={{ direction: 'rtl' }}>
 
@@ -70,7 +78,7 @@ export default function Bundle(props) {
                             <Card key={index} onClick={() => handleTemplateClick(template.name, template.id)} style={{ marginBottom: '10px' }}>
                                 <CardContent>
                                     <Typography variant="h5" component="div">
-                                        {template.name}
+                                        {removeAfterLastUnderscore(template.name.split('.')[0])}
                                     </Typography>
                                     {/* Add more card content based on your item data */}
                                 </CardContent>

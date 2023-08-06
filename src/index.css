@@ -101,3 +101,11 @@ li {
   transform: translate(-50%, -50%);
   z-index: 10; /* Set a high z-index value to ensure the object is on top of everything */
 }
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f2f2f2;
+}
