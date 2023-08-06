@@ -113,7 +113,7 @@ export default function CreateTemplate(props) {
   //   const fetchData = async () => {
   //     try {
   //       // Make the GET request using Axios
-  //       const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/4prde6j4`);
+  //       const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/p12gq12t`);
   //       // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
   //       setInputFields(response.data.inputFields); // Update the state with the fetched data
   //       console.log(response.data.inputFields);

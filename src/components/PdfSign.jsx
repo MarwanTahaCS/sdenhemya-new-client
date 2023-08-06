@@ -59,6 +59,8 @@ export default function PdfSign(props) {
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
+
+
   const pdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${key}.pdf`;
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Alef-Regular.ttf';
@@ -209,6 +211,46 @@ export default function PdfSign(props) {
   };
 
   const handleOpenPDF = async () => {
+
+    const emptySignature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
+
+    var foundNotFilled = false;
+    inputFields.some(inputField => {
+      if (inputField.value === "") {
+        if ((inputField.editor.inputType.value === 'childName' || inputField.editor.inputType.value === 'childId' ||
+          inputField.editor.inputType.value === 'day' || inputField.editor.inputType.value === 'month' || inputField.editor.inputType.value.includes('year') ||
+          inputField.editor.inputType.value === 'parentName1' || inputField.editor.inputType.value === 'parentId1' ||
+          inputField.editor.inputType.value === 'phoneNumber1' || inputField.editor.inputType.value === 'parentName2' ||
+          inputField.editor.inputType.value === 'parentId2' || inputField.editor.inputType.value === 'phoneNumber2' ||
+          inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear' ) ||
+          inputField.editor.inputType.value === 'childFirstName' || inputField.editor.inputType.value === 'childLastName' ||
+          inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'countryOfBirth' ||
+          inputField.editor.inputType.value === 'zip' || inputField.editor.inputType.value === 'address' ||
+          inputField.editor.inputType.value === 'parentJob1' || inputField.editor.inputType.value === 'dateOfBirth' ||
+          inputField.editor.inputType.value === 'parentEmailAddress1' || inputField.editor.inputType.value === 'parentEmailAddress2' ||
+          inputField.editor.inputType.value === 'healthIssueExist' || inputField.editor.inputType.value === 'receivedFullVaccination' ||
+          inputField.editor.inputType.value === 'hmo' || inputField.editor.inputType.value === 'attendanceStartingDate' ||
+          inputField.editor.inputType.value === 'from' || inputField.editor.inputType.value === 'signingDate' ||
+          inputField.editor.inputType.value === 'className' || inputField.editor.inputType.value === 'monthlyPayment' ||
+          inputField.editor.inputType.value === 'paymentMethod' || inputField.editor.inputType.value === 'allowsPhotographingInternal' ||
+          inputField.editor.inputType.value === 'allowsPhotographingExternal' || inputField.editor.inputType.value === 'approverName' ||
+          inputField.editor.inputType.value === 'approverStatus' || inputField.editor.inputType.value === 'approverAddress' ||
+          inputField.editor.inputType.value === 'approverPhoneNumber' ) {
+          alert('אנא ודא שכל ההפרטים מלאים.');
+          foundNotFilled = true;
+          return true;
+        }
+      } else if ((inputField.editor.inputType.value.includes('signature')) && inputField.value === emptySignature) {
+        alert('אנא ודא שחתמת את המסמך.');
+        foundNotFilled = true;
+        return true;
+      }
+
+    });
+
+    if (foundNotFilled) {
+      return;
+    }
 
     if (approverPhoneNumber.length < 9) {
       alert('אנא הכנס את מספר הפלפון שלך בשדה מתחתית חלון זה.');

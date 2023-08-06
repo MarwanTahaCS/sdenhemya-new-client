@@ -270,7 +270,7 @@ export default function Org(props) {
             {org && (
 
                 <div className="container" style={{ textAlign: 'right' }}>
-                    <h1>{org.orgName} ({org.orgID})</h1>
+                    <h1>{org.orgName} </h1>
                     <div>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', direction: 'ltr' }}>
                             <ButtonGroup variant="contained" >
