@@ -348,7 +348,7 @@ export default function Org(props) {
                                     </CardContent>
                                     <CardContent style={{ fontSize: calculateFontSize(), padding: '0px' }}>
                                         <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px' }} style={{ fontSize: calculateFontSize() }}>
-                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} `}</li>)}</ol></b>
+                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${removeAfterLastUnderscore(template.name.split('.')[0])} `}</li>)}</ol></b>
                                         </Typography>
                                     </CardContent>
                                     <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>

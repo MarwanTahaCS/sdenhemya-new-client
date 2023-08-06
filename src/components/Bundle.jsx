@@ -52,7 +52,11 @@ export default function Bundle(props) {
     }, []);
 
     function handleTemplateClick(templateName, templateID){
+        if(templateName.includes(templateID)){
+            navigate(`/template/${templateName.split('.')[0]}`);
+        } else{
         navigate(`/template/${templateName.split('.')[0]}_${templateID}`);
+        }
     }
 
     function removeAfterLastUnderscore(str) {
