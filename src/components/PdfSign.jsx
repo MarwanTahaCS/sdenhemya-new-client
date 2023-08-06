@@ -222,7 +222,7 @@ export default function PdfSign(props) {
           inputField.editor.inputType.value === 'parentName1' || inputField.editor.inputType.value === 'parentId1' ||
           inputField.editor.inputType.value === 'phoneNumber1' || inputField.editor.inputType.value === 'parentName2' ||
           inputField.editor.inputType.value === 'parentId2' || inputField.editor.inputType.value === 'phoneNumber2' ||
-          inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear' ) ||
+          inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear') ||
           inputField.editor.inputType.value === 'childFirstName' || inputField.editor.inputType.value === 'childLastName' ||
           inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'countryOfBirth' ||
           inputField.editor.inputType.value === 'zip' || inputField.editor.inputType.value === 'address' ||
@@ -235,8 +235,8 @@ export default function PdfSign(props) {
           inputField.editor.inputType.value === 'paymentMethod' || inputField.editor.inputType.value === 'allowsPhotographingInternal' ||
           inputField.editor.inputType.value === 'allowsPhotographingExternal' || inputField.editor.inputType.value === 'approverName' ||
           inputField.editor.inputType.value === 'approverStatus' || inputField.editor.inputType.value === 'approverAddress' ||
-          inputField.editor.inputType.value === 'approverPhoneNumber' ) {
-          alert('אנא ודא שכל ההפרטים מלאים.');
+          inputField.editor.inputType.value === 'approverPhoneNumber') {
+          alert(` אנא ודא שכל הפרטים מולאו. ("${inputField.editor.inputType.label}" בדף ${inputField.page} עדיין ריק)`);
           foundNotFilled = true;
           return true;
         }
@@ -505,6 +505,7 @@ export default function PdfSign(props) {
       </div>
       <div className="d-flex justify-content-center">
         <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
+        <h1>{currentPage}</h1>
         <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
       </div>
       <br />
