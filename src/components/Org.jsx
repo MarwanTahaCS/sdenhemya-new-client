@@ -80,16 +80,16 @@ export default function Org(props) {
     function convertToInternationalFormat(phoneNumber) {
         // Remove any non-digit characters from the phone number
         const cleanedNumber = phoneNumber.replace(/\D/g, '');
-      
+
         // Check if the cleanedNumber starts with "0" (local format)
         if (cleanedNumber.startsWith('0')) {
-          // Replace the leading "0" with the country code "+972"
-          return '+972' + cleanedNumber.slice(1);
+            // Replace the leading "0" with the country code "+972"
+            return '+972' + cleanedNumber.slice(1);
         }
-      
+
         // If the cleanedNumber does not start with "0", return it as is
         return cleanedNumber;
-      }
+    }
 
     async function handleAddMember(event, orgID) {
 
@@ -260,7 +260,7 @@ export default function Org(props) {
         return str;
     }
 
- 
+
 
     return (
         <div style={{ direction: 'rtl' }}>
@@ -292,7 +292,7 @@ export default function Org(props) {
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize(), direction: 'ltr' }}>
-                                                { '0' + member.slice(4)}
+                                                {'0' + member.slice(4)}
                                             </Typography>
                                             {/* Add more card content based on your item data */}
                                         </CardContent>
@@ -304,8 +304,9 @@ export default function Org(props) {
                                     <button style={{ fontSize: calculateFontSize() }} className="btn btn-primary btn-sm  " onClick={(event) => handleAddMember(event, `${org.orgID}`)}> הוסף משתמש </button>
                                 </div>
                                 <br /></div>}
-                            {selectedDiv === 2 && <div>{
-                                org.templates.map((template, index) => (
+                            {selectedDiv === 2 && <div>
+                                <Button size="small" variant="contained" color="primary" className="mb-3" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </Button>
+                                {org.templates.map((template, index) => (
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
@@ -318,49 +319,42 @@ export default function Org(props) {
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}> הורד הגשות </Button>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
+                                            <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> עדכן מסמך <LaunchIcon fontSize="small" /></a></Button>
                                             <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
                                         </CardActions>
                                     </Card>
                                 )
                                 )}
-                                <Button size="small" variant="contained" color="primary" className="mb-5" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </Button>
+
                                 <br /></div>}
-                            {selectedDiv === 3 && <div>{org.bundles.map((bundle, index) => (
-                                <Card key={index} style={{ marginBottom: '10px' }}>
-                                    {/* <CardContent>
-                                        <Typography variant="h5" component="div">
-                                            <ul className="list-group px-0">
-                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }} >שם: <b>{bundle.bundleName.split('.')[0]}</b> ({bundle.bundleID})</li>
-                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }} >קישור לקבוצה:
-                                                    <a style={{ fontSize: calculateFontSize() }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} className="btn btn-outline-secondary btn-sm ms-3">פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
-                                                    <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} /></li>
-                                                <li className="list-group-item" style={{ fontSize: calculateFontSize() }}>מסמכי הקבוצה: <b><ol className="px-0">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${template.name.split('.')[0]} (id: ${template.id})`}</li>)}</ol></b></li>
-                                            </ul>
-                                        </Typography>
-                                    </CardContent> */}
-                                    <CardContent style={{ fontSize: calculateFontSize() }}>
-                                        <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
-                                            <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b> 
-                                        </Typography>
-                                        <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                            <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} />
-                                        </Typography>
-                                    </CardContent>
-                                    <CardContent style={{ fontSize: calculateFontSize(), padding: '0px' }}>
-                                        <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px' }} style={{ fontSize: calculateFontSize() }}>
-                                            <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${removeAfterLastUnderscore(template.name.split('.')[0])} `}</li>)}</ol></b>
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>
-                                        <a style={{ fontSize: calculateFontSize() }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} className="btn btn-outline-secondary btn-sm ms-3">פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
-                                    </CardActions>
-                                </Card>
-                            )
-                            )}
+                            {selectedDiv === 3 && <div>
+                                <Button size="small" className="mb-3" variant="contained" color="primary" onClick={handleOpen}>
+                                    צור קבוצה חדשה
+                                </Button>
+                                {org.bundles.map((bundle, index) => (
+                                    <Card key={index} style={{ marginBottom: '10px' }}>
+                                        
+                                        <CardContent style={{ fontSize: calculateFontSize() }}>
+                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                                <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b>
+                                            </Typography>
+                                            <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} />
+                                            </Typography>
+                                        </CardContent>
+                                        <CardContent style={{ fontSize: calculateFontSize(), padding: '0px' }}>
+                                            <Typography sx={{ borderTop: '1px solid lightgrey', paddingTop: '10px' }} style={{ fontSize: calculateFontSize() }}>
+                                                <b><ol className="">{bundle.bundleTemplates.map((template, index) => <li className="" key={index}>{`${removeAfterLastUnderscore(template.name.split('.')[0])} `}</li>)}</ol></b>
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between', fontSize: calculateFontSize() }}>
+                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} className="btn btn-outline-secondary btn-sm ms-3">פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                        </CardActions>
+                                    </Card>
+                                )
+                                )}
                                 <>
-                                    <Button className="mb-5" variant="contained" color="primary" onClick={handleOpen}>
-                                        צור קבוצה חדשה
-                                    </Button>
+
                                     <Modal open={openBundleCreator} onClose={handleClose}>
                                         <Box
                                             sx={{

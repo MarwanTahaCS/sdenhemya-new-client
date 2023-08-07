@@ -25,6 +25,7 @@ import Bundle from "./Bundle";
 import CreateTemplate from "./CreateNewTemplate";
 import SentPage from './SentPage';
 import Submitted from './Submitted';
+import UpdateTemplate from './UpdateTemplate';
 
 export default function Main(props) {
 
@@ -111,7 +112,7 @@ export default function Main(props) {
       {user && <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
 
-          <NavLink className="navbar-brand" to="/"><img src="/logo-transparent.png"  height="50" alt="varno logo" /></NavLink>
+          <NavLink className="navbar-brand" to="/"><img src="/logo-transparent.png" height="50" alt="varno logo" /></NavLink>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -213,6 +214,24 @@ export default function Main(props) {
           {<>
             {user ?
               <CreateTemplate /> :
+              <>
+                {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
+                <>
+                  <Toaster toastOptions={{ duration: 4000 }} />
+                  <div id="recaptcha-container" ></div>
+                  <SignIn onClick={onSignup} ph={ph} setPh={setPh}
+                    otp={otp} setOtp={setOtp}
+                    showOTP={showOTP} setShowOTP={setShowOTP}
+                    onOTPVerify={onOTPVerify} setManager={setManager} />
+                </></>
+            }
+          </>}
+        />
+
+        <Route path="/update-doc/:key" element=
+          {<>
+            {user ?
+              <UpdateTemplate /> :
               <>
                 {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
                 <>
