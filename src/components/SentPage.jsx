@@ -12,7 +12,7 @@ const SentPage = (props) => {
       <section className="py-5 text-center container card w-75">
         <div className="row py-lg-5">
         <h5 className=" text-muted" style={{fontSize: `${windowWidth / 40}px`}}>
-                המסמך נשלל לשדה נחמיה בהצלחה
+                המסמך נשלח בהצלחה
             </h5>
           <div className="">
             <img className="img-fluid p-3" src="/success-35.png" width={`100px`}></img>
