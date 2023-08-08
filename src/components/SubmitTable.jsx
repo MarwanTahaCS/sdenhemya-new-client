@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import Axios from "axios";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Link } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Link, Button } from '@mui/material';
 import { Error as ErrorIcon } from '@mui/icons-material';
+import ExcelJS from 'exceljs';
+import { saveAs } from 'file-saver';
 
 export default function App(props) {
     const [loading, setIsLoading] = useState(false);
@@ -49,11 +51,47 @@ export default function App(props) {
         );
     }
 
+    const createExcelFile = async () => {
+        if (submittedData.length === 0) {
+            return; // Return if no data is available
+        }
 
+        const keys = Object.keys(submittedData[0]);
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('SubmittedData');
+        console.log("keys:");
+        console.log(keys);
+        // Add header row
+        const headerRow = worksheet.addRow(keys);
+        headerRow.font = { bold: true };
+
+        // Add data rows
+        submittedData.forEach(documentData => {
+            worksheet.addRow(Object.values(documentData));
+        });
+
+        const blob = new Blob([await workbook.xlsx.writeBuffer()], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        });
+
+        saveAs(blob, 'הגשות.xlsx');
+    };
 
     return (
         <div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center', /* Horizontally center */
+                alignItems: 'center',
+                padding: '5px'
+            }}>
+                <Button variant="contained" color="primary" onClick={createExcelFile}>
+                    הורד רשימה מלאה
+                </Button>
+            </div>
+
             <TableContainer component={Paper}>
+
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -84,7 +122,7 @@ export default function App(props) {
                                 {/* ... other table cells */}
                             </TableRow>
                         ))}
-                        
+
                     </TableBody>
                 </Table>
                 {submittedData.length === 0 && <h6 style={{ textAlign: 'center', display: 'block' }}>הרשימה עדיין ריקה</h6>}

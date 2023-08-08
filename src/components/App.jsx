@@ -119,8 +119,8 @@ export default function App(props) {
           <Route exact path="/submit-table" element={<div>
             {<SubmitTable />}
           </div>} />
-          <Route path="/success" element={
-            <SentPage childId={childId} documentURL={documentURL} isLoading={isLoading} />
+          <Route path="/success/:key" element={
+            <SentPage />
           } />
         </Routes>
       </Router>

@@ -9,6 +9,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormControl } from "@mui/material";
+import Axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -198,6 +199,33 @@ export default function Reception(props) {
         console.log(documentData);
     }
 
+      // const localUrl = "http://localhost:3001/api/documentSign";
+  const localUrl = "https://api.myvarno.io/api/documentSign";
+
+  async function saveData(newDocumentData, selectedImage) {
+    // setIsLoading(true);
+
+    try {
+      console.log("in save data class")
+      const response = await Axios.post(localUrl, {
+        image: selectedImage,
+        data: newDocumentData,
+      });
+      // console.log(localUrl);
+      
+      console.log(response.data.documentURL);
+      return response.data.documentURL;
+    }
+    catch (err) {
+      console.log(err);
+    //   setIsLoading(false);
+      return err;
+    }
+
+    
+
+  }
+
     async function printOnDocument() {
         console.log(documentData);
 
@@ -219,12 +247,9 @@ export default function Reception(props) {
             return;
         }
 
-        props.saveData(documentData, selectedImage);
+        const result = await saveData(documentData, selectedImage);
 
-        // PDF Modification
-        // modifyPdf();
-
-        // navigate('/success');
+        navigate(`/success/${result.split('/').pop().split('.')[0]}`);
 
     }
 
