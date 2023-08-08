@@ -32,17 +32,6 @@ export default function Reception(props) {
 
     const [selectedImage, setSelectedImage] = useState(null);
 
-    // const handleImageChange = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onloadend = () => {
-    //             setSelectedImage(reader.result);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
-
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -64,8 +53,7 @@ export default function Reception(props) {
       };
 
     const options = [
-        { value: "תינוקיית בית קשת", label: "תינוקיית בית קשת" },
-        { value: "בית קשת - פעוטון", label: "בית קשת -פעוטון" },
+        { value: "פעוטון בית קשת", label: "פעוטון בית קשת" },
         { value: "סנונית – גנון", label: "סנונית – גנון" },
         { value: "רימון – גן צעיר", label: "רימון – גן צעיר" },
         { value: "שיטה – גן בוגר", label: "שיטה – גן בוגר" },
@@ -144,30 +132,26 @@ export default function Reception(props) {
         if (internal === "true") {
             console.log("in true")
             switch (kindergarten) {
-                case "תינוקיית בית קשת":
-                    return "3450";
-                case "בית קשת - פעוטון":
-                    return "3300";
+                case "פעוטון בית קשת":
+                    return "3400";
                 case "סנונית – גנון":
-                    return "3050";
+                    return "3150";
                 case "רימון – גן צעיר":
-                    return "1650";
+                    return "1750";
                 case "שיטה – גן בוגר":
-                    return "1600";
+                    return "1700";
             }
         } else {
             console.log("in false")
             switch (kindergarten) {
-                case "תינוקיית בית קשת":
-                    return "3750";
-                case "בית קשת - פעוטון":
-                    return "3600";
+                case "פעוטון בית קשת":
+                    return "3800";
                 case "סנונית – גנון":
-                    return "3350";
+                    return "3550";
                 case "רימון – גן צעיר":
-                    return "1950";
+                    return "2150";
                 case "שיטה – גן בוגר":
-                    return "1900";
+                    return "2100";
             }
         }
     }
@@ -178,44 +162,41 @@ export default function Reception(props) {
         if (value === "true") {
             console.log("in true")
             switch (documentData.kindergarten) {
-                case "תינוקיית בית קשת":
-                    updateMonthlyPayment({ value: "3,450", name: "monthlyPayment" });
-                    break;
-                case "בית קשת - פעוטון":
-                    updateMonthlyPayment({ value: "3,300", name: "monthlyPayment" });
+                
+                case "פעוטון בית קשת":
+                    updateMonthlyPayment({ value: "3,400", name: "monthlyPayment" });
                     break;
                 case "סנונית – גנון":
-                    updateMonthlyPayment({ value: "3,050", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "3,150", name: "monthlyPayment" });
                     break;
                 case "רימון – גן צעיר":
-                    updateMonthlyPayment({ value: "1,650", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "1,750", name: "monthlyPayment" });
                     break;
                 case "שיטה – גן בוגר":
-                    updateMonthlyPayment({ value: "1,600", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "1,700", name: "monthlyPayment" });
                     break;
             }
         } else {
             console.log("in false")
             switch (documentData.kindergarten) {
-                case "תינוקיית בית קשת":
-                    updateMonthlyPayment({ value: "3,750", name: "monthlyPayment" });
-                    break;
-                case "בית קשת - פעוטון":
-                    updateMonthlyPayment({ value: "3,600", name: "monthlyPayment" });
+                
+                case "פעוטון בית קשת":
+                    updateMonthlyPayment({ value: "3,800", name: "monthlyPayment" });
                     break;
                 case "סנונית – גנון":
-                    updateMonthlyPayment({ value: "3,350", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "3,550", name: "monthlyPayment" });
                     break;
                 case "רימון – גן צעיר":
-                    updateMonthlyPayment({ value: "1,950", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "2,150", name: "monthlyPayment" });
                     break;
                 case "שיטה – גן בוגר":
-                    updateMonthlyPayment({ value: "1,900", name: "monthlyPayment" });
+                    updateMonthlyPayment({ value: "2,100", name: "monthlyPayment" });
                     break;
             }
         }
-    }
 
+        console.log(documentData);
+    }
 
     async function printOnDocument() {
         console.log(documentData);
@@ -243,7 +224,7 @@ export default function Reception(props) {
         // PDF Modification
         // modifyPdf();
 
-        navigate('/success');
+        // navigate('/success');
 
     }
 
@@ -2193,29 +2174,24 @@ export default function Reception(props) {
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>תינוקיית בית קשת</td>
-                                                        <td>3,450 ₪</td>
-                                                        <td>3,750 ₪</td>
-                                                    </tr>
-                                                    <tr>
                                                         <td>בית קשת -פעוטון</td>
-                                                        <td>3,300 ₪</td>
-                                                        <td>3,600 ₪</td>
+                                                        <td>3,400 ₪</td>
+                                                        <td>3,800 ₪</td>
                                                     </tr>
                                                     <tr>
                                                         <td>סנונית –   גנון</td>
-                                                        <td>3,050 ₪</td>
-                                                        <td>3,350 ₪</td>
+                                                        <td>3,150 ₪</td>
+                                                        <td>3,550 ₪</td>
                                                     </tr>
                                                     <tr>
                                                         <td>רימון –    גן צעיר</td>
-                                                        <td>1,650 ₪</td>
-                                                        <td>1,950 ₪</td>
+                                                        <td>1,750 ₪</td>
+                                                        <td>2,150 ₪</td>
                                                     </tr>
                                                     <tr>
                                                         <td>שיטה –  גן בוגר</td>
-                                                        <td>1,600 ₪</td>
-                                                        <td>1,900 ₪</td>
+                                                        <td>1,700 ₪</td>
+                                                        <td>2,100 ₪</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

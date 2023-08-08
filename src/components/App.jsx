@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Axios from "axios";
 import Fillable from "./Fillable";
 import SentPage from "./SentPage";
+import SubmitTable from "./SubmitTable";
 
 export default function App(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,25 +13,8 @@ export default function App(props) {
   const [documentURL, setDocumentURL] = useState('');
   const [idImage, setIdImage] = useState(null);
 
-  useEffect(() => {
-    // handleClick("he");
-    // if (managerPhoneNumber !== "") {
-    //   Axios.get(localUrl + managerPhoneNumber)
-    //     .then((res) => {
-    //       let response = res.data;
-    //       setData(response);
-    //       if (response.length !== 0) {
-    //         setExists(true);
-    //       } else {
-    //         setExists(false);
-    //       }
-    //     })
-    //     .catch((err) => console.log(err));
-    // }
-  }, [])
-
-  // const localUrl = "http://localhost:3001/api/documentSign";
-  const localUrl = "https://api.myvarno.io/api/documentSign";
+  const localUrl = "http://localhost:3001/api/documentSign";
+  // const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData, selectedImage) {
     setIsLoading(true);
@@ -68,7 +52,7 @@ export default function App(props) {
     parentName2: "",
     parentId2: "",
     phoneNumber2: "",
-    kindergarten: "תינוקיית בית קשת",
+    kindergarten: "פעוטון בית קשת",
     hebrewYear: "",
     childFirstName: "",
     childLastName: "",
@@ -131,6 +115,9 @@ export default function App(props) {
         <Routes>
           <Route exact path="/" element={<div>
             {<Fillable documentData={documentData} setIdImage={setIdImage} saveData={saveData} />}
+          </div>} />
+          <Route exact path="/submit-table" element={<div>
+            {<SubmitTable />}
           </div>} />
           <Route path="/success" element={
             <SentPage childId={childId} documentURL={documentURL} isLoading={isLoading} />
