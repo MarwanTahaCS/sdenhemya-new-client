@@ -306,6 +306,22 @@ export default function Org(props) {
                                 <br /></div>}
                             {selectedDiv === 2 && <div>
                                 <Button size="small" variant="contained" color="primary" className="mb-3" onClick={(event) => handleCreateTemplate(event, `${org.orgID}`)}> צור מסמך חדש </Button>
+                                {org.orgID === "jo62wr0f" && <div>
+                                    <Card style={{ marginBottom: '10px' }}>
+                                        <CardContent>
+                                            <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
+                                                <b> 0. הסכם חינוך גיל רך </b>
+                                            </Typography>
+                                            <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
+                                                <SimpleSnackbar templateLink={"https://sdenhemya.myvarno.io/"} />
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
+                                            <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={"https://sdenhemya.myvarno.io/submit-table"}> הצג הגשות <LaunchIcon fontSize="small" /></a></Button>
+                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`https://sdenhemya.myvarno.io/`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                        </CardActions>
+                                    </Card>
+                                </div>}
                                 {org.templates.map((template, index) => (
                                     <Card key={index} style={{ marginBottom: '10px' }}>
                                         <CardContent>
@@ -325,7 +341,6 @@ export default function Org(props) {
                                     </Card>
                                 )
                                 )}
-
                                 <br /></div>}
                             {selectedDiv === 3 && <div>
                                 <Button size="small" className="mb-3" variant="contained" color="primary" onClick={handleOpen}>
@@ -333,7 +348,7 @@ export default function Org(props) {
                                 </Button>
                                 {org.bundles.map((bundle, index) => (
                                     <Card key={index} style={{ marginBottom: '10px' }}>
-                                        
+
                                         <CardContent style={{ fontSize: calculateFontSize() }}>
                                             <Typography variant="h5" component="div" style={{ fontSize: calculateFontSize() }}>
                                                 <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b>

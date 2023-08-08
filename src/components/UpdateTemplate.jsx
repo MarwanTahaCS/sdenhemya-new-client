@@ -603,11 +603,6 @@ export default function UpdateTemplate(props) {
         },
       });
 
-      // console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-      // console.log(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-
-      // setTemplateLink(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-
       setLinkFetched(true);
       // Do something with the response if needed
     } catch (error) {
