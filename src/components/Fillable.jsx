@@ -10,6 +10,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { FormControl } from "@mui/material";
 import Axios from 'axios';
+import { Error as ErrorIcon } from '@mui/icons-material';
+import {CircularProgress } from '@mui/material';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -18,6 +20,9 @@ import SignatureModal from "./SignatureModal.jsx";
 
 
 export default function Reception(props) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const [documentData, setDocumentData] = useState(props.documentData);
     const [url1, setUrl1] = useState(props.documentData.signature1);
     const [url2, setUrl2] = useState(props.documentData.signature1);
@@ -203,7 +208,7 @@ export default function Reception(props) {
   const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData, selectedImage) {
-    // setIsLoading(true);
+    setLoading(true);
 
     try {
       console.log("in save data class")
@@ -214,11 +219,13 @@ export default function Reception(props) {
       // console.log(localUrl);
       
       console.log(response.data.documentURL);
+      setLoading(false);
       return response.data.documentURL;
     }
     catch (err) {
       console.log(err);
-    //   setIsLoading(false);
+      setLoading(false);
+      setError(err);
       return err;
     }
 
@@ -296,6 +303,28 @@ export default function Reception(props) {
             </div>
         );
     }
+
+    if (loading) {
+        return (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh' /* Set a minimum height to fill the viewport */
+          }}>
+            <CircularProgress /> {/* Or any loading indicator you prefer */}
+          </div>
+        );
+      }
+    
+      if (error) {
+        return (
+          <div>
+            <ErrorIcon color="error" />
+            Error: {error.message}
+          </div>
+        );
+      }
 
     return (
         <div className="container py-3">

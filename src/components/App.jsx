@@ -116,7 +116,7 @@ export default function App(props) {
           <Route exact path="/" element={<div>
             {<Fillable documentData={documentData} setIdImage={setIdImage} saveData={saveData} />}
           </div>} />
-          <Route exact path="/submit-table" element={<div>
+          <Route path="/submit-table" element={<div>
             {<SubmitTable />}
           </div>} />
           <Route path="/success/:key" element={
