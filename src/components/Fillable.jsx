@@ -377,7 +377,7 @@ export default function Reception(props) {
                             id="day"
                             value={documentData.day}
                             style={{ width: `${fontSize * 2}px` }}
-                        /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> לחודש <input
+                        /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> לחודש <input
                             className=""
                             onChange={updateDocumentData}
                             type="text"
@@ -387,7 +387,7 @@ export default function Reception(props) {
                             id="month"
                             value={documentData.month}
                             style={{ width: `${fontSize * 2}px` }}
-                        /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> שנת <input
+                        /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> שנת <input
                             className=""
                             onChange={updateDocumentData}
                             type="text"
@@ -397,7 +397,7 @@ export default function Reception(props) {
                             id="year"
                             value={documentData.year}
                             style={{ width: `${fontSize * 2}px` }}
-                        /><span style={{ color: 'red', fontSize: `${fontSize}px`}}>*</span>
+                        /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}>*</span>
                     </b>
                 </div>
                 {/* ------- בין: ----------------------------------------------------------------- */}
@@ -423,7 +423,7 @@ export default function Reception(props) {
                             id="childName"
                             value={documentData.childName}
                             style={{ width: `${fontSize * 5}px` }}
-                        /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> ת"ז <input
+                        /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> ת"ז <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -433,7 +433,7 @@ export default function Reception(props) {
                                 id="childId"
                                 value={documentData.childId}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> <br />
                             (להלן: <b>"הילד"</b>) <br />
                             1.	שםֹ  ההורה <input
                                 className=""
@@ -445,7 +445,7 @@ export default function Reception(props) {
                                 id="parentName1"
                                 value={documentData.parentName1}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /> <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  	ת"ז  <input
+                            /> <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -455,7 +455,7 @@ export default function Reception(props) {
                                 id="parentId1"
                                 value={documentData.parentId1}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} פלאפון  <input
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -465,7 +465,7 @@ export default function Reception(props) {
                                 id="phoneNumber1"
                                 value={documentData.phoneNumber1}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> <br />
                             2.	שםֹ  ההורה  <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -476,7 +476,7 @@ export default function Reception(props) {
                                 id="parentName2"
                                 value={documentData.parentName2}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 	ת"ז  <input
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 	ת"ז  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -486,7 +486,7 @@ export default function Reception(props) {
                                 id="parentId2"
                                 value={documentData.parentId2}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> {windowWidth < 550 ? <br /> : null} פלאפון  <input
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
@@ -496,7 +496,7 @@ export default function Reception(props) {
                                 id="phoneNumber2"
                                 value={documentData.phoneNumber2}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> <br />
                             (להלן ביחד ולחוד: <b>"ההורים"</b>) <br />
                             <p className="text-start"><b><u> מצד שני;</u></b> </p>
                         </div>
@@ -514,7 +514,7 @@ export default function Reception(props) {
                                         {option.label}
                                     </option>
                                 ))}
-                            </select><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> " המיועד לילדי שדה נחמיה לשנתון
+                            </select><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> " המיועד לילדי שדה נחמיה לשנתון
                             <>
                                 <select
                                     style={{ fontSize: `${fontSize + 1}px`, fontWeight: 'bold'  }}
@@ -527,7 +527,7 @@ export default function Reception(props) {
                                             {option.label}
                                         </option>
                                     ))}
-                                </select><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                </select><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                             </>
                             (להלן: <b>"בתי הילדים"</b>); </div>
                         </div>
@@ -1224,10 +1224,10 @@ export default function Reception(props) {
 
                 <div className="px-3 row align-items-start text-center  david" style={{ fontSize: `${fontSize + 2}px` }}>
                     <div className="col-4">
-                        <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> <br /><b> הורה</b><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                        <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} /> <br /><b> הורה</b><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                     </div>
                     <div className="col-4">
-                        <SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} /> <br /><b> הורה</b><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                        <SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} /> <br /><b> הורה</b><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                     </div>
                     <div className="col-4">
                         ____________ <br /> <b>האגודה</b>
@@ -1422,7 +1422,7 @@ export default function Reception(props) {
                                         id="childFirstName"
                                         value={documentData.childFirstName}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  שם משפחה: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  שם משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1432,7 +1432,7 @@ export default function Reception(props) {
                                         id="childLastName"
                                         value={documentData.childLastName}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   {windowWidth < 550 ? <br /> : null} מס' ת.ז.: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   {windowWidth < 550 ? <br /> : null} מס' ת.ז.: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1442,7 +1442,7 @@ export default function Reception(props) {
                                         id="childId"
                                         value={documentData.childId}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                                 </div>
                             </p>
                             <p className="row mx-auto">
@@ -1458,7 +1458,7 @@ export default function Reception(props) {
                                         id="dateOfBirth"
                                         value={documentData.dateOfBirth}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   ארץ לידה:<input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   ארץ לידה:<input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1468,7 +1468,7 @@ export default function Reception(props) {
                                         id="countryOfBirth"
                                         value={documentData.countryOfBirth}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} שנת עליה: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} שנת עליה: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1494,7 +1494,7 @@ export default function Reception(props) {
                                         id="address"
                                         value={documentData.address}
                                         style={{ width: `${fontSize * 11}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  מיקוד: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  מיקוד: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1504,7 +1504,7 @@ export default function Reception(props) {
                                         id="zip"
                                         value={documentData.zip}
                                         style={{ width: `${fontSize * 4}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                                 </div>
                             </p>
                             <p className="row mx-auto">
@@ -1566,7 +1566,7 @@ export default function Reception(props) {
                                         id="parentName1"
                                         value={documentData.parentName1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 	ת"ז: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1576,7 +1576,7 @@ export default function Reception(props) {
                                         id="parentId1"
                                         value={documentData.parentId1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} מקצוע: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1586,7 +1586,7 @@ export default function Reception(props) {
                                         id="parentJob1"
                                         value={documentData.parentJob1}
                                         style={{ width: `${fontSize * 8}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                                 </div>
                             </p>
                             <p className="row mx-auto">
@@ -1602,7 +1602,7 @@ export default function Reception(props) {
                                         id="phoneNumber1"
                                         value={documentData.phoneNumber1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  טלפון בבית: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1638,7 +1638,7 @@ export default function Reception(props) {
                                         id="parentName2"
                                         value={documentData.parentName2}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 	ת"ז: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 	ת"ז: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1648,7 +1648,7 @@ export default function Reception(props) {
                                         id="parentId2"
                                         value={documentData.parentId2}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} מקצוע: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} מקצוע: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1674,7 +1674,7 @@ export default function Reception(props) {
                                         id="phoneNumber2"
                                         value={documentData.phoneNumber2}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  טלפון בבית: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  טלפון בבית: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1714,7 +1714,7 @@ export default function Reception(props) {
                                         id="relativeName1"
                                         value={documentData.relativeName1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  קרבת משפחה: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  קרבת משפחה: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1724,7 +1724,7 @@ export default function Reception(props) {
                                         id="relativeStatus1"
                                         value={documentData.relativeStatus1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} טלפון: <input
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null} טלפון: <input
                                         className=""
                                         onChange={updateDocumentData}
                                         type="text"
@@ -1734,7 +1734,7 @@ export default function Reception(props) {
                                         id="relativeNumber1"
                                         value={documentData.relativeNumber1}
                                         style={{ width: `${fontSize * 5}px` }}
-                                    /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                    /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                                 </div>
                             </p>
                             <p className="row mx-auto" style={{ fontSize: `${fontSize}px` }}>
@@ -1959,7 +1959,7 @@ export default function Reception(props) {
                                     id="hmo"
                                     value={documentData.hmo}
                                     style={{ width: `${fontSize * 20}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                             </p>
                             <p>
                                 הערות:<input
@@ -1986,7 +1986,7 @@ export default function Reception(props) {
                             <div >
                                 <Form>
                                     <Form.Group controlId="formImage">
-                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה) <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </u></b></Form.Label>
+                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה) <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
                                         <Form.Control type="file" accept="image/*" onChange={handleImageChange}
                                             style={{ width: `${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px` }} />
                                     </Form.Group>
@@ -2002,7 +2002,7 @@ export default function Reception(props) {
 
                             <div className="row mx-auto">
                                 <div className="row mx-auto">
-                                    <div className="col-2 px-0">חתימת ההורה: <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </div>
+                                    <div className="col-2 px-0">חתימת ההורה: <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </div>
                                     <div className="col-10">
                                         <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
                                     </div>
@@ -2030,7 +2030,7 @@ export default function Reception(props) {
                                 id="attendanceStartingDate"
                                 value={documentData.attendanceStartingDate}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /></u><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </b>
+                            /></u><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </b>
                         </p>
                         <p className="">
                             <b><u> הסדר תשלום דמי השהייה</u></b>
@@ -2062,7 +2062,7 @@ export default function Reception(props) {
                                     id="parentName1"
                                     value={documentData.parentName1}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>    	ת"ז  <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>    	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2072,7 +2072,7 @@ export default function Reception(props) {
                                     id="parentId1"
                                     value={documentData.parentId1}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null}  פלאפון  <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  {windowWidth < 550 ? <br /> : null}  פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2082,7 +2082,7 @@ export default function Reception(props) {
                                     id="phoneNumber1"
                                     value={documentData.phoneNumber1}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  <br />
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  <br />
                                 2.	שםֹ  ההורה  <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2093,7 +2093,7 @@ export default function Reception(props) {
                                     id="parentName2"
                                     value={documentData.parentName2}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  	ת"ז  <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  	ת"ז  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2103,7 +2103,7 @@ export default function Reception(props) {
                                     id="parentId2"
                                     value={documentData.parentId2}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   {windowWidth < 550 ? <br /> : null} פלאפון  <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   {windowWidth < 550 ? <br /> : null} פלאפון  <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2113,7 +2113,7 @@ export default function Reception(props) {
                                     id="phoneNumber2"
                                     value={documentData.phoneNumber2}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  <br />
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  <br />
                                 מ <input
                                     className=""
                                     onChange={updateDocumentData}
@@ -2124,7 +2124,7 @@ export default function Reception(props) {
                                     id="from"
                                     value={documentData.from}
                                     style={{ width: `${fontSize * 8}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  <br />
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  <br />
                                 (להלן: "ההורים") <br />
                                 <p className="text-start"><b><u> מצד שני; </u></b></p>
                             </div>
@@ -2141,7 +2141,7 @@ export default function Reception(props) {
                                 id="signingDate"
                                 value={documentData.signingDate}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  נחתם בין הצדדים הסכם חינוך לפיו הילד <input
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  נחתם בין הצדדים הסכם חינוך לפיו הילד <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2151,7 +2151,7 @@ export default function Reception(props) {
                                     id="childName"
                                     value={documentData.childName}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> , נושא ת.ז. <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> , נושא ת.ז. <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2161,7 +2161,7 @@ export default function Reception(props) {
                                     id="childId"
                                     value={documentData.childId}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  (להלן: <b>"הילד"</b>) ישהה בבית הילדים <input
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  (להלן: <b>"הילד"</b>) ישהה בבית הילדים <input
                                     className=""
                                     onChange={updateDocumentData}
                                     type="text"
@@ -2171,7 +2171,7 @@ export default function Reception(props) {
                                     id="className"
                                     value={documentData.className}
                                     style={{ width: `${fontSize * 5}px` }}
-                                /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>  באגודה בשנת הלימודים תשפ"ד (להלן: <b>"ההסכם העיקרי"</b>); </p>
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>  באגודה בשנת הלימודים תשפ"ד (להלן: <b>"ההסכם העיקרי"</b>); </p>
                             </div>
                         </div>
                         <div className="row mx-auto">
@@ -2272,8 +2272,8 @@ export default function Reception(props) {
                                                     id="allowsPhotographingInternal"
                                                     row
                                                 >
-                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה (מגורי קבע ורישום בתעודת זהות) <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </span>} />
-                                                    <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי חוץ <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </span>} />
+                                                    <FormControlLabel value={true} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי שדה נחמיה (מגורי קבע ורישום בתעודת זהות) <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </span>} />
+                                                    <FormControlLabel value={false} control={<Radio size="small" />} label={<span style={{ fontSize: `${fontSize}px`, fontFamily: "'David Libre', serif" }}>תושבי חוץ <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </span>} />
                                                 </RadioGroup>
                                             </FormControl>
                                         </div>
@@ -2300,7 +2300,7 @@ export default function Reception(props) {
                                     <div className="col-11 ">
                                         <p>
                                             <p>
-                                                תשלום דמי השהייה יתבצע כדלקמן (סמן  את האפשרות המתאימה): <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                                                תשלום דמי השהייה יתבצע כדלקמן (סמן  את האפשרות המתאימה): <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                                             </p>
                                             <FormControl size="small" >
                                                 <RadioGroup
@@ -2359,15 +2359,15 @@ export default function Reception(props) {
                             id="signingDate"
                             value={documentData.signingDate}
                             style={{ width: `${fontSize * 5}px` }}
-                        /> <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                        /> <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                     </div>
 
                     <div className="px-3 row align-items-start text-center david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="col-4">
-                            <b>הורה <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </b><SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
+                            <b>הורה <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </b><SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
                         </div>
                         <div className="col-4">
-                            <b> הורה <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </b><SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} />
+                            <b> הורה <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </b><SignatureModal updateSignature={updateSignature} url={url2} id={2} signer={"חתימה שניה"} setUrl={setUrl2} />
                         </div>
                         <div className="col-4">
                             ____________ <br /><b> האגודה</b>
@@ -2385,7 +2385,7 @@ export default function Reception(props) {
 
                     </p>
                     <p className=" px-3  david " style={{ fontSize: `${fontSize}px` }}>
-                        <u><b> אני מאשר / לא מאשר</b></u>  לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך. <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                        <u><b> אני מאשר / לא מאשר</b></u>  לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך. <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
@@ -2400,7 +2400,7 @@ export default function Reception(props) {
                         </FormControl>
                     </p>
                     <p className=" px-3   david " style={{ fontSize: `${fontSize}px` }}>
-                        <u><b> אני מאשר / לא מאשר</b></u> לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך. <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> 
+                        <u><b> אני מאשר / לא מאשר</b></u> לצלם את הילד/ה בבית הילדים ולהשתמש בתמונות לצרכים פנימיים של מערכת הגיל הרך. <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> 
                         <FormControl>
                             <RadioGroup
                                 onChange={updateDocumentData}
@@ -2426,7 +2426,7 @@ export default function Reception(props) {
                             id="approverName"
                             value={documentData.approverName}
                             style={{ width: `${fontSize * 5}px` }}
-                        /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   <br />
+                        /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   <br />
                             הקשר של המאשר לילד			 <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -2437,7 +2437,7 @@ export default function Reception(props) {
                                 id="approverStatus"
                                 value={documentData.approverStatus}
                                 style={{ width: `${fontSize * 7}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   <br />
                             כתובת המאשר 				 <input
                                 className=""
                                 onChange={updateDocumentData}
@@ -2448,7 +2448,7 @@ export default function Reception(props) {
                                 id="approverAddress"
                                 value={documentData.approverAddress}
                                 style={{ width: `${fontSize * 14}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   <br />
                             מספר טלפון	 של המאשר 		<input
                                 className=""
                                 onChange={updateDocumentData}
@@ -2459,20 +2459,20 @@ export default function Reception(props) {
                                 id="approverPhoneNumber"
                                 value={documentData.approverPhoneNumber}
                                 style={{ width: `${fontSize * 5}px` }}
-                            /><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span>   <br />
+                            /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>   <br />
                         </b>
                     </p>
 
                     <div className=" px-3  david" style={{ fontSize: `${fontSize}px` }}>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0"><b> חתימת ההורה: <span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </b></div>
+                            <div className="col-2 px-0"><b> חתימת ההורה: <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </b></div>
                             <div className="col-10">
                                 <SignatureModal updateSignature={updateSignature} url={url1} id={1} signer={"חתימה ראשונה"} setUrl={setUrl1} />
 
                             </div>
                         </div>
                         <div className="row mx-auto">
-                            <div className="col-2 px-0"><b>  תאריך </b><span style={{ color: 'red', fontSize: `${fontSize}px`}}><b>*</b></span> </div>
+                            <div className="col-2 px-0"><b>  תאריך </b> </div>
                             <div className="col-10">
                                 <input
                                     className=""
@@ -2484,7 +2484,7 @@ export default function Reception(props) {
                                     id="signingDate"
                                     value={documentData.signingDate}
                                     style={{ width: `${fontSize * 5}px` }}
-                                />
+                                /><span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span>
                             </div>
                         </div>
 
