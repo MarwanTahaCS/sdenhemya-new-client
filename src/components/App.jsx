@@ -52,7 +52,7 @@ export default function App(props) {
     parentName2: "",
     parentId2: "",
     phoneNumber2: "",
-    kindergarten: "פעוטון בית קשת",
+    kindergarten: "",
     hebrewYear: "",
     childFirstName: "",
     childLastName: "",
