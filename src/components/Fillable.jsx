@@ -256,7 +256,7 @@ export default function Reception(props) {
             alert('אנא מלא את כל שדות הקלט');
             return;
         } else if (selectedImage === null){
-            alert('אנא חזור לנספח ג, וצרף צילום תעודת הזהות של ההורים וצילום הספח בו רשום הילד.');
+            alert('אנא חזור לנספח ג, וצרף צילום תעודת הזהות של ההורים וצילום הספח בו רשום הילד(ודא שקובץ הצלום הוא תמונה ולא סוג קובץ אחר).');
             return;
         }else if (documentData.paymentMethod === ''){
             alert('אנא חזור לנספח ד סעיף 6, ובחר אמצעי תשלום .');
