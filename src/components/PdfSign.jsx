@@ -18,6 +18,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
 import { useParams, useNavigate } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
+import DOMPurify from 'dompurify';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -138,7 +139,8 @@ export default function PdfSign(props) {
 
     inputFields.forEach((field, index2) => {
       if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
-        updatedInputFields[index2].value = event.target.value;
+        const sanitizedInput = DOMPurify.sanitize(event.target.value);
+        updatedInputFields[index2].value = sanitizedInput;
       }
     })
     setInputFields(updatedInputFields);
@@ -191,6 +193,19 @@ export default function PdfSign(props) {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+
+    // Check the file type (e.g., if expecting an image)
+    if (!file.type.startsWith('image/')) {
+      alert('Only images are allowed.');
+      return;
+    }
+
+    // Check the file size (e.g., limit to 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB.');
+      return;
+    }
+
     if (file && isAllowedFileType(file)) {
       const reader = new FileReader();
 
