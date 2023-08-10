@@ -1986,7 +1986,7 @@ export default function Reception(props) {
                             <div >
                                 <Form>
                                     <Form.Group controlId="formImage">
-                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה) <span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
+                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה) [<b> אנא העלה קובץ מסוג תמונה</b>]<span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
                                         <Form.Control type="file" accept="image/*" onChange={handleImageChange}
                                             style={{ width: `${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px` }} />
                                     </Form.Group>
