@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, useRouteMatch, NavLink } from 'react-router-dom';
-import Axios from "axios";
+import axios from "axios";
 import Fillable from "./Fillable";
 import AddFormFieldToPdf from "./AddFormFieldsToPDF";
 import '../index.css';
@@ -26,6 +26,7 @@ import CreateTemplate from "./CreateNewTemplate";
 import SentPage from './SentPage';
 import Submitted from './Submitted';
 import UpdateTemplate from './UpdateTemplate';
+import NavBar from './NavBar';
 
 export default function Main(props) {
 
@@ -46,8 +47,10 @@ export default function Main(props) {
           setUser(data);
           setLoading(false);
         });
+        // const isManager = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/manager/${props.user}`);
+        // setManager(isManager);
 
-
+        setLoading(false);
       } catch (err) {
         console.error(err);
         setLoading(false);
@@ -56,7 +59,7 @@ export default function Main(props) {
 
     fetchAuth();
 
-  }, [])
+  }, []);
 
   function onCaptchaVerify() {
     if (!window.recapchaVerifier) {
@@ -109,33 +112,7 @@ export default function Main(props) {
     <div className="bg-light" style={{ height: '100%' }}>
       {/* <Header switchLanguage={handleClick} /> */}
       {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
-      {user && <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container">
-
-          <NavLink className="navbar-brand" to="/"><img src="/logo-transparent.png" height="50" alt="varno logo" /></NavLink>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <NavLink exact className="nav-link" to="/">ארגונים</NavLink>
-              </li>
-              {manager && <li className="nav-item">
-                <NavLink className="nav-link" to="/create-org">צור ארגון חדש</NavLink>
-              </li>}
-
-            </ul>
-            <ul class="navbar-nav me-auto">
-              <li className="nav-item">
-                <button className="btn btn-danger btn-sm mx-1" onClick={() => signOut(auth)} >התנתק</button>
-
-              </li>
-            </ul>
-
-          </div>
-        </div>
-      </nav>}
+      {user && <NavBar user={user.phoneNumber} signOut={() => signOut(auth)} />}
 
       <Routes>
 
@@ -177,7 +154,7 @@ export default function Main(props) {
         <Route path="/org/:key" element=
           {<>
             {user ?
-              <Org /> :
+              <Org user={user.phoneNumber} /> :
               <>
                 {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
                 <>

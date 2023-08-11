@@ -36,6 +36,11 @@ export default function Org(props) {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                console.log(props.user);
+                // Check user orgs
+                const access = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org-ids/${props.user}`);
+                console.log(access.data);
+                if (access.data.result.includes(key) || access.manager) {
                 // Make the GET request using Axios
                 const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org/${key}`);
                 // const response = await axios.get(`http://localhost:3001/api/organzations/get-org/${key}`);
@@ -46,6 +51,9 @@ export default function Org(props) {
                     index: index, // Add the 'age' field with a default value (you can change this as needed)
                     selected: false, // Add the 'city' field with a default value (you can change this as needed)
                 })))
+                } else {
+                    alert("אין לך גישה לארגון זה.");
+                }
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -329,7 +337,7 @@ export default function Org(props) {
                                                 <b>{index + 1}. {removeAfterLastUnderscore(template.name.split('.')[0])}</b>  [מספר הגשות: {template.submitCount}]
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`} />
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`} name={template.name.split('.')[0]} />
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
@@ -354,7 +362,7 @@ export default function Org(props) {
                                                 <b>{index + 1}. {bundle.bundleName.split('.')[0]}</b>
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} />
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/bundle/${bundle.bundleID}`} name={bundle.bundleName.split('.')[0]} />
                                             </Typography>
                                         </CardContent>
                                         <CardContent style={{ fontSize: calculateFontSize(), padding: '0px' }}>

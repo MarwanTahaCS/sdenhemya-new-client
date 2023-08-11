@@ -65,7 +65,7 @@ export default function SimpleSnackbar(props) {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', direction: 'ltr' }} >
-      <Button onClick={handleClick} style={{ fontSize: calculateFontSize(), flex: '1 1 100px' }}>{props.templateLink}</Button>
+      <Button onClick={handleClick} style={{ fontSize: calculateFontSize(), flex: '1 1 100px', textTransform: 'none' }}>{props.name}</Button>
       <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
