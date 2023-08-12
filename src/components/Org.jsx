@@ -321,7 +321,7 @@ export default function Org(props) {
                                                 <b> 0. הסכם חינוך גיל רך </b>
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                                <SimpleSnackbar templateLink={"https://sdenhemya.myvarno.io/"} />
+                                                <SimpleSnackbar templateLink={"https://sdenhemya.myvarno.io/"} name={"https://sdenhemya.myvarno.io/"} />
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>

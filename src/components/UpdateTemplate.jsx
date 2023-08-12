@@ -19,6 +19,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
 import SimpleSnackbar from './SimpleSnackbar.jsx';
 import AtomicSpinner from 'atomic-spinner';
+import Draggable from 'react-draggable';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -160,7 +161,19 @@ export default function UpdateTemplate(props) {
 
   }, [selectedFile]);
 
+  const handleDrag = (e, data, index) => {
+    const x = data.x;
+    const y = data.y;
+    console.log([x,y])
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
 
+      updatedInputFields[index].x = (x / windowWidth); // Update the desired item
+      updatedInputFields[index].y = (y / (windowWidth * ((pageHeight) / pageWidth)));
+
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  };
 
   const handlePageClick = (event, inputType) => {
 
@@ -308,106 +321,6 @@ export default function UpdateTemplate(props) {
     setCurrentPage(newPage);
     setClickY(null); // Reset clickY when the page changes
   };
-
-  // const handleOpenPDF = async () => {
-
-  //   if (!selectedFile) {
-  //     console.log('Please select a PDF file.');
-  //     return;
-  //   }
-
-  //   console.log(inputFields);
-  //   try {
-  //     // Load the existing PDF document
-  //     var existingPdfBytes = await fetch(pdfFile).then(res => res.arrayBuffer());
-
-  //     if (selectedFile) {
-  //       existingPdfBytes = await selectedFile.arrayBuffer();
-  //     }
-
-  //     const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
-
-  //     // Register the fontkit instance
-  //     pdfDoc.registerFontkit(fontkit);
-
-  //     // Load the custom font file
-  //     const fontBytes = await fetch(fontFileUrl).then(res => res.arrayBuffer());
-
-  //     // Embed the font in the PDF document
-  //     const customFont = await pdfDoc.embedFont(fontBytes);
-
-  //     // Add the input field values as text on each page
-  //     const pages = pdfDoc.getPages();
-  //     inputFields.forEach(async inputField => {
-  //       if (inputField.editor.inputType.value !== 'signature1' && inputField.editor.inputType.value !== 'signature2') {
-  //         const { value } = inputField;
-  //         const { x, y } = inputField;
-  //         pages.forEach((page, index) => {
-  //           if (inputField.page === index + 1) {
-  //             const pageHeight = page.getHeight();
-  //             const sizeFont = 12;
-  //             const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
-  //             page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
-  //           }
-  //         });
-  //       } else if (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') {
-  //         console.log(inputField.value);
-  //         // Embed the image in the PDF document
-  //         // const imageBytes = await fetch(inputField.value).then(res => res.arrayBuffer());
-  //         const image = await pdfDoc.embedPng(inputField.value);
-  //         // const pngImage = await pdfDoc.embedPng(inputField.value);
-  //         const pngDims = image.scale(0.27)
-  //         const { x, y } = inputField;
-  //         pages.forEach((page, index) => {
-  //           if (inputField.page === index + 1) {
-  //             const pageHeight = page.getHeight();
-
-  //             const adjustedY = pageHeight - y * (pageHeight) - pngDims.height; //- sizeFont; // Adjust the y-coordinate
-  //             // page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
-  //             // page.moveTo(393, 80);
-  //             page.drawImage(image, {
-  //               x: x * (pageWidth), y: adjustedY,
-  //               width: pngDims.width,
-  //               height: pngDims.height
-  //             })
-  //           }
-  //         });
-  //       }
-  //     });
-
-  //     // Generate the modified PDF document
-  //     const modifiedPdfBytes = await pdfDoc.save();
-
-  //     // Create a Blob object from the PDF data
-  //     const modifiedPdfBlob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
-
-  //     // Create a URL for the Blob object
-  //     const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
-
-  //     // Open the modified PDF in a new window
-  //     const pdfWindow = window.open(modifiedPdfUrl);
-  //     pdfWindow.focus();
-  //   } catch (error) {
-  //     console.log('Error opening PDF:', error);
-  //   }
-  // };
-
-  // const renderPdfContent = () => {
-  //   return (
-  //     <PdfPage>
-  //       {
-  //         inputFields.map((field, index) => (
-  //           clicks.map((click, index) => (
-  //             <View key={index} style={[styles.textContainer, { top: click.y, left: click.x }]}>
-  //               <Text>Your Text Field</Text>
-  //             </View>
-  //           ))
-  //         ))
-  //       }
-
-  //     </PdfPage>
-  //   );
-  // };
 
   const handleAddingTextInputField = () => {
     SetAddingTextInputField(true);
@@ -698,29 +611,29 @@ export default function UpdateTemplate(props) {
 
                     <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                  </div>) : (<input
+                  </div>) : (<Draggable  onDrag={(e,data) => handleDrag(e,data,index)} position={{x: inputField.x * (windowWidth),y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth)}} >
+                  <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                    <input
                     key={index}
                     type="text"
                     value={inputField.value}
                     onChange={(event) => handleInputChange(event, index)}
                     style={{
                       opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                      position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                      // position: 'absolute', 
+                      // top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       height: `${windowWidth * inputField.editor.height / 40}px`,
                       fontSize: `${windowWidth / 60}px`,
                       padding: '4px',
-                      // ...(windowWidth <= 768 && {
-                      //   width: '50px',
-                      //   height: '14px',
-                      //   fontSize: '8px',
-                      //   padding: '2px',
                       // }),
                     }}
                     onMouseEnter={(event) => handleMouseEnter(event, index)}
                     onMouseLeave={handleMouseLeave}
                   // className="input-field"
-                  />)
+                  />
+                  </div>
+                  </Draggable>)
               }
 
 
@@ -945,7 +858,7 @@ export default function UpdateTemplate(props) {
                     </button>
                   </div>
                   <div className="modal-body" style={{ direction: 'rtl' }}>
-                    <SimpleSnackbar templateLink={templateLink} />
+                    <SimpleSnackbar templateLink={templateLink} name={templateLink} />
                     <p className="david pt-3">
                       הקישור לעיל מספק גרסת מהסמך שניתן למלא ולחתום על ידי הלקוח. <br />
                       באפשרותך לשתף קישור זה בקלות עם הלקוחות שלך. <br />

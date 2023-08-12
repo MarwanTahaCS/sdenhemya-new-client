@@ -12,13 +12,14 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete, Snackbar,Checkbox ,FormControlLabel  } from '@mui/material';
+import { Typography, TextField, Autocomplete, Snackbar, Checkbox, FormControlLabel } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
 import SimpleSnackbar from './SimpleSnackbar.jsx';
 import AtomicSpinner from 'atomic-spinner';
+import Draggable from 'react-draggable';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -63,7 +64,7 @@ export default function CreateTemplate(props) {
   const navigate = useNavigate();
   const { key } = useParams();
 
-  const [windowWidth, setWindowWidth] = useState(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+  const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -71,7 +72,7 @@ export default function CreateTemplate(props) {
   };
 
   const handleResize = () => {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -88,7 +89,7 @@ export default function CreateTemplate(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+        setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -147,7 +148,7 @@ export default function CreateTemplate(props) {
 
     fetchNumPages();
 
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
   }, [selectedFile]);
 
@@ -183,7 +184,7 @@ export default function CreateTemplate(props) {
           width: 0.25,
           height: 1,
           font: 1,
-          inputType: { label: 'אחר', value: 'other'+ generateRandomString(8) },
+          inputType: { label: 'אחר', value: 'other' + generateRandomString(8) },
         }
       };
 
@@ -253,7 +254,7 @@ export default function CreateTemplate(props) {
           width: 0.25,
           height: 1,
           font: 1,
-          inputType: { label: 'אחר', value: 'other'+ generateRandomString(8) },
+          inputType: { label: 'אחר', value: 'other' + generateRandomString(8) },
         }
       };
 
@@ -404,7 +405,7 @@ export default function CreateTemplate(props) {
     SetAddingTextInputField(true);
   }
 
-  const handleAddingExtraTextInputField = ()=> {
+  const handleAddingExtraTextInputField = () => {
     SetAddingExtraTextInputField(true);
   }
 
@@ -497,6 +498,20 @@ export default function CreateTemplate(props) {
     }
   };
 
+  const handleDrag = (e, data, index) => {
+    const x = data.x;
+    const y = data.y;
+    console.log([x,y])
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+
+      updatedInputFields[index].x = (x / windowWidth); // Update the desired item
+      updatedInputFields[index].y = (y / (windowWidth * ((pageHeight) / pageWidth)));
+
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  };
+
   const handleIndexChange = (event, index, coordinateType) => {
     console.log(inputFields[index]);
     const newValue = event.target.value;
@@ -518,7 +533,7 @@ export default function CreateTemplate(props) {
       updatedInputFields[index].editor.inputType = value;
       if (value.value === 'signature1' || value.value === 'signature2') {
         updatedInputFields[index].value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
-      } else if (value.value === 'other') { 
+      } else if (value.value === 'other') {
         updatedInputFields[index].editor.inputType.value = value.value + generateRandomString(8);
         updatedInputFields[index].value = "";
       } else {
@@ -594,7 +609,7 @@ export default function CreateTemplate(props) {
   };
 
   function handlePdfLoadSuccess() {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
   }
 
   const handleCheckboxChange = (event) => {
@@ -621,7 +636,7 @@ export default function CreateTemplate(props) {
           הוסף לוח חתימה
         </BootstrapButton> */}
       </>}
-        
+
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingExtraTextInputField ? (event) => handleMouseMove(event, 2) : null}>
         <Document file={selectedFile}  >
           {/* {Array.from(new Array(numPages), (el, index) => (
@@ -638,7 +653,7 @@ export default function CreateTemplate(props) {
           (inputField.page === currentPage) ?
             <>
               {
-                inputField.editor.inputType.value === 'signature1' ||inputField.editor.inputType.value === 'signature2'  ? (
+                inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2' ? (
                   <div key={index}
                     style={{
                       opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
@@ -653,14 +668,17 @@ export default function CreateTemplate(props) {
 
                     <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                  </div>) : (<input
+                  </div>) : (<Draggable  onDrag={(e,data) => handleDrag(e,data,index)} position={{x: inputField.x * (windowWidth),y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth)}} >
+                  <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                    <input
                     key={index}
                     type="text"
                     value={inputField.value}
                     onChange={(event) => handleInputChange(event, index)}
                     style={{
                       opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                      position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                      // position: 'absolute', 
+                      // top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
                       width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
                       height: `${windowWidth * inputField.editor.height / 40}px`,
                       fontSize: `${windowWidth / 60}px`,
@@ -675,7 +693,9 @@ export default function CreateTemplate(props) {
                     onMouseEnter={(event) => handleMouseEnter(event, index)}
                     onMouseLeave={handleMouseLeave}
                   // className="input-field"
-                  />)
+                  />
+                  </div>
+                  </Draggable>)
               }
 
 
@@ -867,17 +887,17 @@ export default function CreateTemplate(props) {
         {/* <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button> */}
 
         <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={requireID}
-              onChange={handleCheckboxChange}
-              color="primary"
-            />
-          }
-          label="דרוש תעודה מזהה"
-        />
-      </div>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={requireID}
+                onChange={handleCheckboxChange}
+                color="primary"
+              />
+            }
+            label="דרוש תעודה מזהה"
+          />
+        </div>
 
         <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
 
@@ -900,7 +920,7 @@ export default function CreateTemplate(props) {
                     </button>
                   </div>
                   <div className="modal-body" style={{ direction: 'rtl' }}>
-                    <SimpleSnackbar templateLink={templateLink} />
+                    <SimpleSnackbar templateLink={templateLink} name={templateLink} />
                     <p className="david pt-3">
                       הקישור לעיל מספק גרסת מהסמך שניתן למלא ולחתום על ידי הלקוח. <br />
                       באפשרותך לשתף קישור זה בקלות עם הלקוחות שלך. <br />
