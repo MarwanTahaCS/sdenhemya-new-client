@@ -11,7 +11,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete } from '@mui/material';
+import { Typography, TextField, Autocomplete, Box, Container, Select, MenuItem } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -225,11 +225,40 @@ export default function PdfSign(props) {
     }
   };
 
+  const wrapText = async (text, maxWidth, font, size) => {
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+  
+    words.forEach((word) => {
+      const width = font.widthOfTextAtSize(line + word + ' ', size);
+      if (width < maxWidth) {
+        line += word + ' ';
+      } else {
+        lines.push(line);
+        line = word + ' ';
+      }
+    });
+  
+    lines.push(line);
+  
+    return lines;
+  };
+
   const handleOpenPDF = async () => {
 
     const emptySignature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
 
     var foundNotFilled = false;
+
+    inputFields.forEach(field => {
+      if(field?.mandatory === true && field?.value === ""){
+        alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
+          foundNotFilled = true;
+          return true;
+      }
+    })
+
     inputFields.some(inputField => {
       if (inputField.value === "") {
         if ((inputField.editor.inputType.value === 'childName' || inputField.editor.inputType.value === 'childId' ||
@@ -301,13 +330,26 @@ export default function PdfSign(props) {
         if (inputField.editor.inputType.value !== 'signature1' && inputField.editor.inputType.value !== 'signature2') {
           const { value } = inputField;
           const { x, y } = inputField;
-          pages.forEach((page, index) => {
+          pages.forEach(async (page, index) => {
             if (inputField.page === index + 1) {
               const pageHeight = page.getHeight();
               const sizeFont = 12;
               const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
-              page.drawText(value, { x: x * (pageWidth), y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
-            }
+              // const textWidth = customFont.widthOfTextAtSize(value, sizeFont);
+              const lines = await wrapText(value, pageWidth*inputField.editor.width/1.5, customFont, sizeFont);
+
+              lines.forEach((line, index) => {
+                console.log(line);
+                page.drawText(line, { 
+                x: x * (pageWidth) + pageWidth*inputField.editor.width/1.5 - customFont.widthOfTextAtSize(lines[index], sizeFont), 
+                y: adjustedY - 14*index, 
+                font: customFont, 
+                size: sizeFont, 
+                color: rgb(0, 0, 0)
+                });
+              });
+              // page.drawText(value, { x: x * (pageWidth) + pageWidth*inputField.editor.width/1.5 - textWidth, y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
+            } 
           });
         } else if (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value == 'signature2') {
           console.log(inputField.value);
@@ -450,6 +492,15 @@ export default function PdfSign(props) {
     setDocumentLoaded(true);
   }
 
+  const handleSelectChange = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].value = event.target.value;
+      console.log(updatedInputFields[index].value);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
   // Use the documentBytes as needed, e.g., display the PDF
   return (
     <div>
@@ -486,29 +537,62 @@ export default function PdfSign(props) {
 
                       <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                    </div>) : (<input
-                      key={index}
-                      type="text"
-                      value={inputField.value}
-                      onChange={(event) => handleInputChange(event, index)}
-                      style={{
-                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                    </div>) : <>{inputField?.options?.length === 0 ? <input
+                        key={index}
+                        type="text"
+                        value={inputField.value}
+                        onChange={(event) => handleInputChange(event, index)}
+                        style={{
+                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                         position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                        height: `${windowWidth * inputField.editor.height / 40}px`,
-                        fontSize: `${windowWidth / 60}px`,
-                        padding: '4px',
-                        // ...(windowWidth <= 768 && {
-                        //   width: '50px',
-                        //   height: '14px',
-                        //   fontSize: '8px',
-                        //   padding: '2px',
-                        // }),
-                      }}
-                      onMouseEnter={(event) => handleMouseEnter(event, index)}
-                      onMouseLeave={handleMouseLeave}
-                    // className="input-field"
-                    />)
+                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                          height: `${windowWidth * inputField.editor.height / 40}px`,
+                          fontSize: `${windowWidth / 60}px`,
+                          padding: '4px',
+                        }}
+                        onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                      /> :
+                        <Select
+                          style={{
+                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                            position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                            height: `${windowWidth * inputField.editor.height / 40}px`,
+                            fontSize: `${windowWidth / 60}px`,
+                            padding: '0 0px 0 0px',
+                          }}
+                          value={inputField.value}
+                          onChange={(event) => handleSelectChange(event, index)}
+                          displayEmpty
+                          onMouseEnter={(event) => handleMouseEnter(event, index)}
+                          onMouseLeave={handleMouseLeave}
+                          sx={{
+                            padding: '0px',
+                            '@media (max-width: 600px)': {
+                              padding: '0px', // Adjust for mobile
+                              '& .MuiSelect-icon': {
+                                fontSize: `${windowWidth / 60}px`, // Adjust the size of the dropdown arrow for mobile
+                              },
+                            },
+                            '& .MuiOutlinedInput-input': {
+                              padding: '0px !important' ,
+                            },
+                            '& .MuiSelect-icon': {
+                              display: 'none',
+                            },
+                          }}
+                        >
+                          <MenuItem value="" style={{fontSize: `${windowWidth / 60}px`, minHeight: '10px'}} disabled>
+                            -- בחר אופציה --
+                          </MenuItem>
+                          {inputField.options.map((input, inputIndex) => (
+                            <MenuItem  style={{fontSize: `${windowWidth / 60}px`, minHeight: '10px'}} key={inputIndex} value={input}>
+                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                            </MenuItem>
+                          ))}
+                        </Select>}
+                        </>
                 }
 
 

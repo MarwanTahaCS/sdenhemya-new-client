@@ -12,7 +12,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete, Snackbar, Checkbox, FormControlLabel } from '@mui/material';
+import { Typography, TextField, Autocomplete, Checkbox, FormControlLabel, Box, Select, MenuItem } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -20,6 +20,7 @@ import axios from "axios";
 import SimpleSnackbar from './SimpleSnackbar.jsx';
 import AtomicSpinner from 'atomic-spinner';
 import Draggable from 'react-draggable';
+import AddIcon from '@mui/icons-material/Add';
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -179,6 +180,8 @@ export default function CreateTemplate(props) {
         value: "",
         page: currentPage,
         isCursor: false,
+        options: [],
+        mandatory: false,
         editor: {
           state: false,
           width: 0.25,
@@ -249,6 +252,8 @@ export default function CreateTemplate(props) {
         value: '',
         page: currentPage,
         isCursor: true,
+        options: [],
+        mandatory: false,
         editor: {
           state: false,
           width: 0.25,
@@ -501,7 +506,7 @@ export default function CreateTemplate(props) {
   const handleDrag = (e, data, index) => {
     const x = data.x;
     const y = data.y;
-    console.log([x,y])
+    console.log([x, y])
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
 
@@ -540,6 +545,42 @@ export default function CreateTemplate(props) {
         updatedInputFields[index].value = "";
       }
       console.log(updatedInputFields);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleAddOption = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].options.push("");
+      console.log(updatedInputFields[index].options);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleOptionChange = (e, index, optionIndex) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].options[optionIndex] = e.target.value;
+      console.log(updatedInputFields[index].options[optionIndex]);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleMandatoryChange = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].mandatory = !updatedInputFields[index].mandatory;
+      console.log(updatedInputFields[index].mandatory);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleSelectChange = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].value = event.target.value;
+      console.log(updatedInputFields[index].value);
       return updatedInputFields; // Set the updated array as the new state
     });
   }
@@ -668,33 +709,50 @@ export default function CreateTemplate(props) {
 
                     <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                  </div>) : (<Draggable  onDrag={(e,data) => handleDrag(e,data,index)} position={{x: inputField.x * (windowWidth),y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth)}} >
-                  <div style={{ position: 'absolute', top: 0, left: 0 }}>
-                    <input
-                    key={index}
-                    type="text"
-                    value={inputField.value}
-                    onChange={(event) => handleInputChange(event, index)}
-                    style={{
-                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                      // position: 'absolute', 
-                      // top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                      width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                      height: `${windowWidth * inputField.editor.height / 40}px`,
-                      fontSize: `${windowWidth / 60}px`,
-                      padding: '4px',
-                      // ...(windowWidth <= 768 && {
-                      //   width: '50px',
-                      //   height: '14px',
-                      //   fontSize: '8px',
-                      //   padding: '2px',
-                      // }),
-                    }}
-                    onMouseEnter={(event) => handleMouseEnter(event, index)}
-                    onMouseLeave={handleMouseLeave}
-                  // className="input-field"
-                  />
-                  </div>
+                  </div>) : (<Draggable onDrag={(e, data) => handleDrag(e, data, index)} position={{ x: inputField.x * (windowWidth), y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth) }} >
+                    <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                      
+                      { inputField?.options?.length === 0 ? <input
+                        key={index}
+                        type="text"
+                        value={inputField.value}
+                        onChange={(event) => handleInputChange(event, index)}
+                        style={{
+                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                          height: `${windowWidth * inputField.editor.height / 40}px`,
+                          fontSize: `${windowWidth / 60}px`,
+                          padding: '4px',
+                        }}
+                        onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                      />:
+                      <Select
+                      style={{
+                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                        height: `${windowWidth * inputField.editor.height / 40}px`,
+                        fontSize: `${windowWidth / 60}px`,
+                        padding: '4px',
+                      }}
+                      value={inputField.value}
+                      onChange={(event) => handleSelectChange(event, index)}
+                      displayEmpty
+                      fullWidth
+                      onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                      <MenuItem value=""  disabled>
+                      -- בחר אופציה --
+                      </MenuItem>
+                      {inputField.options.map((input, inputIndex) => (
+                        <MenuItem  key={inputIndex} value={input}>
+                          {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                        </MenuItem>
+                      ))}
+                    </Select>}
+
+                    </div>
                   </Draggable>)
               }
 
@@ -760,7 +818,6 @@ export default function CreateTemplate(props) {
                       onDrag={(event) => handleHeightDragMove(event, index)}
                     >
                       <Typography variant="body1" inputProps={{
-
                         style: {
                           fontSize: `${windowWidth / 50}px`,
                         },
@@ -776,64 +833,6 @@ export default function CreateTemplate(props) {
                       />
                     </div>
 
-                    <div className="row">
-                      <div className="col d-flex justify-content-center py-3">
-                        <TextField
-
-                          type="number"
-                          label="Horizontal"
-                          value={Math.trunc(inputField.x * windowWidth)}
-                          onChange={(event) => handleIndexChange(event, index, 'x')}
-                          inputProps={{
-                            min: 0,
-                            max: windowWidth,
-                            step: 5,
-                            style: {
-                              fontSize: `${windowWidth / 50}px`,
-                            },
-                          }}
-                          InputLabelProps={{
-                            style: {
-                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                            },
-                          }}
-                        />
-                      </div>
-                      <div className="col d-flex justify-content-center py-3">
-                        <TextField
-                          style={{ fontSize: `${windowWidth / 60}px` }}
-
-                          type="number"
-                          label="Vertical"
-                          value={Math.trunc(inputField.y * (windowWidth))}
-                          onChange={(event) => handleIndexChange(event, index, 'y')}
-                          inputProps={{
-                            min: 0,
-                            max: (windowWidth * ((pageHeight) / pageWidth)),
-                            step: 5,
-                            style: {
-                              fontSize: `${windowWidth / 50}px`,
-                            },
-                          }}
-                          InputLabelProps={{
-                            style: {
-                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                            },
-                          }}
-                        />
-                      </div>
-                    </div>
-                    {/* <Autocomplete
-                    className="pb-2"
-                    options={options}
-                    // getOptionLabel={(option) => option.label}
-                    // getOptionSelected={(option, value) => option.value === value.value}
-                    value={inputField.editor.inputType}
-                    renderInput={(params) => (
-                      <TextField {...params} label="סוג קלט" variant="outlined" />
-                    )}
-                    onChange={(event, value) => handleInputTypeChange(event,value, index)}
-                  /> */}
                     <Autocomplete
                       className="mb-2"
                       disablePortal
@@ -842,6 +841,44 @@ export default function CreateTemplate(props) {
                       value={inputField.editor.inputType}
                       renderInput={(params) => <TextField {...params} label="סוג קלט" />}
                     />
+                    {/* ------------------------------------- */}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddIcon className="mx-2" />}
+                      onClick={(event) => handleAddOption(event, index)}
+                    >
+                      הוסף אופציה קבועה
+                    </Button>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="flex-start"
+                    >
+                      {inputField.options.map((input, optionIndex) => (
+                        <TextField
+                          key={optionIndex}
+                          value={inputField.options[optionIndex]}
+                          onChange={e => handleOptionChange(e, index, optionIndex)}
+                          placeholder="כתוב את האופציה"
+                          fullWidth
+                        // margin="normal"
+                        />
+                      ))}
+                    </Box>
+
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={inputField.mandatory}
+                          onChange={(event)=>handleMandatoryChange(event, index)}
+                          color="primary"
+                        />
+                      }
+                      label="שדה חובה"
+                    />
+                    
+                    {/* ------------------------------------- */}
                     <div className="row">
                       <div className="col col-7 d-flex justify-content-center ps-1">
                         <button className="btn btn-success w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => switchEditorState(index)}> Save</button>
@@ -852,6 +889,7 @@ export default function CreateTemplate(props) {
 
                       </div>
                     </div>
+
                   </div>
 
 

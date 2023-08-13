@@ -12,7 +12,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete, Snackbar,Checkbox ,FormControlLabel  } from '@mui/material';
+import { Typography, TextField, Autocomplete, Checkbox, FormControlLabel, Box, Select, MenuItem } from '@mui/material';
 import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -20,7 +20,7 @@ import axios from "axios";
 import SimpleSnackbar from './SimpleSnackbar.jsx';
 import AtomicSpinner from 'atomic-spinner';
 import Draggable from 'react-draggable';
-
+import AddIcon from '@mui/icons-material/Add';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -66,7 +66,7 @@ export default function UpdateTemplate(props) {
   const pdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${key}.pdf`;
   const fontFileUrl = 'DavidLibre-Regular.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+  const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
   const handleFileChange = (event) => {
     setFileUpdated(true);
@@ -76,7 +76,7 @@ export default function UpdateTemplate(props) {
   };
 
   const handleResize = () => {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -93,7 +93,7 @@ export default function UpdateTemplate(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+        setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -122,7 +122,7 @@ export default function UpdateTemplate(props) {
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
         // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
         setInputFields(response.data.inputFields); // Update the state with the fetched data
-        if(response.data.requireID === true){
+        if (response.data.requireID === true) {
           setRequireID(response.data.requireID);
         }
         setFileName(response.data.templateName)
@@ -157,14 +157,14 @@ export default function UpdateTemplate(props) {
 
     fetchNumPages();
 
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
   }, [selectedFile]);
 
   const handleDrag = (e, data, index) => {
     const x = data.x;
     const y = data.y;
-    console.log([x,y])
+    console.log([x, y])
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
 
@@ -200,12 +200,14 @@ export default function UpdateTemplate(props) {
         value: "",
         page: currentPage,
         isCursor: false,
+        options: [],
+        mandatory: false,
         editor: {
           state: false,
           width: 0.25,
           height: 1,
           font: 1,
-          inputType: { label: 'אחר', value: 'other'+ generateRandomString(8) },
+          inputType: { label: 'אחר', value: 'other' + generateRandomString(8) },
         }
       };
 
@@ -270,12 +272,14 @@ export default function UpdateTemplate(props) {
         value: '',
         page: currentPage,
         isCursor: true,
+        options: [],
+        mandatory: false,
         editor: {
           state: false,
           width: 0.25,
           height: 1,
           font: 1,
-          inputType: { label: 'אחר', value: 'other'+ generateRandomString(8) },
+          inputType: { label: 'אחר', value: 'other' + generateRandomString(8) },
         }
       };
 
@@ -326,7 +330,7 @@ export default function UpdateTemplate(props) {
     SetAddingTextInputField(true);
   }
 
-  const handleAddingExtraTextInputField = ()=> {
+  const handleAddingExtraTextInputField = () => {
     SetAddingExtraTextInputField(true);
   }
 
@@ -440,7 +444,7 @@ export default function UpdateTemplate(props) {
       updatedInputFields[index].editor.inputType = value;
       if (value.value === 'signature1' || value.value === 'signature2') {
         updatedInputFields[index].value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
-      } else if (value.value === 'other') { 
+      } else if (value.value === 'other') {
         updatedInputFields[index].editor.inputType.value = value.value + generateRandomString(8);
         updatedInputFields[index].value = "";
       } else {
@@ -472,14 +476,14 @@ export default function UpdateTemplate(props) {
     setLoading(false);
   }
 
-  async function handlefileNotUpdatedsubmit(){
+  async function handlefileNotUpdatedsubmit() {
     let localUrl = `${window.AppConfig.serverDomain}/api/organzations/update-input-fields/`;
 
     const formData = {
       data: JSON.stringify(inputFields),
       templateID: key.split('_').pop(),
       requireID: requireID,
-  };
+    };
 
     try {
       const response = await axios.post(localUrl, formData);
@@ -496,13 +500,13 @@ export default function UpdateTemplate(props) {
     }
   }
 
-  async function handlefileUpdatedSubmit(){
-    
+  async function handlefileUpdatedSubmit() {
+
     let localUrl = `${window.AppConfig.serverDomain}/api/organzations/update-template/`;
 
     const data = new FormData();
-      data.append('pdf', selectedFile);
-      data.append('templateName', selectedFile.name);
+    data.append('pdf', selectedFile);
+    data.append('templateName', selectedFile.name);
     // console.log(inputFields);
     data.append('data', JSON.stringify(inputFields));
     data.append('templateID', key.split('_').pop());
@@ -525,17 +529,17 @@ export default function UpdateTemplate(props) {
 
   const handleSubmit = async () => {
 
-    if(fileUpdated){
+    if (fileUpdated) {
       handlefileUpdatedSubmit();
     } else {
       handlefileNotUpdatedsubmit();
     }
 
-    if(fileUpdated){
+    if (fileUpdated) {
       setTemplateLink(`${currentProtocol}//${currentDomain}/template/${fileName.split('.')[0]}_${key.split('_').pop()}`);
 
-    }else {
-    setTemplateLink(`${currentProtocol}//${currentDomain}/template/${removeAfterLastUnderscore(fileName.split('.')[0])}_${key.split('_').pop()}`);
+    } else {
+      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${removeAfterLastUnderscore(fileName.split('.')[0])}_${key.split('_').pop()}`);
 
     }
 
@@ -546,19 +550,55 @@ export default function UpdateTemplate(props) {
   function removeAfterLastUnderscore(str) {
     const lastUnderscoreIndex = str.lastIndexOf('_');
     if (lastUnderscoreIndex !== -1) {
-        return str.substring(0, lastUnderscoreIndex);
+      return str.substring(0, lastUnderscoreIndex);
     }
     return str;
-}
+  }
 
   function handlePdfLoadSuccess() {
-    setWindowWidth(((window.innerWidth  < 765)? window.innerWidth: window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
   }
 
   const handleCheckboxChange = (event) => {
     setRequireID(event.target.checked);
     console.log(event.target.checked);
   };
+
+  const handleAddOption = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].options.push("");
+      console.log(updatedInputFields[index].options);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleOptionChange = (e, index, optionIndex) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].options[optionIndex] = e.target.value;
+      console.log(updatedInputFields[index].options[optionIndex]);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleSelectChange = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].value = event.target.value;
+      console.log(updatedInputFields[index].value);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
+
+  const handleMandatoryChange = (event, index) => {
+    setInputFields(prevInputFields => {
+      const updatedInputFields = [...prevInputFields]; // Copy the existing array
+      updatedInputFields[index].mandatory = !updatedInputFields[index].mandatory;
+      console.log(updatedInputFields[index].mandatory);
+      return updatedInputFields; // Set the updated array as the new state
+    });
+  }
 
   // Use the documentBytes as needed, e.g., display the PDF
   return (
@@ -579,7 +619,7 @@ export default function UpdateTemplate(props) {
           הוסף לוח חתימה
         </BootstrapButton> */}
       </>}
-        
+
       <div ref={containerRef} style={{ width: '100%', overflow: 'visible', position: 'relative' }} onMouseMove={addingTextInputField ? (event) => handleMouseMove(event, 1) : addingExtraTextInputField ? (event) => handleMouseMove(event, 2) : null}>
         <Document file={selectedFile}  >
           {/* {Array.from(new Array(numPages), (el, index) => (
@@ -596,7 +636,7 @@ export default function UpdateTemplate(props) {
           (inputField.page === currentPage) ?
             <>
               {
-                inputField.editor.inputType.value === 'signature1' ||inputField.editor.inputType.value === 'signature2'  ? (
+                inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2' ? (
                   <div key={index}
                     style={{
                       opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
@@ -611,28 +651,48 @@ export default function UpdateTemplate(props) {
 
                     <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                  </div>) : (<Draggable  onDrag={(e,data) => handleDrag(e,data,index)} position={{x: inputField.x * (windowWidth),y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth)}} >
-                  <div style={{ position: 'absolute', top: 0, left: 0 }}>
-                    <input
-                    key={index}
-                    type="text"
-                    value={inputField.value}
-                    onChange={(event) => handleInputChange(event, index)}
-                    style={{
-                      opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                      // position: 'absolute', 
-                      // top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                      width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                      height: `${windowWidth * inputField.editor.height / 40}px`,
-                      fontSize: `${windowWidth / 60}px`,
-                      padding: '4px',
-                      // }),
-                    }}
-                    onMouseEnter={(event) => handleMouseEnter(event, index)}
-                    onMouseLeave={handleMouseLeave}
-                  // className="input-field"
-                  />
-                  </div>
+                  </div>) : (<Draggable onDrag={(e, data) => handleDrag(e, data, index)} position={{ x: inputField.x * (windowWidth), y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth) }} >
+                    <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                      {inputField?.options?.length === 0 ? <input
+                        key={index}
+                        type="text"
+                        value={inputField.value}
+                        onChange={(event) => handleInputChange(event, index)}
+                        style={{
+                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                          height: `${windowWidth * inputField.editor.height / 40}px`,
+                          fontSize: `${windowWidth / 60}px`,
+                          padding: '4px',
+                        }}
+                        onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                      /> :
+                        <Select
+                          style={{
+                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                            height: `${windowWidth * inputField.editor.height / 40}px`,
+                            fontSize: `${windowWidth / 60}px`,
+                            padding: '4px',
+                          }}
+                          value={inputField.value}
+                          onChange={(event) => handleSelectChange(event, index)}
+                          displayEmpty
+                          fullWidth
+                          onMouseEnter={(event) => handleMouseEnter(event, index)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <MenuItem value="" disabled>
+                            -- בחר אופציה --
+                          </MenuItem>
+                          {inputField.options.map((input, inputIndex) => (
+                            <MenuItem key={inputIndex} value={input}>
+                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                            </MenuItem>
+                          ))}
+                        </Select>}
+                    </div>
                   </Draggable>)
               }
 
@@ -714,64 +774,7 @@ export default function UpdateTemplate(props) {
                       />
                     </div>
 
-                    <div className="row">
-                      <div className="col d-flex justify-content-center py-3">
-                        <TextField
 
-                          type="number"
-                          label="Horizontal"
-                          value={Math.trunc(inputField.x * windowWidth)}
-                          onChange={(event) => handleIndexChange(event, index, 'x')}
-                          inputProps={{
-                            min: 0,
-                            max: windowWidth,
-                            step: 5,
-                            style: {
-                              fontSize: `${windowWidth / 50}px`,
-                            },
-                          }}
-                          InputLabelProps={{
-                            style: {
-                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                            },
-                          }}
-                        />
-                      </div>
-                      <div className="col d-flex justify-content-center py-3">
-                        <TextField
-                          style={{ fontSize: `${windowWidth / 60}px` }}
-
-                          type="number"
-                          label="Vertical"
-                          value={Math.trunc(inputField.y * (windowWidth))}
-                          onChange={(event) => handleIndexChange(event, index, 'y')}
-                          inputProps={{
-                            min: 0,
-                            max: (windowWidth * ((pageHeight) / pageWidth)),
-                            step: 5,
-                            style: {
-                              fontSize: `${windowWidth / 50}px`,
-                            },
-                          }}
-                          InputLabelProps={{
-                            style: {
-                              // fontSize: `${windowWidth / 60}px`, // Set the desired font size for the label
-                            },
-                          }}
-                        />
-                      </div>
-                    </div>
-                    {/* <Autocomplete
-                    className="pb-2"
-                    options={options}
-                    // getOptionLabel={(option) => option.label}
-                    // getOptionSelected={(option, value) => option.value === value.value}
-                    value={inputField.editor.inputType}
-                    renderInput={(params) => (
-                      <TextField {...params} label="סוג קלט" variant="outlined" />
-                    )}
-                    onChange={(event, value) => handleInputTypeChange(event,value, index)}
-                  /> */}
                     <Autocomplete
                       className="mb-2"
                       disablePortal
@@ -780,6 +783,42 @@ export default function UpdateTemplate(props) {
                       value={inputField.editor.inputType}
                       renderInput={(params) => <TextField {...params} label="סוג קלט" />}
                     />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddIcon className="mx-2" />}
+                      onClick={(event) => handleAddOption(event, index)}
+                    >
+                      הוסף אופציה קבועה
+                    </Button>
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="flex-start"
+                    >
+                      {inputField.options.map((input, optionIndex) => (
+                        <TextField
+                          key={optionIndex}
+                          value={inputField.options[optionIndex]}
+                          onChange={e => handleOptionChange(e, index, optionIndex)}
+                          placeholder="כתוב את האופציה"
+                          fullWidth
+                        // margin="normal"
+                        />
+                      ))}
+                    </Box>
+
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={inputField.mandatory}
+                          onChange={(event)=>handleMandatoryChange(event, index)}
+                          color="primary"
+                        />
+                      }
+                      label="שדה חובה"
+                    />
+
                     <div className="row">
                       <div className="col col-7 d-flex justify-content-center ps-1">
                         <button className="btn btn-success w-100" style={{ fontSize: `${windowWidth / 60}px` }} onClick={() => switchEditorState(index)}> Save</button>
@@ -822,20 +861,20 @@ export default function UpdateTemplate(props) {
         <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
 
         <br />
-        
+
 
         <div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={requireID}
-              onChange={handleCheckboxChange}
-              color="primary"
-            />
-          }
-          label="דרוש תעודה מזהה"
-        />
-      </div>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={requireID}
+                onChange={handleCheckboxChange}
+                color="primary"
+              />
+            }
+            label="דרוש תעודה מזהה"
+          />
+        </div>
 
         <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
 
