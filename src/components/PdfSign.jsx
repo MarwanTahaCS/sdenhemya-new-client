@@ -582,8 +582,18 @@ export default function PdfSign(props) {
                             '& .MuiOutlinedInput-input': {
                               padding: '0px !important' ,
                             },
+                            '& .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root': {
+                              padding: '0px !important' ,
+                            },
                             '& .MuiSelect-icon': {
                               display: 'none',
+                            },
+                          }}
+                          MenuProps={{
+                            PaperProps: {
+                              style: {
+                                maxHeight: '30vh', // 50% of viewport height
+                              },
                             },
                           }}
                         >
