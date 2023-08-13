@@ -66,11 +66,11 @@ export default function PdfSign(props) {
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Tahoma Regular font.ttf';
 
-  const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
+  const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
 
 
   const handleResize = () => {
-    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
   };
 
   // Add event listener to handle window resize
@@ -90,7 +90,7 @@ export default function PdfSign(props) {
   useEffect(() => {
     const fetchNumPages = async () => {
       try {
-        setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
+        setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
 
         const pdf = await pdfjs.getDocument(pdfFile).promise;
         setNumPages(pdf.numPages);
@@ -491,7 +491,7 @@ export default function PdfSign(props) {
   }
 
   async function handlePdfLoadSuccess() {
-    setWindowWidth(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
+    setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
 
     setDocumentLoaded(true);
   }
