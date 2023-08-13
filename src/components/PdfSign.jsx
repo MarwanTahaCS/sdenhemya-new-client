@@ -64,7 +64,7 @@ export default function PdfSign(props) {
 
   const pdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${key}.pdf`;
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
-  const fontFileUrl = '../Alef-Regular.ttf';
+  const fontFileUrl = '../Tahoma Regular font.ttf';
 
   const [windowWidth, setWindowWidth] = useState(((window.innerWidth < 765) ? window.innerWidth : window.visualViewport.width));
 
@@ -140,7 +140,7 @@ export default function PdfSign(props) {
     inputFields.forEach((field, index2) => {
       if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
         const sanitizedInput = DOMPurify.sanitize(event.target.value);
-        updatedInputFields[index2].value = sanitizedInput;
+        updatedInputFields[index2].value = event.target.value;
       }
     })
     setInputFields(updatedInputFields);
@@ -251,13 +251,17 @@ export default function PdfSign(props) {
 
     var foundNotFilled = false;
 
-    inputFields.forEach(field => {
+    inputFields.some(field => {
       if(field?.mandatory === true && field?.value === ""){
         alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
           foundNotFilled = true;
           return true;
       }
     })
+
+    if (foundNotFilled) {
+      return;
+    }
 
     inputFields.some(inputField => {
       if (inputField.value === "") {
@@ -302,7 +306,7 @@ export default function PdfSign(props) {
     }
 
     if (requireID && !selectedImage) {
-      alert('Please select an image first.');
+      alert('אנא העלה צילום ת"ז עבור השדה המיועד למטה.');
       return;
     }
 
@@ -333,7 +337,7 @@ export default function PdfSign(props) {
           pages.forEach(async (page, index) => {
             if (inputField.page === index + 1) {
               const pageHeight = page.getHeight();
-              const sizeFont = 12;
+              const sizeFont = 10;
               const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
               // const textWidth = customFont.widthOfTextAtSize(value, sizeFont);
               const lines = await wrapText(value, pageWidth*inputField.editor.width/1.5, customFont, sizeFont);
