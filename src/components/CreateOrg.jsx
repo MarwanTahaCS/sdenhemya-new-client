@@ -8,23 +8,23 @@ const CreateOrg = () => {
 
   const navigate = useNavigate();
 
-   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // const localUrl = "http://localhost:3001/api/organzations/createorg/";
     const localUrl = `${window.AppConfig.serverDomain}/api/organzations/createorg/`;
 
     const formData = {
-        orgName: orgName,
-        orgMembers: orgMembers,
-      };
+      orgName: orgName,
+      orgMembers: orgMembers,
+    };
     // Add more fields as needed
 
     try {
       const response = await axios.post(localUrl, formData);
 
       console.log(response.data.orgID);
-      
+
       navigate('/');
 
       // Do something with the response if needed
@@ -32,7 +32,7 @@ const CreateOrg = () => {
       console.error('Error:', error);
     }
 
-    
+
   };
 
   return (

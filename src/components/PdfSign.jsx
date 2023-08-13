@@ -140,7 +140,7 @@ export default function PdfSign(props) {
     inputFields.forEach((field, index2) => {
       if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
         const sanitizedInput = DOMPurify.sanitize(event.target.value);
-        updatedInputFields[index2].value = event.target.value;
+        updatedInputFields[index2].value = sanitizedInput;
       }
     })
     setInputFields(updatedInputFields);

@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Checkbox, FormControlLabel } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 
-import SimpleSnackbar from './SimpleSnackbar';
+import { format } from 'date-fns';
 
 export default function Submitted(props) {
     const [data, setData] = useState(false);
@@ -25,9 +23,9 @@ export default function Submitted(props) {
                 // Make the GET request using Axios
                 const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${key}`);
                 const result = response.data.map((submitted) => {
-                    const { staticFields, signedPdf, submitterPhone } = submitted;
+                    const { accepted, staticFields, signedPdf, submitterPhone, updatedAt, createdAt } = submitted;
                     const { childId, childName, parentName1, parentName2 } = staticFields;
-                    return { childId, childName, submitterPhone, parentName1, parentName2, signedPdf };
+                    return { updatedAt, createdAt, accepted, childId, childName, submitterPhone, parentName1, parentName2, signedPdf };
                 });
 
                 console.log(result);
@@ -44,6 +42,27 @@ export default function Submitted(props) {
 
     }, []);
 
+    const handleAcceptedChange = async (event, timestamp, key) => {
+        // const localUrl = "http://localhost:3001/api/organzations/createorg/";
+        const localUrl = `${window.AppConfig.serverDomain}/api/organzations/update-accpeted/`;
+
+        const formData = {
+            timestamp: timestamp,
+            submitter: key.split('_').pop(),
+            templateID: key.split('_')[0]
+        };
+        // Add more fields as needed
+
+        try {
+            const response = await axios.post(localUrl, formData);
+
+            // Do something with the response if needed
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+    };
+
     return (
         <div style={{ direction: 'rtl' }}>
 
@@ -56,6 +75,8 @@ export default function Submitted(props) {
                         <Table>
                             <TableHead>
                                 <TableRow>
+                                    {/* <TableCell>קבל הגשה</TableCell> */}
+                                    <TableCell>זמן הגשה</TableCell>
                                     <TableCell>ת"ז הילד/ה</TableCell>
                                     <TableCell>שם הילד/ה</TableCell>
                                     <TableCell>מס. החותם</TableCell>
@@ -67,6 +88,17 @@ export default function Submitted(props) {
                             <TableBody>
                                 {data.map((row, index) => (
                                     <TableRow key={index}>
+                                        {/* <TableCell>{<FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={row.accepted}
+                                                    onChange={(event) => handleAcceptedChange(event, row.createdAt ? row.createdAt : row.updatedAt, row.signedPdf.split('/').pop().split(".")[0])}
+                                                    color="primary"
+                                                />
+                                            }
+                                            label="שדה חובה"
+                                        />}</TableCell> */}
+                                        <TableCell>{format(new Date(row.createdAt ? row.createdAt : row.updatedAt), 'dd/MM/yyyy HH:mm:ss')}</TableCell>
                                         <TableCell>{row.childId}</TableCell>
                                         <TableCell>{row.childName}</TableCell>
                                         <TableCell>{row.submitterPhone}</TableCell>

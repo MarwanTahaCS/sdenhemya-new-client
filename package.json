@@ -15,6 +15,7 @@
     "@testing-library/user-event": "^13.5.0",
     "atomic-spinner": "^1.2.6",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "dompurify": "^3.0.5",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
