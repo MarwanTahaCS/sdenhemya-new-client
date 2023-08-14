@@ -52,6 +52,7 @@ export default function PdfSign(props) {
   const [approverPhoneNumber, setApproverPhoneNumner] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [requireID, setRequireID] = useState(false);
+  const [pdfFile, setPdfFile] = useState(null);
 
   // Access the parameter using useParams
   const { key } = useParams();
@@ -62,7 +63,7 @@ export default function PdfSign(props) {
 
 
 
-  const pdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${key}.pdf`;
+  
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Tahoma Regular font.ttf';
 
@@ -87,28 +88,18 @@ export default function PdfSign(props) {
 
 
 
-  useEffect(() => {
-    const fetchNumPages = async () => {
-      try {
-        setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
+  // useEffect(() => {
+  //   const fetchNumPages = async () => {
+  //     try {
+        
 
-        const pdf = await pdfjs.getDocument(pdfFile).promise;
-        setNumPages(pdf.numPages);
+  //     } catch (error) {
+  //       console.error('Error occurred while fetching PDF:', error);
+  //     }
+  //   };
 
-        const firstPage = await pdf.getPage(1);
-        const { width, height } = firstPage.getViewport({ scale: 1 });
-
-        console.log([width, height]);
-        setPageWidth(width);
-        setPageHeight(height);
-
-      } catch (error) {
-        console.error('Error occurred while fetching PDF:', error);
-      }
-    };
-
-    fetchNumPages();
-  }, []);
+  //   fetchNumPages();
+  // }, []);
 
   useEffect(() => {
     // Function to fetch data from the backend server
@@ -116,7 +107,25 @@ export default function PdfSign(props) {
       try {
         // Make the GET request using Axios
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
-        // const response = await axios.get(`http://localhost:3001/api/organzations/document-input-fields/${key}`);
+        console.log(`${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_')? "": `_${response?.data?.templateID}`}.pdf`);
+        //----------------------------------------------------------
+        if(response?.data?.templateName){
+          const fetchedPdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_')? "": `_${response?.data?.templateID}`}.pdf`;
+          setPdfFile(fetchedPdfFile);
+        
+          setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
+  
+          const pdf = await pdfjs.getDocument(fetchedPdfFile).promise;
+          setNumPages(pdf.numPages);
+  
+          const firstPage = await pdf.getPage(1);
+          const { width, height } = firstPage.getViewport({ scale: 1 });
+  
+          console.log([width, height]);
+          setPageWidth(width);
+          setPageHeight(height);
+        }
+        //----------------------------------------------------------
         setInputFields(response.data.inputFields); // Update the state with the fetched data
         if (response.data.inputFields) {
           setRequireID(response.data.requireID);
