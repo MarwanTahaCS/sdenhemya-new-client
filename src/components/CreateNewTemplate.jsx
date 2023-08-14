@@ -742,7 +742,7 @@ export default function CreateTemplate(props) {
                       onMouseEnter={(event) => handleMouseEnter(event, index)}
                         onMouseLeave={handleMouseLeave}
                     >
-                      <MenuItem value=""  disabled>
+                      <MenuItem value=""  >
                       -- בחר אופציה --
                       </MenuItem>
                       {inputField.options.map((input, inputIndex) => (
