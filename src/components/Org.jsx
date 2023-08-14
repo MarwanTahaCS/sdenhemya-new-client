@@ -337,14 +337,14 @@ export default function Org(props) {
                                                 <b>{index + 1}. {removeAfterLastUnderscore(template.name.split('.')[0])}</b>  [מספר הגשות: {template.submitCount}]
                                             </Typography>
                                             <Typography variant="body2" style={{ fontSize: calculateFontSize() }}>
-                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`} name={template.name.split('.')[0]} />
+                                                <SimpleSnackbar templateLink={`${currentProtocol}//${currentDomain}${port}/template/${encodeURIComponent(removeAfterLastUnderscore(template.name.split('.')[0]))}_${template.id}`} name={template.name.split('.')[0]} />
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}> הורד הגשות </Button>
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
                                             <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> עדכן מסמך <LaunchIcon fontSize="small" /></a></Button>
-                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${encodeURIComponent(removeAfterLastUnderscore(template.name.split('.')[0]))}_${template.id}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
                                         </CardActions>
                                     </Card>
                                 )
