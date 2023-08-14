@@ -75,7 +75,7 @@ export default function Bundle(props) {
             {bundle && (
 
                 <div className="container" style={{ textAlign: 'right' }}>
-                    <h1>{bundle.bundleName} </h1> <h6>({bundle.bundleID})</h6>
+                    <h1>{bundle.bundleName} </h1>
                     <h3 className="my-5"> אנא בחר את המסמך המתאים מהאפשרויות המסופקות למטה:</h3>
                     {
                         bundle.bundleTemplates.map((template, index) => (
