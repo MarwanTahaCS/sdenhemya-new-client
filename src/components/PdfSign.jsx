@@ -229,7 +229,7 @@ export default function PdfSign(props) {
     const words = text.split(' ');
     const lines = [];
     let line = '';
-  
+
     words.forEach((word) => {
       const width = font.widthOfTextAtSize(line + word + ' ', size);
       if (width < maxWidth) {
@@ -239,9 +239,9 @@ export default function PdfSign(props) {
         line = word + ' ';
       }
     });
-  
+
     lines.push(line);
-  
+
     return lines;
   };
 
@@ -252,10 +252,10 @@ export default function PdfSign(props) {
     var foundNotFilled = false;
 
     inputFields.some(field => {
-      if(field?.mandatory === true && field?.value === ""){
+      if (field?.mandatory === true && field?.value === "") {
         alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
-          foundNotFilled = true;
-          return true;
+        foundNotFilled = true;
+        return true;
       }
     })
 
@@ -340,20 +340,20 @@ export default function PdfSign(props) {
               const sizeFont = 10;
               const adjustedY = pageHeight - y * (pageHeight) - sizeFont; // Adjust the y-coordinate
               // const textWidth = customFont.widthOfTextAtSize(value, sizeFont);
-              const lines = await wrapText(value, pageWidth*inputField.editor.width/1.5, customFont, sizeFont);
+              const lines = await wrapText(value, pageWidth * inputField.editor.width / 1.5, customFont, sizeFont);
 
               lines.forEach((line, index) => {
                 console.log(line);
-                page.drawText(line, { 
-                x: x * (pageWidth) + pageWidth*inputField.editor.width/1.5 - customFont.widthOfTextAtSize(lines[index], sizeFont), 
-                y: adjustedY - 14*index, 
-                font: customFont, 
-                size: sizeFont, 
-                color: rgb(0, 0, 0)
+                page.drawText(line, {
+                  x: x * (pageWidth) + pageWidth * inputField.editor.width / 1.5 - customFont.widthOfTextAtSize(lines[index], sizeFont),
+                  y: adjustedY - 14 * index,
+                  font: customFont,
+                  size: sizeFont,
+                  color: rgb(0, 0, 0)
                 });
               });
               // page.drawText(value, { x: x * (pageWidth) + pageWidth*inputField.editor.width/1.5 - textWidth, y: adjustedY, font: customFont, size: sizeFont, color: rgb(0, 0, 0) });
-            } 
+            }
           });
         } else if (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value == 'signature2') {
           console.log(inputField.value);
@@ -542,22 +542,23 @@ export default function PdfSign(props) {
                       <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
                     </div>) : <>{inputField?.options?.length === 0 ? <input
-                        key={index}
-                        type="text"
-                        value={inputField.value}
-                        onChange={(event) => handleInputChange(event, index)}
-                        style={{
-                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                      key={index}
+                      type="text"
+                      value={inputField.value}
+                      onChange={(event) => handleInputChange(event, index)}
+                      style={{
+                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                         position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                          height: `${windowWidth * inputField.editor.height / 40}px`,
-                          fontSize: `${windowWidth / 60}px`,
-                          padding: '4px',
-                        }}
-                        onMouseEnter={(event) => handleMouseEnter(event, index)}
-                        onMouseLeave={handleMouseLeave}
-                      /> :
-                        <Select
+                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                        height: `${windowWidth * inputField.editor.height / 40}px`,
+                        fontSize: `${windowWidth / 60}px`,
+                        padding: '4px',
+                      }}
+                      onMouseEnter={(event) => handleMouseEnter(event, index)}
+                      onMouseLeave={handleMouseLeave}
+                    /> :
+                      <>
+                        {/* <Select
                           style={{
                             opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
                             position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
@@ -580,10 +581,10 @@ export default function PdfSign(props) {
                               },
                             },
                             '& .MuiOutlinedInput-input': {
-                              padding: '0px !important' ,
+                              padding: '0px !important',
                             },
                             '& .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root': {
-                              padding: '0px !important' ,
+                              padding: '0px !important',
                             },
                             '& .MuiSelect-icon': {
                               display: 'none',
@@ -597,16 +598,41 @@ export default function PdfSign(props) {
                             },
                           }}
                         >
-                          <MenuItem value="" style={{fontSize: `${windowWidth / 60}px`, minHeight: '10px'}} disabled>
+                          <MenuItem value="" style={{ fontSize: `${windowWidth / 60}px`, minHeight: '10px' }} disabled>
                             -- בחר אופציה --
                           </MenuItem>
                           {inputField.options.map((input, inputIndex) => (
-                            <MenuItem  style={{fontSize: `${windowWidth / 60}px`, minHeight: '10px'}} key={inputIndex} value={input}>
-                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                            <MenuItem style={{ fontSize: `${windowWidth / 60}px`, minHeight: '10px' }} key={inputIndex} value={input}>
+                              {input || 'בחר אופציה'} 
                             </MenuItem>
                           ))}
-                        </Select>}
-                        </>
+                        </Select> */}
+                        <select
+                          style={{
+                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                            position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                            height: `${windowWidth * inputField.editor.height / 40}px`,
+                            fontSize: `${windowWidth / 60}px`,
+                            border: '1px solid #ccc',
+                          }}
+                          value={inputField.value}
+                          onChange={(event) => handleSelectChange(event, index)}
+                          displayEmpty
+                          onMouseEnter={(event) => handleMouseEnter(event, index)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <option value="" style={{ fontSize: `${windowWidth / 60}px`}} disabled>
+                            -- בחר אופציה --
+                          </option>
+                          {inputField.options.map((input, inputIndex) => (
+                            <option style={{ fontSize: `${windowWidth / 60}px` }} key={inputIndex} value={input}>
+                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                            </option>
+                          ))}
+                        </select>
+                      </>}
+                  </>
                 }
 
 
