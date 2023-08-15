@@ -149,7 +149,7 @@ export default function UpdateTemplate(props) {
         console.log([width, height]);
         setPageWidth(width);
         setPageHeight(height);
-
+        
       } catch (error) {
         console.error('Error occurred while fetching PDF:', error);
       }

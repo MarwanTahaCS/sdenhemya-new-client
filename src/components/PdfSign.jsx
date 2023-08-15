@@ -84,23 +84,6 @@ export default function PdfSign(props) {
     };
   }, []);
 
-
-
-
-
-  // useEffect(() => {
-  //   const fetchNumPages = async () => {
-  //     try {
-        
-
-  //     } catch (error) {
-  //       console.error('Error occurred while fetching PDF:', error);
-  //     }
-  //   };
-
-  //   fetchNumPages();
-  // }, []);
-
   useEffect(() => {
     // Function to fetch data from the backend server
     const fetchData = async () => {
