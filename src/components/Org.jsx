@@ -7,6 +7,11 @@ import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import LaunchIcon from '@mui/icons-material/Launch';
 
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
+
 import SimpleSnackbar from './SimpleSnackbar';
 
 export default function Org(props) {
@@ -19,6 +24,7 @@ export default function Org(props) {
     const [selectedTemplates, setSelectedTemplates] = useState([]);
     const [selectedDiv, setSelectedDiv] = useState(2);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [deleting, setDeleting] = useState(false);
 
 
     const navigate = useNavigate();
@@ -41,16 +47,16 @@ export default function Org(props) {
                 const access = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org-ids/${props.user}`);
                 console.log(access.data);
                 if (access.data.result.includes(key) || access.manager) {
-                // Make the GET request using Axios
-                const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org/${key}`);
-                // const response = await axios.get(`http://localhost:3001/api/organzations/get-org/${key}`);
-                console.log(response.data);
-                setOrg(response.data); // Update the state with the fetched data
-                setSelectedTemplates(response.data.templates.map((item, index) => ({
-                    ...item, // Spread the original item's properties
-                    index: index, // Add the 'age' field with a default value (you can change this as needed)
-                    selected: false, // Add the 'city' field with a default value (you can change this as needed)
-                })))
+                    // Make the GET request using Axios
+                    const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/get-org/${key}`);
+                    // const response = await axios.get(`http://localhost:3001/api/organzations/get-org/${key}`);
+                    console.log(response.data);
+                    setOrg(response.data); // Update the state with the fetched data
+                    setSelectedTemplates(response.data.templates.map((item, index) => ({
+                        ...item, // Spread the original item's properties
+                        index: index, // Add the 'age' field with a default value (you can change this as needed)
+                        selected: false, // Add the 'city' field with a default value (you can change this as needed)
+                    })))
                 } else {
                     alert("אין לך גישה לארגון זה.");
                 }
@@ -270,6 +276,30 @@ export default function Org(props) {
 
 
 
+    const handleDelete = async (templateID) => {
+        setDeleting(true);
+
+        const endpointURL = `${window.AppConfig.serverDomain}/api/organzations/disable-template`;
+
+        try {
+            const response = await axios.post(endpointURL, { templateID });
+
+            if (response.status === 200) {
+                // Refresh the page
+                window.location.reload();
+            } else {
+                // Handle other HTTP response statuses
+                console.error("Error deleting the template:", response.data);
+                setDeleting(false);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            setDeleting(false);
+        }
+    };
+
+
+
     return (
         <div style={{ direction: 'rtl' }}>
 
@@ -345,6 +375,11 @@ export default function Org(props) {
                                             <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
                                             <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> עדכן מסמך <LaunchIcon fontSize="small" /></a></Button>
                                             <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${encodeURIComponent(removeAfterLastUnderscore(template.name.split('.')[0]))}_${template.id}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                            <Tooltip title="כפתור זה משבית מסמך זה, אך ישאר שמור במאגר שלנו.">
+                                                <IconButton onClick={() => handleDelete(template.id)} disabled={deleting}>
+                                                    {deleting ? <CircularProgress size={24} /> : <DeleteIcon />}
+                                                </IconButton>
+                                            </Tooltip>
                                         </CardActions>
                                     </Card>
                                 )
@@ -423,9 +458,10 @@ export default function Org(props) {
                         </Box>
                     </div>
 
-                </div>
-            )}
-        </div>
+                </div >
+            )
+            }
+        </div >
     );
 };
 
