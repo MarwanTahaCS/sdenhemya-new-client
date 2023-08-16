@@ -36,9 +36,10 @@ export default function Reception(props) {
 
     const navigate = useNavigate();
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage1, setSelectedImage1] = useState(null);
+    const [selectedImage2, setSelectedImage2] = useState(null);
 
-    const handleImageChange = (event) => {
+    const handleImageChange = (event, index) => {
         const file = event.target.files[0];
         if (file) {
           Resizer.imageFileResizer(
@@ -49,7 +50,12 @@ export default function Reception(props) {
             70, // Compression quality (0-100)
             0, // Rotation (0-360)
             (uri) => {
-              setSelectedImage(uri);
+                if(index === 1){
+                    setSelectedImage1(uri);
+                } else {
+                    setSelectedImage2(uri);
+                }
+              
             },
             'base64', // Output type ('base64', 'blob', or 'file')
             400, // Set the maximum file size in bytes
@@ -208,13 +214,14 @@ export default function Reception(props) {
     //   const localUrl = "http://localhost:3001/api/documentSign";
   const localUrl = "https://api.myvarno.io/api/documentSign";
 
-  async function saveData(newDocumentData, selectedImage) {
+  async function saveData(newDocumentData, selectedImage, selectedImage2) {
     setLoading(true);
 
     try {
       console.log("in save data class")
       const response = await Axios.post(localUrl, {
         image: selectedImage,
+        image2: selectedImage2,
         data: newDocumentData,
       });
       // console.log(localUrl);
@@ -255,21 +262,24 @@ export default function Reception(props) {
             || documentData.signingDate === ''  || documentData.kindergarten === '') {
             alert('אנא מלא את כל שדות הקלט');
             return;
-        } else if (selectedImage === null){
+        } else if (selectedImage1 === null){
             alert('אנא חזור לנספח ג, וצרף צילום תעודת הזהות של ההורים וצילום הספח בו רשום הילד(ודא שקובץ הצלום הוא תמונה ולא סוג קובץ אחר).');
             return;
-        }else if (documentData.paymentMethod === ''){
+        } else if (selectedImage2 === null && (documentData.parentId2 !== '' && documentData.phoneNumber2 !== '' && documentData.parentName2 !== '') ){
+            alert('סמנו לב שהכנסתם נתוני הורה שני, אך לא צירפתם תעודת זהות הורה שני, אנא חזורו לנספח ג, וצרף צילום תעודת הזהות של ההורה השני עם צילום הספח בו רשום הילד(ודא שקובץ הצלום הוא תמונה ולא סוג קובץ אחר).');
+            return;
+        } else if (documentData.paymentMethod === ''){
             alert('אנא חזור לנספח ד סעיף 6, ובחר אמצעי תשלום .');
             return;
-        }else if (internal === ''){
+        } else if (internal === ''){
             alert('אנא חזור לנספח ד סעיף 3, ובחר האם אתה תושב שדה נחמיה או תושב חוץ .');
             return;
-        }else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC") {
+        } else if (documentData.signature1 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC") {
             alert('בבקשה תוודאו שחתמתם את המסמך');
             return;
         }
 
-        const result = await saveData(documentData, selectedImage);
+        const result = await saveData(documentData, selectedImage1, selectedImage2);
 
         navigate(`/success/${result.split('/').pop().split('.')[0]}`);
           } else {
@@ -1985,13 +1995,28 @@ export default function Reception(props) {
                             <div >
                                 <Form>
                                     <Form.Group controlId="formImage">
-                                        <Form.Label><b><u>בחר תמונת ת"ז: (שדה חובה) [<b> אנא העלה קובץ מסוג תמונה</b>]<span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
-                                        <Form.Control type="file" accept="image/*" onChange={handleImageChange}
+                                        <Form.Label><b><u>בחר תמונת ת"ז הורה ראשון: (שדה חובה) [<b> אנא העלה קובץ מסוג תמונה</b>]<span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
+                                        <Form.Control type="file" accept="image/*" onChange={(event)=>handleImageChange(event,1)}
                                             style={{ width: `${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px` }} />
                                     </Form.Group>
-                                    {selectedImage && (
+                                    {selectedImage1 && (
                                         <div className="mt-3">
-                                            <img src={selectedImage} alt="Selected" width={`${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px`} />
+                                            <img src={selectedImage1} alt="Selected" width={`${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px`} />
+                                        </div>
+                                    )}
+                                </Form>
+                            </div>
+
+                            <div >
+                                <Form>
+                                    <Form.Group controlId="formImage">
+                                        <Form.Label><b><u>בחר תמונת ת"ז הורה שני: (שדה חובה) [<b> אנא העלה קובץ מסוג תמונה</b>]<span style={{ color: 'red', fontSize: `${fontSize*1.5}px`}}><b>*</b></span> </u></b></Form.Label>
+                                        <Form.Control type="file" accept="image/*" onChange={(event)=>handleImageChange(event,2)}
+                                            style={{ width: `${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px` }} />
+                                    </Form.Group>
+                                    {selectedImage2 && (
+                                        <div className="mt-3">
+                                            <img src={selectedImage2} alt="Selected" width={`${windowWidth < 800 ? fontSize * 20 : fontSize * 40}px`} />
                                         </div>
                                     )}
                                 </Form>
