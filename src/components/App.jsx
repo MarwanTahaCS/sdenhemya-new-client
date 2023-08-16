@@ -38,8 +38,6 @@ export default function App(props) {
 
   }
 
-
-
   var documentData = {
     day: "",
     month: "",
