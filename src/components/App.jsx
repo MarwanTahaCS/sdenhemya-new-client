@@ -13,8 +13,8 @@ export default function App(props) {
   const [documentURL, setDocumentURL] = useState('');
   const [idImage, setIdImage] = useState(null);
 
-  const localUrl = "http://localhost:3001/api/documentSign";
-  // const localUrl = "https://api.myvarno.io/api/documentSign";
+  // const localUrl = "http://localhost:3001/api/documentSign";
+  const localUrl = "https://api.myvarno.io/api/documentSign";
 
   async function saveData(newDocumentData, selectedImage) {
     setIsLoading(true);
