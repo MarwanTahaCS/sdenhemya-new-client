@@ -377,16 +377,18 @@ export default function Reception(props) {
                 </div>
                 <div className="card m-1">
                     <h5 className="p-3 text-center david">
-                        <b> <u> הסכם חינוך גיל רך </u></b> 
+                        <b> <u> הסכם חינוך גיל רך </u></b> {/* {props.t("Reception.1")} */}
                     </h5>
                     <div className=" px-1 pb-3 text-center david " style={{ fontSize: `${fontSize - 1}px` }}  >
 
+                        {/* <div className="text-nowrap"> שנערך ונחתם בקיבוץ שדה נחמיה ביום </div> */}
                         <b>
                             שנערך ונחתם בקיבוץ שדה נחמיה ביום <input
                                 className=""
                                 onChange={updateDocumentData}
                                 type="text"
                                 name="day"
+                                // placeholder={props.t("OrgDetails.3")}
                                 autoComplete="off"
                                 id="day"
                                 value={documentData.day}
@@ -396,6 +398,7 @@ export default function Reception(props) {
                                 onChange={updateDocumentData}
                                 type="text"
                                 name="month"
+                                // placeholder={props.t("OrgDetails.3")}
                                 autoComplete="off"
                                 id="month"
                                 value={documentData.month}
@@ -405,6 +408,7 @@ export default function Reception(props) {
                                 onChange={updateDocumentData}
                                 type="text"
                                 name="year"
+                                // placeholder={props.t("OrgDetails.3")}
                                 autoComplete="off"
                                 id="year"
                                 value={documentData.year}
@@ -430,6 +434,7 @@ export default function Reception(props) {
                                 onChange={updateDocumentData}
                                 type="text"
                                 name="childName"
+                                // placeholder={props.t("OrgDetails.3")}
                                 autoComplete="off"
                                 id="childName"
                                 value={documentData.childName}
@@ -439,6 +444,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="childId"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="childId"
                                     value={documentData.childId}
@@ -450,6 +456,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="parentName1"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="parentName1"
                                     value={documentData.parentName1}
@@ -459,6 +466,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="parentId1"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="parentId1"
                                     value={documentData.parentId1}
@@ -468,6 +476,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="phoneNumber1"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="phoneNumber1"
                                     value={documentData.phoneNumber1}
@@ -478,6 +487,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="parentName2"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="parentName2"
                                     value={documentData.parentName2}
@@ -487,6 +497,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="parentId2"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="parentId2"
                                     value={documentData.parentId2}
@@ -496,6 +507,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="phoneNumber2"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="phoneNumber2"
                                     value={documentData.phoneNumber2}
@@ -1421,6 +1433,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="childFirstName"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="childFirstName"
                                             value={documentData.childFirstName}
@@ -1430,6 +1443,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="childLastName"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="childLastName"
                                             value={documentData.childLastName}
@@ -1439,6 +1453,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="childId"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="childId"
                                             value={documentData.childId}
@@ -1454,6 +1469,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="dateOfBirth"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="dateOfBirth"
                                             value={documentData.dateOfBirth}
@@ -1463,6 +1479,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="countryOfBirth"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="countryOfBirth"
                                             value={documentData.countryOfBirth}
@@ -1472,6 +1489,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="yearOfArrival"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="yearOfArrival"
                                             value={documentData.yearOfArrival}
@@ -1487,6 +1505,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="address"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="address"
                                             value={documentData.address}
@@ -1496,6 +1515,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="zip"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="zip"
                                             value={documentData.zip}
@@ -1511,6 +1531,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="brother1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="brother1"
                                             value={documentData.brother1}
@@ -1520,6 +1541,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="brother2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="brother2"
                                             value={documentData.brother2}
@@ -1529,6 +1551,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="brother3"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="brother3"
                                             value={documentData.brother3}
@@ -1538,6 +1561,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="brother4"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="brother4"
                                             value={documentData.brother4}
@@ -1553,6 +1577,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentName1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentName1"
                                             value={documentData.parentName1}
@@ -1562,6 +1587,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentId1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentId1"
                                             value={documentData.parentId1}
@@ -1571,6 +1597,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentJob1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentJob1"
                                             value={documentData.parentJob1}
@@ -1586,6 +1613,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="phoneNumber1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="phoneNumber1"
                                             value={documentData.phoneNumber1}
@@ -1595,6 +1623,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentHomeNumber1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentHomeNumber1"
                                             value={documentData.parentHomeNumber1}
@@ -1604,6 +1633,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentEmailAddress1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentEmailAddress1"
                                             value={documentData.parentEmailAddress1}
@@ -1619,6 +1649,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentName2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentName2"
                                             value={documentData.parentName2}
@@ -1628,6 +1659,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentId2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentId2"
                                             value={documentData.parentId2}
@@ -1637,6 +1669,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentJob2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentJob2"
                                             value={documentData.parentJob2}
@@ -1652,6 +1685,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="phoneNumber2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="phoneNumber2"
                                             value={documentData.phoneNumber2}
@@ -1661,6 +1695,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentHomeNumber2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentHomeNumber2"
                                             value={documentData.parentHomeNumber2}
@@ -1670,6 +1705,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="parentEmailAddress2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="parentEmailAddress2"
                                             value={documentData.parentEmailAddress2}
@@ -1689,6 +1725,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeName1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeName1"
                                             value={documentData.relativeName1}
@@ -1698,6 +1735,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeStatus1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeStatus1"
                                             value={documentData.relativeStatus1}
@@ -1707,6 +1745,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeNumber1"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeNumber1"
                                             value={documentData.relativeNumber1}
@@ -1722,6 +1761,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeName2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeName2"
                                             value={documentData.relativeName2}
@@ -1731,6 +1771,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeStatus2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeStatus2"
                                             value={documentData.relativeStatus2}
@@ -1740,6 +1781,7 @@ export default function Reception(props) {
                                             onChange={updateDocumentData}
                                             type="text"
                                             name="relativeNumber2"
+                                            // placeholder={props.t("OrgDetails.3")}
                                             autoComplete="off"
                                             id="relativeNumber2"
                                             value={documentData.relativeNumber2}
@@ -2014,6 +2056,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="attendanceStartingDate"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="attendanceStartingDate"
                                     value={documentData.attendanceStartingDate}
@@ -2045,6 +2088,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="parentName1"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="parentName1"
                                         value={documentData.parentName1}
@@ -2054,6 +2098,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="parentId1"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="parentId1"
                                         value={documentData.parentId1}
@@ -2063,6 +2108,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="phoneNumber1"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="phoneNumber1"
                                         value={documentData.phoneNumber1}
@@ -2073,6 +2119,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="parentName2"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="parentName2"
                                         value={documentData.parentName2}
@@ -2082,6 +2129,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="parentId2"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="parentId2"
                                         value={documentData.parentId2}
@@ -2091,6 +2139,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="phoneNumber2"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="phoneNumber2"
                                         value={documentData.phoneNumber2}
@@ -2101,6 +2150,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="from"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="from"
                                         value={documentData.from}
@@ -2117,6 +2167,7 @@ export default function Reception(props) {
                                     onChange={updateDocumentData}
                                     type="text"
                                     name="signingDate"
+                                    // placeholder={props.t("OrgDetails.3")}
                                     autoComplete="off"
                                     id="signingDate"
                                     value={documentData.signingDate}
@@ -2126,6 +2177,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="childName"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="childName"
                                         value={documentData.childName}
@@ -2135,6 +2187,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="childId"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="childId"
                                         value={documentData.childId}
@@ -2144,6 +2197,7 @@ export default function Reception(props) {
                                         onChange={updateDocumentData}
                                         type="text"
                                         name="className"
+                                        // placeholder={props.t("OrgDetails.3")}
                                         autoComplete="off"
                                         id="className"
                                         value={documentData.className}
@@ -2244,6 +2298,7 @@ export default function Reception(props) {
                                                 <FormControl>
                                                     <RadioGroup
                                                         onChange={(event) => updatePrice(event.target.value)}
+                                                        // defaultValue={false}
                                                         name="allowsPhotographingInternal"
                                                         id="allowsPhotographingInternal"
                                                         row
@@ -2281,6 +2336,7 @@ export default function Reception(props) {
                                                 <FormControl size="small" >
                                                     <RadioGroup
                                                         aria-labelledby="demo-radio-buttons-group-label"
+                                                        // defaultValue="12-checks"
                                                         onChange={updateDocumentData}
                                                         id="paymentMethod"
                                                         name="paymentMethod"
@@ -2329,6 +2385,7 @@ export default function Reception(props) {
                                 onChange={updateDocumentData}
                                 type="text"
                                 name="signingDate"
+                                // placeholder={props.t("OrgDetails.3")}
                                 autoComplete="off"
                                 id="signingDate"
                                 value={documentData.signingDate}
