@@ -41,7 +41,11 @@ export default function Reception(props) {
 
     const handleImageChange = (event, index) => {
         const file = event.target.files[0];
-        if (file) {
+
+        if (file && file.size > 5 * 1024 * 1024) { // check if file size is greater than 5MB
+            alert('התמונה גדולה מ-5MB! אנא בחרו תמונה פחות בגודלה מ-5MB.');
+            return;
+        } else if (file) {
             Resizer.imageFileResizer(
                 file,
                 650, // Set the maximum width in pixels
@@ -340,7 +344,8 @@ export default function Reception(props) {
     function MyComponent() {
         return (
             <div>
-                 <img src="/holidays.png" alt="My Image" width="90%" />
+
+            <img src="/holidays.png" alt="My Image" width="90%" />
             </div>
         );
     }
@@ -371,6 +376,7 @@ export default function Reception(props) {
         <div className="container py-3">
             <form onSubmit={printOnDocument}>
                 <div className="p-3 text-center">
+                    {/* onClick={(event) => { return printOnDocument(event) }} */}
                     <button type="submit" className="btn btn-primary btn-sm" >
                         הגשה
                     </button>
