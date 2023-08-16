@@ -8,7 +8,6 @@ import SubmitTable from "./SubmitTable";
 
 export default function App(props) {
   const [isLoading, setIsLoading] = useState(false);
-
   const [childId, setChildId] = useState("");
   const [documentURL, setDocumentURL] = useState('');
   const [idImage, setIdImage] = useState(null);
