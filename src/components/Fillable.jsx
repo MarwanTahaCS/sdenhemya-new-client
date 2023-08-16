@@ -78,6 +78,7 @@ export default function Reception(props) {
         }
     };
 
+
     const options = [
         { value: "", label: "בחר גן/פעוטון" },
         { value: "פעוטון בית קשת", label: "פעוטון בית קשת" },
@@ -224,21 +225,49 @@ export default function Reception(props) {
 
         console.log(documentData);
     }
-    
+
 
     // const localUrl = "http://localhost:3001/api/documentSign";
     const localUrl = "https://api.myvarno.io/api/documentSign";
 
+    const base64ToBlob = (base64, mimeType = '') => {
+        // Split base64: data:image/png;base64,iVBORw0KGg...
+        const byteString = atob(base64.split(',')[1]);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+
+        for (let i = 0; i < byteString.length; i++) {
+            uintArray[i] = byteString.charCodeAt(i);
+        }
+
+        return new Blob([arrayBuffer], { type: mimeType });
+    };
+
     async function saveData(newDocumentData, selectedImage, selectedImage2) {
         setLoading(true);
 
+        if (!selectedImage || !selectedImage2) {
+            console.error("Both files must be provided");
+            return;
+        }
+
+        const blob1 = base64ToBlob(selectedImage, 'image/jpeg'); // Or 'image/png' or other appropriate MIME type
+        const blob2 = base64ToBlob(selectedImage2, 'image/jpeg');
+
         try {
+            const formData = new FormData();
+            formData.append('image', blob1);
+            formData.append('image2', blob2);
+            formData.append('data', JSON.stringify(newDocumentData));
+
             console.log("in save data class")
-            const response = await Axios.post(localUrl, {
-                image: selectedImage,
-                image2: selectedImage2,
-                data: newDocumentData,
-            });
+            const response = await Axios.post(localUrl, formData
+                //     {
+                //     image: selectedImage,
+                //     image2: selectedImage2,
+                //     data: newDocumentData,
+                // }
+            );
             // console.log(localUrl);
 
             console.log(response.data.documentURL);
