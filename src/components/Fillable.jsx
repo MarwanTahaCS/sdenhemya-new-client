@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../index.css';
 import { Form, Button } from 'react-bootstrap';
 import Resizer from 'react-image-file-resizer';
+import heic2any from 'heic2any';
 
 // imports for radio form
 import Radio from '@mui/material/Radio';
@@ -39,8 +40,18 @@ export default function Reception(props) {
     const [selectedImage1, setSelectedImage1] = useState(null);
     const [selectedImage2, setSelectedImage2] = useState(null);
 
-    const handleImageChange = (event, index) => {
-        const file = event.target.files[0];
+    const handleImageChange = async (event, index) => {
+        let file = event.target.files[0];
+
+        // Check if the uploaded file is a HEIC image
+        if (file.type === 'image/heic') {
+            const convertedBlob = await heic2any({
+                blob: file,
+                toType: 'image/jpeg',
+                quality: 0.8
+            });
+            file = new File([convertedBlob], file.name, { type: 'image/jpeg' });
+        }
 
         if (file && file.size > 5 * 1024 * 1024) { // check if file size is greater than 5MB
             alert('התמונה גדולה מ-5MB! אנא בחרו תמונה פחות בגודלה מ-5MB.');
@@ -59,7 +70,6 @@ export default function Reception(props) {
                     } else {
                         setSelectedImage2(uri);
                     }
-
                 },
                 'base64', // Output type ('base64', 'blob', or 'file')
                 400, // Set the maximum file size in bytes
@@ -215,8 +225,8 @@ export default function Reception(props) {
         console.log(documentData);
     }
 
-    //   const localUrl = "http://localhost:3001/api/documentSign";
-    const localUrl = "https://api.myvarno.io/api/documentSign";
+    const localUrl = "http://localhost:3001/api/documentSign";
+    // const localUrl = "https://api.myvarno.io/api/documentSign";
 
     async function saveData(newDocumentData, selectedImage, selectedImage2) {
         setLoading(true);
@@ -248,33 +258,22 @@ export default function Reception(props) {
     async function printOnDocument(event) {
         event.preventDefault();
 
-        const importantfields = ["month", "year", "day", "childId", "childName", "approverName", "approverStatus", "approverAddress", "approverPhoneNumber", 
+        const importantfields = ["month", "year", "day", "childId", "childName", "approverName", "approverStatus", "approverAddress", "approverPhoneNumber",
             "hebrewYear", "childFirstName", "childLastName", "dateOfBirth", "address", "zip", "relativeName1", "relativeStatus1", "relativeNumber1", "hmo",
             "attendanceStartingDate", "signingDate", "className", "paymentMethod", "kindergarten"]
         const unfilledFields = Object.keys(documentData).filter(fieldName => documentData[fieldName] === '' && importantfields.includes(fieldName));
 
         if (unfilledFields.length === 0) {
-            if (documentData.childId === '' || documentData.childName === '' || documentData.approverName === ''
-                || documentData.approverStatus === '' || documentData.approverAddress === '' || documentData.approverPhoneNumber === ''
-                || documentData.month === '' || documentData.year === '' || documentData.day === ''
-
-                || documentData.hebrewYear === '' || documentData.childFirstName === '' || documentData.childLastName === ''
-                || documentData.dateOfBirth === '' || documentData.address === '' || documentData.zip === ''
-                || documentData.relativeName1 === '' || documentData.relativeStatus1 === '' || documentData.relativeNumber1 === ''
-                || documentData.hmo === '' || documentData.attendanceStartingDate === ''
-                || documentData.signingDate === '' || documentData.kindergarten === '') {
-                alert('אנא מלא את כל שדות הקלט');
-                return;
-            } else if ((documentData.parentId1 === '' || documentData.phoneNumber1 === '' || documentData.parentName1 === '')
-            && (documentData.parentId2 === '' || documentData.phoneNumber2 === '' || documentData.parentName2 === '')) {
+            if ((documentData.parentId1 === '' || documentData.phoneNumber1 === '' || documentData.parentName1 === '')
+                && (documentData.parentId2 === '' || documentData.phoneNumber2 === '' || documentData.parentName2 === '')) {
                 document.querySelector(`#parentJob1`).scrollIntoView({ behavior: 'smooth' });
                 alert('חובה למלא לפחות נתוני אחד מבין ההורים.');
                 return;
             } else if (selectedImage1 === null) {
                 alert('אנא חזור לנספח ג, וצרף צילום תעודת הזהות של ההורים וצילום הספח בו רשום הילד(ודא שקובץ הצלום הוא תמונה ולא סוג קובץ אחר).');
                 return;
-            } else if (selectedImage2 === null && ((documentData.parentId2 !== '' && documentData.phoneNumber2 !== '' && documentData.parentName2 !== '') 
-                && (documentData.parentId1 !== '' && documentData.phoneNumber1 !== '' && documentData.parentName1 !== '')) ) {
+            } else if (selectedImage2 === null && ((documentData.parentId2 !== '' && documentData.phoneNumber2 !== '' && documentData.parentName2 !== '')
+                && (documentData.parentId1 !== '' && documentData.phoneNumber1 !== '' && documentData.parentName1 !== ''))) {
                 alert('שמנו לב שהכנסתם נתוני הורה שני, אך לא צירפתם תעודת זהות הורה שני, אנא חזורו לנספח ג, וצרף צילום תעודת הזהות של ההורה השני עם צילום הספח בו רשום הילד(ודא שקובץ הצלום הוא תמונה ולא סוג קובץ אחר).');
                 return;
             } else if (documentData.paymentMethod === '') {
@@ -287,7 +286,7 @@ export default function Reception(props) {
                 alert('בבקשה תוודאו שחתמתם את המסמך');
                 return;
             } else if (documentData.signature2 === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC"
-                && ((documentData.parentId2 !== '' && documentData.phoneNumber2 !== '' && documentData.parentName2 !== '') 
+                && ((documentData.parentId2 !== '' && documentData.phoneNumber2 !== '' && documentData.parentName2 !== '')
                     && (documentData.parentId1 !== '' && documentData.phoneNumber1 !== '' && documentData.parentName1 !== ''))) {
                 alert('שמנו לב שהוספתם פרטי הורי שני, לכן אננא הוסיפו חתימת הורה שני.');
                 return;
@@ -345,7 +344,7 @@ export default function Reception(props) {
         return (
             <div>
 
-            <img src="/holidays.png" alt="My Image" width="90%" />
+                <img src="/holidays.png" alt="My Image" width="90%" />
             </div>
         );
     }
