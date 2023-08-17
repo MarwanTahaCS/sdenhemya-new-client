@@ -652,7 +652,7 @@ export default function PdfSign(props) {
       </div>
       <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
 
-        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="הכנס מספר פלפון" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מה מספר פלפון שלך" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
 
         <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
       </div>
