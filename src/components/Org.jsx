@@ -202,7 +202,9 @@ export default function Org(props) {
 
 
         submittedData.forEach((submittedDocument, index) => {
-            worksheet.addRow({ ...submittedDocument.staticFields, documentURL: submittedDocument.signedPdf });
+            if(submittedDocument.accepted){
+                worksheet.addRow({ ...submittedDocument.staticFields, documentURL: submittedDocument.signedPdf });
+            }
         });
 
         const buffer = await workbook.xlsx.writeBuffer();

@@ -398,10 +398,10 @@ export default function PdfSign(props) {
 
       //------------------------------------------
       // send pdf to server
-      await submitSignedData(modifiedPdfBlob);
+      const documentUrl = await submitSignedData(modifiedPdfBlob);
       //------------------------------------------
 
-      navigate(`/success/${key.split('_').pop()}_${approverPhoneNumber}`);
+      navigate(`/success/${documentUrl}`);
 
       // Create a URL for the Blob object
       // const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
@@ -448,6 +448,8 @@ export default function PdfSign(props) {
         },
       });
       console.log(`${response.data}`);
+
+      return response?.data?.documentURL;
 
       // Do something with the response if needed
     } catch (error) {

@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 export default function Submitted(props) {
     const [data, setData] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [update, setUpdate] = useState(0);
 
 
     const navigate = useNavigate();
@@ -23,9 +24,9 @@ export default function Submitted(props) {
                 // Make the GET request using Axios
                 const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${key}`);
                 const result = response.data.map((submitted) => {
-                    const { accepted, staticFields, signedPdf, submitterPhone, updatedAt, createdAt } = submitted;
+                    const { accepted, staticFields, signedPdf, submitterPhone, updatedAt, createdAt, submittionID } = submitted;
                     const { childId, childName, parentName1, parentName2 } = staticFields;
-                    return { updatedAt, createdAt, accepted, childId, childName, submitterPhone, parentName1, parentName2, signedPdf };
+                    return { updatedAt, createdAt, accepted, childId, childName, submitterPhone, parentName1, parentName2, signedPdf, submittionID };
                 });
 
                 console.log(result);
@@ -40,21 +41,25 @@ export default function Submitted(props) {
         // Call the fetchData function when the component mounts
         fetchSubmittedData();
 
-    }, []);
+    }, [update]);
 
-    const handleAcceptedChange = async (event, timestamp, key) => {
+    const handleAcceptedChange = async (event, timestamp, key, submittionID) => {
         // const localUrl = "http://localhost:3001/api/organzations/createorg/";
         const localUrl = `${window.AppConfig.serverDomain}/api/organzations/update-accpeted/`;
 
         const formData = {
             timestamp: timestamp,
             submitter: key.split('_').pop(),
-            templateID: key.split('_')[0]
+            templateID: key.split('_')[0],
+            submittionID: submittionID,
+            value: event.target.checked
         };
         // Add more fields as needed
 
         try {
             const response = await axios.post(localUrl, formData);
+
+            setUpdate(update+1);
 
             // Do something with the response if needed
         } catch (error) {
@@ -75,7 +80,7 @@ export default function Submitted(props) {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    {/* <TableCell>קבל הגשה</TableCell> */}
+                                    <TableCell>קבל הגשה</TableCell>
                                     <TableCell>זמן הגשה</TableCell>
                                     <TableCell>ת"ז הילד/ה</TableCell>
                                     <TableCell>שם הילד/ה</TableCell>
@@ -88,16 +93,15 @@ export default function Submitted(props) {
                             <TableBody>
                                 {data.map((row, index) => (
                                     <TableRow key={index}>
-                                        {/* <TableCell>{<FormControlLabel
+                                        <TableCell>{<FormControlLabel
                                             control={
                                                 <Checkbox
                                                     checked={row.accepted}
-                                                    onChange={(event) => handleAcceptedChange(event, row.createdAt ? row.createdAt : row.updatedAt, row.signedPdf.split('/').pop().split(".")[0])}
+                                                    onChange={(event) => handleAcceptedChange(event, row.createdAt ? row.createdAt : row.updatedAt, row.signedPdf.split('/').pop().split(".")[0], row.submittionID)}
                                                     color="primary"
                                                 />
                                             }
-                                            label="שדה חובה"
-                                        />}</TableCell> */}
+                                        />}</TableCell>
                                         <TableCell>{format(new Date(row.createdAt ? row.createdAt : row.updatedAt), 'dd/MM/yyyy HH:mm:ss')}</TableCell>
                                         <TableCell>{row.childId}</TableCell>
                                         <TableCell>{row.childName}</TableCell>
