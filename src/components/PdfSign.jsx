@@ -412,7 +412,7 @@ export default function PdfSign(props) {
       const documentUrl = await submitSignedData(modifiedPdfBlob);
       //------------------------------------------
 
-      // navigate(`/success/${documentUrl}`);
+      navigate(`/success/${documentUrl}`);
 
       // Create a URL for the Blob object
       // const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
