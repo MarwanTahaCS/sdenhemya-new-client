@@ -69,6 +69,7 @@ export default function CreateTemplate(props) {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    file.arrayBuffer();
     setSelectedFile(file);
   };
 
@@ -135,7 +136,7 @@ export default function CreateTemplate(props) {
         const pdfDoc = await PDFLibDocument.load(existingPdfBytes);
         setNumPages(pdfDoc.getPageCount());
 
-        const page = pdfDoc.getPage(1);
+        const page = pdfDoc.getPage(0);
         const { width, height } = page.getSize();
 
         console.log([width, height]);

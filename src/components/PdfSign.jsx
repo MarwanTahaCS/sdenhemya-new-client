@@ -16,11 +16,15 @@ import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
 import DOMPurify from 'dompurify';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function PdfSign(props) {
   const [inputFields, setInputFields] = useState([
@@ -61,9 +65,16 @@ export default function PdfSign(props) {
   const [addingTextInputField, SetAddingTextInputField] = useState(false);
   const [addingSignatureInputField, SetAddingSignatureInputField] = useState(false);
 
+  const query = useQuery();
+
+  const govId = query.get("gov_id");
+  const username = query.get("username");
+  const signatureHash = query.get("signature_hash");
+  const requestId = query.get("request_id");
+
+  // console.log(govId, username, signatureHash, requestId);
 
 
-  
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
   const fontFileUrl = '../Tahoma Regular font.ttf';
 
@@ -90,20 +101,20 @@ export default function PdfSign(props) {
       try {
         // Make the GET request using Axios
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
-        console.log(`${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_')? "": `_${response?.data?.templateID}`}.pdf`);
+        console.log(`${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`);
         //----------------------------------------------------------
-        if(response?.data?.templateName){
-          const fetchedPdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_')? "": `_${response?.data?.templateID}`}.pdf`;
+        if (response?.data?.templateName) {
+          const fetchedPdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`;
           setPdfFile(fetchedPdfFile);
-        
+
           setWindowWidth(((window.innerWidth < 765) ? document.documentElement.clientWidth : window.visualViewport.width));
-  
+
           const pdf = await pdfjs.getDocument(fetchedPdfFile).promise;
           setNumPages(pdf.numPages);
-  
+
           const firstPage = await pdf.getPage(1);
           const { width, height } = firstPage.getViewport({ scale: 1 });
-  
+
           console.log([width, height]);
           setPageWidth(width);
           setPageHeight(height);
@@ -401,7 +412,7 @@ export default function PdfSign(props) {
       const documentUrl = await submitSignedData(modifiedPdfBlob);
       //------------------------------------------
 
-      navigate(`/success/${documentUrl}`);
+      // navigate(`/success/${documentUrl}`);
 
       // Create a URL for the Blob object
       // const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
@@ -434,11 +445,20 @@ export default function PdfSign(props) {
 
     console.log(inputFields);
 
+    // const govId = query.get("gov_id");
+    // const username = query.get("username");
+    // const signatureHash = query.get("signature_hash");
+    // const requestId = query.get("request_id");
+
     const data = new FormData();
     data.append('data', JSON.stringify(extractValues(inputFields)));
     data.append('templateID', key.split('_').pop());
     data.append('pdf', modifiedPdfBlob, `${key}_${approverPhoneNumber}.pdf`);
-    data.append('approverPhone', approverPhoneNumber)
+    data.append('approverPhone', approverPhoneNumber);
+    data.append('govId', govId?govId:"null");
+    data.append('username', username?username:"null");
+    data.append('signatureHash', signatureHash?signatureHash:"null");
+    data.append('requestId', requestId?requestId:"null");
     // Add more fields as needed
 
     try {
@@ -616,7 +636,7 @@ export default function PdfSign(props) {
                           onMouseEnter={(event) => handleMouseEnter(event, index)}
                           onMouseLeave={handleMouseLeave}
                         >
-                          <option value="" style={{ fontSize: `${windowWidth / 60}px`}} disabled>
+                          <option value="" style={{ fontSize: `${windowWidth / 60}px` }} disabled>
                             -- בחר אופציה --
                           </option>
                           {inputField.options.map((input, inputIndex) => (
@@ -790,7 +810,7 @@ const options = [
   { label: 'מספר סידורי של הילד בין אחיו', value: 'childOrderBetweenSiblings' },
   { label: 'שם איש קשר למצב חירום', value: 'emergencyContactName' },
   { label: 'מס איש קשר למצב חירום', value: 'emergencyContactNumber' },
-  
+
   { label: 'אחר', value: 'other' },
 ];
 
