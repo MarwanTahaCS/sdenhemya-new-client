@@ -149,7 +149,7 @@ export default function UpdateTemplate(props) {
         console.log([width, height]);
         setPageWidth(width);
         setPageHeight(height);
-        
+
       } catch (error) {
         console.error('Error occurred while fetching PDF:', error);
       }
@@ -536,10 +536,10 @@ export default function UpdateTemplate(props) {
     }
 
     if (fileUpdated) {
-      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${fileName.split('.')[0]}_${key.split('_').pop()}`);
+      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${key.split('_').pop()}`);
 
     } else {
-      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${removeAfterLastUnderscore(fileName.split('.')[0])}_${key.split('_').pop()}`);
+      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${key.split('_').pop()}`);
 
     }
 
@@ -812,7 +812,7 @@ export default function UpdateTemplate(props) {
                       control={
                         <Checkbox
                           checked={inputField.mandatory}
-                          onChange={(event)=>handleMandatoryChange(event, index)}
+                          onChange={(event) => handleMandatoryChange(event, index)}
                           color="primary"
                         />
                       }
@@ -857,9 +857,9 @@ export default function UpdateTemplate(props) {
         ))} */}
       </div>
       {selectedFile && <div className="m-1">
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
-
+        {(currentPage !== 1) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>}
+        {(numPages > 1) && <h1>{currentPage}</h1>}
+        {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
         <br />
 
 
@@ -876,7 +876,7 @@ export default function UpdateTemplate(props) {
           />
         </div>
 
-        <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
+        <button className="btn btn-primary m-1" onClick={saveInputFields}>שמור שינויים</button>
 
         {loading &&
           <div className="loading-wrapper">

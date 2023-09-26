@@ -407,19 +407,23 @@ export default function PdfSign(props) {
       // Create a Blob object from the PDF data
       const modifiedPdfBlob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
 
-      //------------------------------------------
-      // send pdf to server
-      const documentUrl = await submitSignedData(modifiedPdfBlob);
-      //------------------------------------------
+      const userConfirmed = window.confirm("האם אתה בטוח שהמסמך מוכן לשליחה?");
 
-      navigate(`/success/${documentUrl}`);
+      if (userConfirmed) {
+        //------------------------------------------
+        // send pdf to server
+        const documentUrl = await submitSignedData(modifiedPdfBlob);
+        //------------------------------------------
 
-      // Create a URL for the Blob object
-      // const modifiedPdfUrl = URL.createObjectURL(modifiedPdfBlob);
+        navigate(`/success/${documentUrl}`);
+        setLoading(false);
 
-      // // Open the modified PDF in a new window
-      // const pdfWindow = window.open(modifiedPdfUrl);
-      // pdfWindow.focus();
+      } else {
+        // User clicked "Cancel", exit the function
+        setLoading(false);
+        return;
+      }
+
       setLoading(false);
     } catch (error) {
       console.log('Error opening PDF:', error);
@@ -455,10 +459,10 @@ export default function PdfSign(props) {
     data.append('templateID', key.split('_').pop());
     data.append('pdf', modifiedPdfBlob, `${key}_${approverPhoneNumber}.pdf`);
     data.append('approverPhone', approverPhoneNumber);
-    data.append('govId', govId?govId:"null");
-    data.append('username', username?username:"null");
-    data.append('signatureHash', signatureHash?signatureHash:"null");
-    data.append('requestId', requestId?requestId:"null");
+    data.append('govId', govId ? govId : "null");
+    data.append('username', username ? username : "null");
+    data.append('signatureHash', signatureHash ? signatureHash : "null");
+    data.append('requestId', requestId ? requestId : "null");
     // Add more fields as needed
 
     try {
@@ -657,9 +661,9 @@ export default function PdfSign(props) {
 
       </div>
       <div className="d-flex justify-content-center">
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
-        <h1>{currentPage}</h1>
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
+        {(currentPage !== 1) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>}
+        {(numPages > 1) && <h1>{currentPage}</h1>}
+        {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
       </div>
       <br />
 

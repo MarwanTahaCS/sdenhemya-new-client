@@ -634,9 +634,9 @@ export default function CreateTemplate(props) {
       });
 
       console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
-      console.log(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      console.log(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0].split('_').pop()}`);
 
-      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
+      setTemplateLink(`${currentProtocol}//${currentDomain}/template/${response.data.documentURL.split('/').pop().split('.')[0].split('_').pop()}`);
 
       // console.log(`/${response.data.documentURL.split('/').pop().split('.')[0]}`);
       // console.log(`${currentProtocol}//${currentDomain}:3000/template/${response.data.documentURL.split('/').pop().split('.')[0]}`);
@@ -712,8 +712,8 @@ export default function CreateTemplate(props) {
 
                   </div>) : (<Draggable onDrag={(e, data) => handleDrag(e, data, index)} position={{ x: inputField.x * (windowWidth), y: inputField.y * (windowWidth) * ((pageHeight) / pageWidth) }} >
                     <div style={{ position: 'absolute', top: 0, left: 0 }}>
-                      
-                      { inputField?.options?.length === 0 ? <input
+
+                      {inputField?.options?.length === 0 ? <input
                         key={index}
                         type="text"
                         value={inputField.value}
@@ -727,31 +727,31 @@ export default function CreateTemplate(props) {
                         }}
                         onMouseEnter={(event) => handleMouseEnter(event, index)}
                         onMouseLeave={handleMouseLeave}
-                      />:
-                      <Select
-                      style={{
-                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                        height: `${windowWidth * inputField.editor.height / 40}px`,
-                        fontSize: `${windowWidth / 60}px`,
-                        padding: '4px',
-                      }}
-                      value={inputField.value}
-                      onChange={(event) => handleSelectChange(event, index)}
-                      displayEmpty
-                      fullWidth
-                      onMouseEnter={(event) => handleMouseEnter(event, index)}
-                        onMouseLeave={handleMouseLeave}
-                    >
-                      <MenuItem value=""  >
-                      -- בחר אופציה --
-                      </MenuItem>
-                      {inputField.options.map((input, inputIndex) => (
-                        <MenuItem  key={inputIndex} value={input}>
-                          {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
-                        </MenuItem>
-                      ))}
-                    </Select>}
+                      /> :
+                        <Select
+                          style={{
+                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                            height: `${windowWidth * inputField.editor.height / 40}px`,
+                            fontSize: `${windowWidth / 60}px`,
+                            padding: '4px',
+                          }}
+                          value={inputField.value}
+                          onChange={(event) => handleSelectChange(event, index)}
+                          displayEmpty
+                          fullWidth
+                          onMouseEnter={(event) => handleMouseEnter(event, index)}
+                          onMouseLeave={handleMouseLeave}
+                        >
+                          <MenuItem value=""  >
+                            -- בחר אופציה --
+                          </MenuItem>
+                          {inputField.options.map((input, inputIndex) => (
+                            <MenuItem key={inputIndex} value={input}>
+                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                            </MenuItem>
+                          ))}
+                        </Select>}
 
                     </div>
                   </Draggable>)
@@ -872,13 +872,13 @@ export default function CreateTemplate(props) {
                       control={
                         <Checkbox
                           checked={inputField.mandatory}
-                          onChange={(event)=>handleMandatoryChange(event, index)}
+                          onChange={(event) => handleMandatoryChange(event, index)}
                           color="primary"
                         />
                       }
                       label="שדה חובה"
                     />
-                    
+
                     {/* ------------------------------------- */}
                     <div className="row">
                       <div className="col col-7 d-flex justify-content-center ps-1">
@@ -919,9 +919,9 @@ export default function CreateTemplate(props) {
         ))} */}
       </div>
       {selectedFile && <div className="m-1">
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>
-        <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>
-
+        {(currentPage !== 1) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>}
+        {(numPages > 1) && <h1>{currentPage}</h1>}
+        {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
         <br />
         {/* <button className="btn btn-primary m-1" onClick={handleOpenPDF}>Open PDF</button> */}
 

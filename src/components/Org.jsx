@@ -11,6 +11,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import EditIcon from '@mui/icons-material/Edit';
 
 import SimpleSnackbar from './SimpleSnackbar';
 
@@ -202,7 +205,7 @@ export default function Org(props) {
 
 
         submittedData.forEach((submittedDocument, index) => {
-            if(submittedDocument.accepted){
+            if (submittedDocument.accepted) {
                 worksheet.addRow({ ...submittedDocument.staticFields, documentURL: submittedDocument.signedPdf });
             }
         });
@@ -279,25 +282,35 @@ export default function Org(props) {
 
 
     const handleDelete = async (templateID) => {
-        setDeleting(true);
+        const userConfirmed = window.confirm("האם את/ה בטוח/ה ממחיקת מסמך זה ?");
 
-        const endpointURL = `${window.AppConfig.serverDomain}/api/organzations/disable-template`;
+        if (userConfirmed) {
+            setDeleting(true);
 
-        try {
-            const response = await axios.post(endpointURL, { templateID });
+            const endpointURL = `${window.AppConfig.serverDomain}/api/organzations/disable-template`;
 
-            if (response.status === 200) {
-                // Refresh the page
-                window.location.reload();
-            } else {
-                // Handle other HTTP response statuses
-                console.error("Error deleting the template:", response.data);
+            try {
+                const response = await axios.post(endpointURL, { templateID });
+
+                if (response.status === 200) {
+                    // Refresh the page
+                    window.location.reload();
+                } else {
+                    // Handle other HTTP response statuses
+                    console.error("Error deleting the template:", response.data);
+                    setDeleting(false);
+                }
+            } catch (error) {
+                console.error("Error:", error);
                 setDeleting(false);
             }
-        } catch (error) {
-            console.error("Error:", error);
-            setDeleting(false);
+        } else {
+            // User clicked "Cancel", exit the function
+            return;
         }
+
+
+
     };
 
 
@@ -373,10 +386,19 @@ export default function Org(props) {
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}> הורד הגשות </Button>
-                                            <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}> הצדג הגשות </Button>
-                                            <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}> עדכן מסמך <LaunchIcon fontSize="small" /></a></Button>
-                                            <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.id}`}> פתח בדפדפן חדש <LaunchIcon fontSize="small" /></a>
+                                            
+                                            <Tooltip title="הורד קובץ אקסל הכולל את נתוני ההגשות">
+                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}><GetAppIcon/> הורד הגשות </Button>
+                                            </Tooltip>
+                                            <Tooltip title="הצג את הפרטים העיקריים של כל הגשה, ופסול הגשות לא מרוצות.">
+                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}><TableChartIcon/> הצג הגשות </Button>
+                                            </Tooltip>
+                                            <Tooltip title="פתח את דף עריכת המסמך">
+                                                <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}><EditIcon/> עדכן מסמך </a></Button>
+                                            </Tooltip>
+                                            <Tooltip title="פתח את המסמך הדיגטלי במסמך חדש.">
+                                                <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.id}`}> <LaunchIcon  /> פתח </a>
+                                            </Tooltip>
                                             <Tooltip title="כפתור זה משבית מסמך זה, אך ישאר שמור במאגר שלנו.">
                                                 <IconButton onClick={() => handleDelete(template.id)} disabled={deleting}>
                                                     {deleting ? <CircularProgress size={24} /> : <DeleteIcon />}
