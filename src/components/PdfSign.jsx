@@ -102,6 +102,9 @@ export default function PdfSign(props) {
         // Make the GET request using Axios
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
         console.log(`${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`);
+        
+        console.log(response?.data?.requestedFiles);
+        
         //----------------------------------------------------------
         if (response?.data?.templateName) {
           const fetchedPdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`;
