@@ -12,13 +12,16 @@ import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
 import { Typography, TextField, Autocomplete, Box, Container, Select, MenuItem } from '@mui/material';
-import SignatureModal from "./SignatureModal.jsx";
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import AtomicSpinner from 'atomic-spinner';
 import DOMPurify from 'dompurify';
+import LinearProgress from '@mui/material/LinearProgress';
+
+import RequestedFilesList from "./RequestedFilesList.jsx";
+import SignatureModal from "./SignatureModal.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -57,6 +60,10 @@ export default function PdfSign(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [requireID, setRequireID] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
+  const [requestedFiles, setRequestedFiles] = useState([]);
+  const [files, setFiles] = useState({});
+  const [modifiedFileNames, setModifiedFileNames] = useState({});
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Access the parameter using useParams
   const { key } = useParams();
@@ -102,9 +109,7 @@ export default function PdfSign(props) {
         // Make the GET request using Axios
         const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/document-input-fields/${key}`);
         console.log(`${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`);
-        
-        console.log(response?.data?.requestedFiles);
-        
+
         //----------------------------------------------------------
         if (response?.data?.templateName) {
           const fetchedPdfFile = `${window.AppConfig.serverDomain}/api/documentSign/${response?.data?.templateName?.split('.')[0]}${response?.data?.templateName.includes('_') ? "" : `_${response?.data?.templateID}`}.pdf`;
@@ -126,6 +131,9 @@ export default function PdfSign(props) {
         setInputFields(response.data.inputFields); // Update the state with the fetched data
         if (response.data.inputFields) {
           setRequireID(response.data.requireID);
+        }
+        if (response?.data?.requestedFiles) {
+          setRequestedFiles(response?.data?.requestedFiles);
         }
         console.log(response.data.inputFields);
       } catch (error) {
@@ -316,6 +324,27 @@ export default function PdfSign(props) {
       return;
     }
 
+    if (Object.keys(files).length !== requestedFiles.length) {
+      alert('אנא הגש את המסמכים הדרושים למטה.');
+      return;
+    }
+
+    let modified = {};
+
+    Object.keys(files).forEach((key) => {
+      const modifiedFileName = `file-${key}-${generateRandomString(16)}.${files[key].name.split('.').pop()}`; // Modify the name as per your requirements
+      modified = {
+        ...modified,
+        [key]: modifiedFileName
+      };
+      setModifiedFileNames(currentFileNames => ({
+        ...currentFileNames,
+        [key]: modifiedFileName
+      }));
+    });
+
+
+
     console.log(inputFields);
     try {
       setLoading(true);
@@ -402,6 +431,31 @@ export default function PdfSign(props) {
         });
       }
 
+      if (Object.keys(files).length > 0) {
+        console.log("in printing file links");
+
+        const page = pdfDoc.addPage();
+        const { width, height } = page.getSize();
+        const linksObject = {
+          0: 'https://templates-api.myvarno.io/api/documentSign/file-1-az1mjk1nibcpczvk.jpeg',
+          1: 'https://templates-api.myvarno.io/api/documentSign/file-2-stquwcs6qhhfi5z0.pdf',
+          // ...
+        };
+
+
+        let y = 500;
+        const x = 50;
+
+        // Iterate through the links object and write each link to the PDF
+        for (const link of Object.values(modified)) {
+          // Write the link to the PDF
+          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y, size: 12, color: rgb(0, 0, 1) });
+          // `https://templates-api.myvarno.io/api/documentSign/${link}`
+          // Move the y-coordinate down for the next link
+          y -= 20;
+        }
+      }
+
 
 
       // Generate the modified PDF document
@@ -415,7 +469,7 @@ export default function PdfSign(props) {
       if (userConfirmed) {
         //------------------------------------------
         // send pdf to server
-        const documentUrl = await submitSignedData(modifiedPdfBlob);
+        const documentUrl = await submitSignedData(modifiedPdfBlob, modified);
         //------------------------------------------
 
         navigate(`/success/${documentUrl}`);
@@ -446,7 +500,19 @@ export default function PdfSign(props) {
     return extracted;
   }
 
-  const submitSignedData = async (modifiedPdfBlob) => {
+  function generateRandomString(length) {
+    const charset = "abcdefghijklmnopqrstuvwxz0123456789";
+    let randomString = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      randomString += charset[randomIndex];
+    }
+
+    return randomString;
+  }
+
+  const submitSignedData = async (modifiedPdfBlob, modified) => {
     // const localUrl = "http://localhost:3001/api/organzations/submit/";
     const localUrl = `${window.AppConfig.serverDomain}/api/organzations/submit/`;
 
@@ -466,12 +532,19 @@ export default function PdfSign(props) {
     data.append('username', username ? username : "null");
     data.append('signatureHash', signatureHash ? signatureHash : "null");
     data.append('requestId', requestId ? requestId : "null");
+    Object.keys(files).forEach((key) => {
+      data.append('files', files[key], modified[key]);
+    });
     // Add more fields as needed
 
     try {
       const response = await axios.post(localUrl, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
         },
       });
       console.log(`${response.data}`);
@@ -531,7 +604,14 @@ export default function PdfSign(props) {
     <div>
       <h1 className="text-center david"> הגשת מסמכים דיגיטלית </h1>
 
-      {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
+      {loading &&
+        <div className="loading-wrapper">
+          <div className="loading">
+            <AtomicSpinner />
+            <LinearProgress variant="determinate" value={uploadProgress} />
+          </div>
+        </div>
+      }
 
       <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
         <Document file={pdfFile}  >
@@ -579,55 +659,6 @@ export default function PdfSign(props) {
                       onMouseLeave={handleMouseLeave}
                     /> :
                       <>
-                        {/* <Select
-                          style={{
-                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                            position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                            height: `${windowWidth * inputField.editor.height / 40}px`,
-                            fontSize: `${windowWidth / 60}px`,
-                            padding: '0 0px 0 0px',
-                          }}
-                          value={inputField.value}
-                          onChange={(event) => handleSelectChange(event, index)}
-                          displayEmpty
-                          onMouseEnter={(event) => handleMouseEnter(event, index)}
-                          onMouseLeave={handleMouseLeave}
-                          sx={{
-                            padding: '0px',
-                            '@media (max-width: 600px)': {
-                              padding: '0px', // Adjust for mobile
-                              '& .MuiSelect-icon': {
-                                fontSize: `${windowWidth / 60}px`, // Adjust the size of the dropdown arrow for mobile
-                              },
-                            },
-                            '& .MuiOutlinedInput-input': {
-                              padding: '0px !important',
-                            },
-                            '& .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root': {
-                              padding: '0px !important',
-                            },
-                            '& .MuiSelect-icon': {
-                              display: 'none',
-                            },
-                          }}
-                          MenuProps={{
-                            PaperProps: {
-                              style: {
-                                maxHeight: '30vh', // 50% of viewport height
-                              },
-                            },
-                          }}
-                        >
-                          <MenuItem value="" style={{ fontSize: `${windowWidth / 60}px`, minHeight: '10px' }} disabled>
-                            -- בחר אופציה --
-                          </MenuItem>
-                          {inputField.options.map((input, inputIndex) => (
-                            <MenuItem style={{ fontSize: `${windowWidth / 60}px`, minHeight: '10px' }} key={inputIndex} value={input}>
-                              {input || 'בחר אופציה'} 
-                            </MenuItem>
-                          ))}
-                        </Select> */}
                         <select
                           style={{
                             opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
@@ -670,7 +701,10 @@ export default function PdfSign(props) {
       </div>
       <br />
 
-      {/* {selectedImage && <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />} */}
+
+      {requestedFiles.length > 0 && <RequestedFilesList requestedFiles={requestedFiles} files={files} setFiles={setFiles} />}
+
+
       <div className="d-flex justify-content-center p-3">
 
         {requireID && <div className="form-group" style={{ direction: 'rtl', textAlign: 'right' }}>
