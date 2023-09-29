@@ -64,6 +64,7 @@ export default function PdfSign(props) {
   const [files, setFiles] = useState({});
   const [modifiedFileNames, setModifiedFileNames] = useState({});
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [visibleDiv, setVisibleDiv] = useState(0);
 
   // Access the parameter using useParams
   const { key } = useParams();
@@ -145,6 +146,67 @@ export default function PdfSign(props) {
     fetchData();
   }, []);
 
+  const handleNextClick = () => {
+    if (visibleDiv === 0) {
+      const emptySignature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
+
+      var foundNotFilled = false;
+
+      inputFields.some(field => {
+        if (field?.mandatory === true && field?.value === "") {
+          alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
+          foundNotFilled = true;
+          return true;
+        }
+      })
+
+      if (foundNotFilled) {
+        return;
+      }
+
+      inputFields.some(inputField => {
+        if (inputField.value === "") {
+          if ((inputField.editor.inputType.value === 'childName' || inputField.editor.inputType.value === 'childId' ||
+            inputField.editor.inputType.value === 'day' || inputField.editor.inputType.value === 'month' || inputField.editor.inputType.value.includes('year') ||
+            inputField.editor.inputType.value === 'parentName1' || inputField.editor.inputType.value === 'parentId1' ||
+            inputField.editor.inputType.value === 'phoneNumber1' || inputField.editor.inputType.value === 'parentName2' ||
+            inputField.editor.inputType.value === 'parentId2' || inputField.editor.inputType.value === 'phoneNumber2' ||
+            inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear') ||
+            inputField.editor.inputType.value === 'childFirstName' || inputField.editor.inputType.value === 'childLastName' ||
+            inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'countryOfBirth' ||
+            inputField.editor.inputType.value === 'zip' || inputField.editor.inputType.value === 'address' ||
+            inputField.editor.inputType.value === 'parentJob1' || inputField.editor.inputType.value === 'dateOfBirth' ||
+            inputField.editor.inputType.value === 'parentEmailAddress1' || inputField.editor.inputType.value === 'parentEmailAddress2' ||
+            inputField.editor.inputType.value === 'healthIssueExist' || inputField.editor.inputType.value === 'receivedFullVaccination' ||
+            inputField.editor.inputType.value === 'hmo' || inputField.editor.inputType.value === 'attendanceStartingDate' ||
+            inputField.editor.inputType.value === 'from' || inputField.editor.inputType.value === 'signingDate' ||
+            inputField.editor.inputType.value === 'className' || inputField.editor.inputType.value === 'monthlyPayment' ||
+            inputField.editor.inputType.value === 'paymentMethod' || inputField.editor.inputType.value === 'allowsPhotographingInternal' ||
+            inputField.editor.inputType.value === 'allowsPhotographingExternal' || inputField.editor.inputType.value === 'approverName' ||
+            inputField.editor.inputType.value === 'approverStatus' || inputField.editor.inputType.value === 'approverAddress' ||
+            inputField.editor.inputType.value === 'approverPhoneNumber') {
+            alert(` אנא ודא שכל הפרטים מולאו. ("${inputField.editor.inputType.label}" בדף ${inputField.page} עדיין ריק)`);
+            foundNotFilled = true;
+            return true;
+          }
+        } else if ((inputField.editor.inputType.value.includes('signature')) && inputField.value === emptySignature) {
+          alert('אנא ודא שחתמת את המסמך.');
+          foundNotFilled = true;
+          return true;
+        }
+
+      });
+
+      if (foundNotFilled) {
+        return;
+      }
+    }
+    setVisibleDiv(current => current + 1);
+  };
+
+  const handlePreviousClick = () => {
+    setVisibleDiv(current => current - 1);
+  };
 
   const handleInputChange = (event, index) => {
     console.log(inputFields[index].editor.inputType.label);
@@ -319,10 +381,10 @@ export default function PdfSign(props) {
       return;
     }
 
-    if (requireID && !selectedImage) {
-      alert('אנא העלה צילום ת"ז עבור השדה המיועד למטה.');
-      return;
-    }
+    // if (requireID && !selectedImage) {
+    //   alert('אנא העלה צילום ת"ז עבור השדה המיועד למטה.');
+    //   return;
+    // }
 
     if (Object.keys(files).length !== requestedFiles.length) {
       alert('אנא הגש את המסמכים הדרושים למטה.');
@@ -612,113 +674,123 @@ export default function PdfSign(props) {
           </div>
         </div>
       }
-      
-      <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
-        <Document file={pdfFile}  >
-          <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
 
-            <Page onLoadSuccess={handlePdfLoadSuccess} key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />
+      <div className={`div-container ${visibleDiv === 0 ? '' : 'hidden'}`}>
+        <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
+          <Document file={pdfFile}  >
+            <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
+
+              <Page onLoadSuccess={handlePdfLoadSuccess} key={currentPage - 1} pageNumber={currentPage} width={containerRef.current?.clientWidth} />
 
 
-          </div>
-        </Document>
-        {documentLoaded &&
-          <>{inputFields.map((inputField, index) => (
-            (inputField.page === currentPage) ?
-              <div key={index}>
-                {
-                  (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') ? (
-                    <div key={index}
-                      style={{
-                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                        position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                        fontSize: `${windowWidth / 40}px`,
-                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                        padding: '4px',
-                      }}
-                      onMouseEnter={(event) => handleMouseEnter(event, index)}
-                      onMouseLeave={handleMouseLeave}
-                    >
+            </div>
+          </Document>
+          {documentLoaded &&
+            <>{inputFields.map((inputField, index) => (
+              (inputField.page === currentPage) ?
+                <div key={index}>
+                  {
+                    (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') ? (
+                      <div key={index}
+                        style={{
+                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                          position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                          fontSize: `${windowWidth / 40}px`,
+                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                          padding: '4px',
+                        }}
+                        onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                      >
 
-                      <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                        <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
 
-                    </div>) : <>{inputField?.options?.length === 0 ? <input
-                      key={index}
-                      type="text"
-                      value={inputField.value}
-                      onChange={(event) => handleInputChange(event, index)}
-                      style={{
-                        opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                        position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                        width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                        height: `${windowWidth * inputField.editor.height / 40}px`,
-                        fontSize: `${windowWidth / 60}px`,
-                        padding: '4px',
-                      }}
-                      onMouseEnter={(event) => handleMouseEnter(event, index)}
-                      onMouseLeave={handleMouseLeave}
-                    /> :
-                      <>
-                        <select
-                          style={{
-                            opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                            position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                            width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                            height: `${windowWidth * inputField.editor.height / 40}px`,
-                            fontSize: `${windowWidth / 60}px`,
-                            border: '1px solid #ccc',
-                          }}
-                          value={inputField.value}
-                          onChange={(event) => handleSelectChange(event, index)}
-                          displayEmpty
-                          onMouseEnter={(event) => handleMouseEnter(event, index)}
-                          onMouseLeave={handleMouseLeave}
-                        >
-                          <option value="" style={{ fontSize: `${windowWidth / 60}px` }} disabled>
-                            -- בחר אופציה --
-                          </option>
-                          {inputField.options.map((input, inputIndex) => (
-                            <option style={{ fontSize: `${windowWidth / 60}px` }} key={inputIndex} value={input}>
-                              {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                      </div>) : <>{inputField?.options?.length === 0 ? <input
+                        key={index}
+                        type="text"
+                        value={inputField.value}
+                        onChange={(event) => handleInputChange(event, index)}
+                        style={{
+                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                          position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                          height: `${windowWidth * inputField.editor.height / 40}px`,
+                          fontSize: `${windowWidth / 60}px`,
+                          padding: '4px',
+                        }}
+                        onMouseEnter={(event) => handleMouseEnter(event, index)}
+                        onMouseLeave={handleMouseLeave}
+                      /> :
+                        <>
+                          <select
+                            style={{
+                              opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
+                              position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
+                              width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
+                              height: `${windowWidth * inputField.editor.height / 40}px`,
+                              fontSize: `${windowWidth / 60}px`,
+                              border: '1px solid #ccc',
+                            }}
+                            value={inputField.value}
+                            onChange={(event) => handleSelectChange(event, index)}
+                            displayEmpty
+                            onMouseEnter={(event) => handleMouseEnter(event, index)}
+                            onMouseLeave={handleMouseLeave}
+                          >
+                            <option value="" style={{ fontSize: `${windowWidth / 60}px` }} disabled>
+                              -- בחר אופציה --
                             </option>
-                          ))}
-                        </select>
-                      </>}
-                  </>
-                }
+                            {inputField.options.map((input, inputIndex) => (
+                              <option style={{ fontSize: `${windowWidth / 60}px` }} key={inputIndex} value={input}>
+                                {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
+                              </option>
+                            ))}
+                          </select>
+                        </>}
+                    </>
+                  }
 
 
-              </div> : <div></div>
+                </div> : <div></div>
 
-          ))}</>}
+            ))}</>}
 
 
+        </div>
+        <div className="d-flex justify-content-center">
+          {(currentPage !== 1) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>}
+          {(numPages > 1) && <h1>{currentPage}</h1>}
+          {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
+        </div>
+        <br />
       </div>
-      <div className="d-flex justify-content-center">
-        {(currentPage !== 1) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === 1) ? currentPage : currentPage - 1)}><KeyboardArrowRightIcon /></button>}
-        {(numPages > 1) && <h1>{currentPage}</h1>}
-        {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
+
+      <div className={`div-container ${visibleDiv === 1 ? '' : 'hidden'}`}>
+        {requestedFiles.length > 0 && <RequestedFilesList requestedFiles={requestedFiles} files={files} setFiles={setFiles} />}
+
+
+        <div className="d-flex justify-content-center p-3">
+
+          {requireID && <div className="form-group" style={{ direction: 'rtl', textAlign: 'right' }}>
+            <label htmlFor="customFile" style={{ direction: 'rtl' }}> בחר צילום תעודה מזהה שמראה את פרטי הילד/ה: </label>
+            {/* <input type="file" className="form-control-file" id="fileInput" /> */}
+            <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
+          </div>}
+        </div>
+        <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
+
+          <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מה מספר פלפון שלך" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+
+          <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
+        </div>
       </div>
-      <br />
 
-
-      {requestedFiles.length > 0 && <RequestedFilesList requestedFiles={requestedFiles} files={files} setFiles={setFiles} />}
-
-
-      <div className="d-flex justify-content-center p-3">
-
-        {requireID && <div className="form-group" style={{ direction: 'rtl', textAlign: 'right' }}>
-          <label htmlFor="customFile" style={{ direction: 'rtl' }}> בחר צילום תעודה מזהה שמראה את פרטי הילד/ה: </label>
-          {/* <input type="file" className="form-control-file" id="fileInput" /> */}
-          <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
-        </div>}
-      </div>
-      <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
-
-        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מה מספר פלפון שלך" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
-
-        <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
-      </div>
+      <button onClick={handlePreviousClick} disabled={visibleDiv === 0}>
+        Previous
+      </button>
+      <button onClick={handleNextClick} disabled={visibleDiv === 1}>
+        Next
+      </button>
 
     </div>
   );
