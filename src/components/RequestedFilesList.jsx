@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Button, Input, Typography } from '@mui/material';
+import { Box, Button, Input, Typography, Divider, Paper, } from '@mui/material';
+
+import '../index.css';
 
 function RequestedFilesList(props) {
 
@@ -45,19 +47,30 @@ function RequestedFilesList(props) {
   };
 
   return (
-    <Box>
-      <Typography variant="h4" mb={2}>מסמכים דרושים</Typography>
-      {props.requestedFiles.map((description, index) => (
-        <Box key={index} mb={2}>
-          <Typography variant="h6">{description}</Typography>
-          <Input
-            type="file"
-            accept=".pdf, .xlsx, image/*, .heic, .heif"
-            onChange={(event) => handleFileChange(index, event)}
-          />
-        </Box>
-      ))}
-    </Box>
+
+    <div className="david" >
+      <Box >
+
+        <Typography variant="h4" mb={2}>מסמכים דרושים</Typography>
+        <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px', margin: '8px' }}>
+          {props.requestedFiles.map((description, index) => (
+            <React.Fragment key={index}>
+              <Typography variant="h6" align="right" style={{ marginTop: '8px' }}>{description}</Typography>
+              <Box key={index} mb={2} display="flex" alignItems="center" justifyContent="space-between">
+
+                <Input
+                  type="file"
+                  accept=".pdf, .xlsx, image/*, .heic, .heif"
+                  onChange={(event) => handleFileChange(index, event)}
+                  fullWidth
+                />
+              </Box>
+              {index !== props.requestedFiles.length - 1 && <Divider style={{ margin: '8px 0' }} />}
+            </React.Fragment>
+          ))}
+        </Paper>
+      </Box>
+    </div>
   );
 }
 

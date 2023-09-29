@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton } from '@mui/material';
+import {
+  Button, TextField, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Divider, Paper,
+} from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Done as DoneIcon, Cancel as CancelIcon } from '@mui/icons-material';
 
 function FileRequestForm(props) {
@@ -50,39 +52,39 @@ function FileRequestForm(props) {
 
   return (
     <div>
-      <h2>Request Files</h2>
+      <h2>מסמכים דרושים</h2>
       {!showInput && (
-        <div>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowInput(true)}>
-            Request File
+        <div dir="ltr">
+          <Button variant="contained" endIcon={<AddIcon />} onClick={() => setShowInput(true)}>
+            הוספת מסמכך דרוש
           </Button>
         </div>
       )}
       {showInput && (
         <div>
           <TextField
-            label="File Description (max 100 characters)"
+            label="תיאור המסמך (max 100 characters)"
             variant="outlined"
             fullWidth
             value={currentDescription}
             onChange={(e) => setCurrentDescription(e.target.value)}
           />
           {editingIndex !== null ? (
-            <div>
-              <Button variant="contained" startIcon={<DoneIcon />} onClick={handleSaveEdit}>
-                Done
+            <div dir="ltr">
+              <Button variant="contained" endIcon={<DoneIcon />} onClick={handleSaveEdit}>
+                סיום
               </Button>
-              <Button variant="contained" startIcon={<CancelIcon />} onClick={handleCancelEdit}>
-                Cancel
+              <Button variant="contained" endIcon={<CancelIcon />} onClick={handleCancelEdit}>
+                ביטול
               </Button>
             </div>
           ) : (
-            <div>
-              <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddFileRequest}>
-                Add
+            <div dir="ltr">
+              <Button variant="contained" endIcon={<AddIcon />} onClick={handleAddFileRequest}>
+                הוספה
               </Button>
-              <Button variant="contained" startIcon={<CancelIcon />} onClick={() => setShowInput(false)}>
-                Cancel
+              <Button variant="contained" endIcon={<CancelIcon />} onClick={() => setShowInput(false)}>
+                ביטול
               </Button>
             </div>
           )}
@@ -90,19 +92,24 @@ function FileRequestForm(props) {
       )}
       <div>
         <List>
-          {props.requestedFiles.map((file, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={file} />
-              <ListItemSecondaryAction>
-                <IconButton edge="end" onClick={() => handleEditFileRequest(index)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton edge="end" onClick={() => handleDeleteFileRequest(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+          <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>
+            {props.requestedFiles.map((file, index) => (
+              <React.Fragment key={index}>
+                <ListItem key={index}>
+                  <ListItemText primary={file} />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" onClick={() => handleEditFileRequest(index)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton edge="end" onClick={() => handleDeleteFileRequest(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                {index !== props.requestedFiles.length - 1 && <Divider style={{ margin: '8px 0' }} />}
+              </React.Fragment>
+            ))}
+          </Paper>
         </List>
       </div>
     </div>

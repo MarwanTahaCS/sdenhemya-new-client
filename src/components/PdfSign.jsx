@@ -11,7 +11,7 @@ import fontkit from '@pdf-lib/fontkit';
 import '../index.css';
 import { FaEdit } from 'react-icons/fa';
 import Slider from '@mui/material/Slider';
-import { Typography, TextField, Autocomplete, Box, Container, Select, MenuItem } from '@mui/material';
+import { Paper } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import axios from "axios";
@@ -612,7 +612,7 @@ export default function PdfSign(props) {
           </div>
         </div>
       }
-
+      
       <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
         <Document file={pdfFile}  >
           <div style={{ pointerEvents: `${addingTextInputField || addingSignatureInputField ? 'auto' : 'none'}` }} >
