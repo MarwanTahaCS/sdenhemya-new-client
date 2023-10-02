@@ -22,6 +22,10 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 import RequestedFilesList from "./RequestedFilesList.jsx";
 import SignatureModal from "./SignatureModal.jsx";
+import TextInput from "./inputs/TextInput.jsx";
+import SelectInput from "./inputs/SelectInput.jsx";
+import SignatureInput from "./inputs/SignatureInput.jsx";
+import DateInput from "./inputs/DateInput.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -30,18 +34,7 @@ function useQuery() {
 }
 
 export default function PdfSign(props) {
-  const [inputFields, setInputFields] = useState([
-    // { x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 1, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'חתימה', value: 'signature1' } } },
-    // { x: 0.24397031539888683, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.12, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.3562152133580705, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.07, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.45640074211502785, y: 0.11247759856630825, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.05, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.2894248608534323, y: 0.2845206093189964, value: '', page: 1, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.49165120593692024, y: 0.2845206093189964, value: '', page: 2, isCursor: false, editor: { state: false, width: 0.23, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.512987012987013, y: 0.3275313620071685, value: '', page: 2, isCursor: false, editor: { state: false, width: 0.17, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.3395176252319109, y: 0.3282482078853047, value: '', page: 3, isCursor: false, editor: { state: false, width: 0.16, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.18274582560296845, y: 0.3268145161290323, value: '', page: 3, isCursor: false, editor: { state: false, width: 0.15, height: 1, font: 1, inputType: { label: 'השנה', value: 'year' } } },
-    // { x: 0.016697588126159554, y: 0.8501120071684588, value: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC", page: 2, isCursor: false, editor: { state: false, width: 0.25, height: 1, font: 1, inputType: { label: 'חתימה', value: 'signature1' } } },
-  ]);
+  const [inputFields, setInputFields] = useState([]);
   const [signatures, setSignatures] = useState([]);
   const [containerBounds, setContainerBounds] = useState([]);
   const [clicks, setClicks] = useState([]);
@@ -689,72 +682,19 @@ export default function PdfSign(props) {
             <>{inputFields.map((inputField, index) => (
               (inputField.page === currentPage) ?
                 <div key={index}>
-                  {
-                    (inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') ? (
-                      <div key={index}
-                        style={{
-                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                          position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                          fontSize: `${windowWidth / 40}px`,
-                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                          padding: '4px',
-                        }}
-                        onMouseEnter={(event) => handleMouseEnter(event, index)}
-                        onMouseLeave={handleMouseLeave}
-                      >
+                  {(inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') &&
+                    <SignatureInput index={index} inputField={inputField} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                        <SignatureModal key={index} windowWidth={windowWidth} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} url={inputField.value} index={index} signer={"חתימה ראשונה"} />
+                  {(inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'signingDate') &&
+                    <DateInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                      </div>) : <>{inputField?.options?.length === 0 ? <input
-                        key={index}
-                        type="text"
-                        value={inputField.value}
-                        onChange={(event) => handleInputChange(event, index)}
-                        style={{
-                          opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                          position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                          width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                          height: `${windowWidth * inputField.editor.height / 40}px`,
-                          fontSize: `${windowWidth / 60}px`,
-                          padding: '4px',
-                        }}
-                        onMouseEnter={(event) => handleMouseEnter(event, index)}
-                        onMouseLeave={handleMouseLeave}
-                      /> :
-                        <>
-                          <select
-                            style={{
-                              opacity: `${hoveredIndex === index || inputField.editor.state ? 0.8 : 1}`,
-                              position: 'absolute', top: inputField.y * (windowWidth) * ((pageHeight) / pageWidth), left: inputField.x * (windowWidth),
-                              width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
-                              height: `${windowWidth * inputField.editor.height / 40}px`,
-                              fontSize: `${windowWidth / 60}px`,
-                              border: '1px solid #ccc',
-                            }}
-                            value={inputField.value}
-                            onChange={(event) => handleSelectChange(event, index)}
-                            displayEmpty
-                            onMouseEnter={(event) => handleMouseEnter(event, index)}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            <option value="" style={{ fontSize: `${windowWidth / 60}px` }} disabled>
-                              -- בחר אופציה --
-                            </option>
-                            {inputField.options.map((input, inputIndex) => (
-                              <option style={{ fontSize: `${windowWidth / 60}px` }} key={inputIndex} value={input}>
-                                {input || 'בחר אופציה'} {/* Display 'Empty Input' if the input is an empty string */}
-                              </option>
-                            ))}
-                          </select>
-                        </>}
-                    </>
-                  }
+                  {inputField?.options?.length > 0 &&
+                    <SelectInput index={index} inputField={inputField} handleSelectChange={handleSelectChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-
-                </div> : <div></div>
-
+                  {inputField?.options?.length === 0 && inputField.editor.inputType.value !== 'signature1' && inputField.editor.inputType.value !== 'signature2' && inputField.editor.inputType.value !== 'dateOfBirth' && inputField.editor.inputType.value !== 'signingDate' &&
+                    <TextInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
+                </div>: <div></div>
             ))}</>}
-
 
         </div>
         <div className="d-flex justify-content-center">
