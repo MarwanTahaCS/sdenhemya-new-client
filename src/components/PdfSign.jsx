@@ -26,6 +26,7 @@ import TextInput from "./inputs/TextInput.jsx";
 import SelectInput from "./inputs/SelectInput.jsx";
 import SignatureInput from "./inputs/SignatureInput.jsx";
 import DateInput from "./inputs/DateInput.jsx";
+import IsraeliIdInput from "./inputs/IsraeliIdInput.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -527,7 +528,13 @@ export default function PdfSign(props) {
         const documentUrl = await submitSignedData(modifiedPdfBlob, modified);
         //------------------------------------------
 
-        navigate(`/success/${documentUrl}`);
+        if (documentUrl?.status === "success") {
+          navigate(`/success/${documentUrl.response}`);
+        } else {
+          window.alert("משהו השתבש, אנא נסה שוב מאוחר יותר");
+        }
+
+
         setLoading(false);
 
       } else {
@@ -604,11 +611,12 @@ export default function PdfSign(props) {
       });
       console.log(`${response.data}`);
 
-      return response?.data?.documentURL;
+      return { status: "success", response: response?.data?.documentURL };
 
       // Do something with the response if needed
     } catch (error) {
       console.error('Error:', error);
+      return { status: "error", response: error };
     }
   };
 
@@ -682,18 +690,32 @@ export default function PdfSign(props) {
             <>{inputFields.map((inputField, index) => (
               (inputField.page === currentPage) ?
                 <div key={index}>
-                  {(inputField.editor.inputType.value === 'signature1' || inputField.editor.inputType.value === 'signature2') &&
+                  {(inputField.editor.inputType.value === 'signature1' || 
+                  inputField.editor.inputType.value === 'signature2') &&
                     <SignatureInput index={index} inputField={inputField} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                  {(inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'signingDate') &&
+                  {(inputField.editor.inputType.value === 'dateOfBirth' || 
+                  inputField.editor.inputType.value === 'signingDate') &&
                     <DateInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
                   {inputField?.options?.length > 0 &&
                     <SelectInput index={index} inputField={inputField} handleSelectChange={handleSelectChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                  {inputField?.options?.length === 0 && inputField.editor.inputType.value !== 'signature1' && inputField.editor.inputType.value !== 'signature2' && inputField.editor.inputType.value !== 'dateOfBirth' && inputField.editor.inputType.value !== 'signingDate' &&
+                  {(inputField.editor.inputType.value === 'childId' || 
+                  inputField.editor.inputType.value === 'parentId1' || 
+                  inputField.editor.inputType.value === 'parentId2' ) &&
+                    <IsraeliIdInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
+
+                  {inputField?.options?.length === 0 && 
+                  inputField.editor.inputType.value !== 'signature1' && 
+                  inputField.editor.inputType.value !== 'signature2' && 
+                  inputField.editor.inputType.value !== 'dateOfBirth' && 
+                  inputField.editor.inputType.value !== 'signingDate' &&
+                  inputField.editor.inputType.value !== 'childId' &&
+                  inputField.editor.inputType.value !== 'parentId1' && 
+                  inputField.editor.inputType.value !== 'parentId2' &&
                     <TextInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
-                </div>: <div></div>
+                </div> : <div></div>
             ))}</>}
 
         </div>
