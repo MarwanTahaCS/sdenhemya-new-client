@@ -492,23 +492,20 @@ export default function PdfSign(props) {
 
         const page = pdfDoc.addPage();
         const { width, height } = page.getSize();
-        const linksObject = {
-          0: 'https://templates-api.myvarno.io/api/documentSign/file-1-az1mjk1nibcpczvk.jpeg',
-          1: 'https://templates-api.myvarno.io/api/documentSign/file-2-stquwcs6qhhfi5z0.pdf',
-          // ...
-        };
-
 
         let y = 500;
         const x = 50;
+        let counter = 0;
 
         // Iterate through the links object and write each link to the PDF
         for (const link of Object.values(modified)) {
           // Write the link to the PDF
-          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y, size: 12, color: rgb(0, 0, 1) });
+          page.drawText(`${requestedFiles[counter]}`, { x, y, size: 12, color: rgb(0, 0, 1), font:customFont });
+          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y: y-20, size: 12, color: rgb(0, 0, 1), font:customFont });
           // `https://templates-api.myvarno.io/api/documentSign/${link}`
           // Move the y-coordinate down for the next link
-          y -= 20;
+          y -= 40;
+          counter = counter+1;
         }
       }
 
@@ -579,11 +576,6 @@ export default function PdfSign(props) {
     const localUrl = `${window.AppConfig.serverDomain}/api/organzations/submit/`;
 
     console.log(inputFields);
-
-    // const govId = query.get("gov_id");
-    // const username = query.get("username");
-    // const signatureHash = query.get("signature_hash");
-    // const requestId = query.get("request_id");
 
     const data = new FormData();
     data.append('data', JSON.stringify(extractValues(inputFields)));

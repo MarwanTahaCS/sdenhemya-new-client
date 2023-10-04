@@ -147,17 +147,6 @@ export default function Org(props) {
         // Function to fetch data from the backend server
         const fetchSubmittedData = async () => {
             try {
-                setLoading(true);
-                // Make the GET request using Axios
-                // const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${templateID}`);
-                // const result = response.data.map((submitted) => {
-                //     const { staticFields, signedPdf, submitterPhone } = submitted;
-                //     const { childId, childName, parentName1, parentName2 } = staticFields;
-                //     return { childId, childName, submitterPhone, parentName1, parentName2, signedPdf };
-                // });
-                // console.log(result);
-
-                setLoading(false);
                 navigate(`/submitted/${templateID}`);
             } catch (error) {
                 console.error('Error fetching data:', error);
