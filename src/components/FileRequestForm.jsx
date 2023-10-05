@@ -90,8 +90,8 @@ function FileRequestForm(props) {
           )}
         </div>
       )}
-      
-      <div>
+
+      {props.requestedFiles.length > 0 && <div>
         <List>
           <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>
             {props.requestedFiles.map((file, index) => (
@@ -112,7 +112,7 @@ function FileRequestForm(props) {
             ))}
           </Paper>
         </List>
-      </div>
+      </div>}
     </div>
   );
 }

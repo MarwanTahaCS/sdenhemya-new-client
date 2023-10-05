@@ -904,7 +904,7 @@ export default function CreateTemplate(props) {
         {(currentPage !== numPages) && <button className="btn btn-secondary m-1" onClick={() => handlePageChange((currentPage === numPages) ? currentPage : currentPage + 1)}><KeyboardArrowLeftIcon /></button>}
         <br />
         <div>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 checked={requireID}
@@ -913,12 +913,12 @@ export default function CreateTemplate(props) {
               />
             }
             label="דרוש תעודה מזהה"
-          />
+          /> */}
           
           <FileRequestForm requestedFiles={requestedFiles} setRequestedFiles={setRequestedFiles} />
         </div>
 
-        <button className="btn btn-primary m-1" onClick={saveInputFields}>Save Input Fields</button>
+        <button className="btn btn-primary m-1" onClick={saveInputFields}>צור עותק דיגיטאלי</button>
 
         {loading &&
           <div className="loading-wrapper">

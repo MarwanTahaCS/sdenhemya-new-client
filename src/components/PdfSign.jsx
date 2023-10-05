@@ -493,19 +493,35 @@ export default function PdfSign(props) {
         const page = pdfDoc.addPage();
         const { width, height } = page.getSize();
 
-        let y = 500;
+        let y = height-200;
         const x = 50;
         let counter = 0;
+        const sizeFont = 12;
+        let totalLines = 0;
 
         // Iterate through the links object and write each link to the PDF
         for (const link of Object.values(modified)) {
           // Write the link to the PDF
-          page.drawText(`${requestedFiles[counter]}`, { x, y, size: 12, color: rgb(0, 0, 1), font:customFont });
-          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y: y-20, size: 12, color: rgb(0, 0, 1), font:customFont });
+          const lines = await wrapText(`${requestedFiles[counter]}`, pageWidth * 0.8, customFont, sizeFont);
+          totalLines = totalLines + lines.length;
+
+          lines.forEach((line, index) => {
+            console.log(line);
+            page.drawText(`${index===0?`${counter+1}( `:" "}${line}`, {
+              x: x + pageWidth * 0.8 - customFont.widthOfTextAtSize(lines[index], sizeFont),
+              y: y-20*(index),
+              font: customFont,
+              size: sizeFont,
+              color: rgb(0, 0, 0)
+            });
+          });
+
+          // page.drawText(`${requestedFiles[counter]}`, { x, y, size: 12, font: customFont });
+          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y: y - (lines.length) * 20, size: sizeFont, color: rgb(0, 0, 1), font: customFont });
           // `https://templates-api.myvarno.io/api/documentSign/${link}`
           // Move the y-coordinate down for the next link
-          y -= 40;
-          counter = counter+1;
+          y -= (lines.length+2)*20;
+          counter = counter + 1;
         }
       }
 
@@ -682,30 +698,30 @@ export default function PdfSign(props) {
             <>{inputFields.map((inputField, index) => (
               (inputField.page === currentPage) ?
                 <div key={index}>
-                  {(inputField.editor.inputType.value === 'signature1' || 
-                  inputField.editor.inputType.value === 'signature2') &&
+                  {(inputField.editor.inputType.value === 'signature1' ||
+                    inputField.editor.inputType.value === 'signature2') &&
                     <SignatureInput index={index} inputField={inputField} setHoveredIndex={setHoveredIndex} setSignatureOpen={setSignatureOpen} updateSignature={updateSignature} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                  {(inputField.editor.inputType.value === 'dateOfBirth' || 
-                  inputField.editor.inputType.value === 'signingDate') &&
+                  {(inputField.editor.inputType.value === 'dateOfBirth' ||
+                    inputField.editor.inputType.value === 'signingDate') &&
                     <DateInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
                   {inputField?.options?.length > 0 &&
                     <SelectInput index={index} inputField={inputField} handleSelectChange={handleSelectChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                  {(inputField.editor.inputType.value === 'childId' || 
-                  inputField.editor.inputType.value === 'parentId1' || 
-                  inputField.editor.inputType.value === 'parentId2' ) &&
+                  {(inputField.editor.inputType.value === 'childId' ||
+                    inputField.editor.inputType.value === 'parentId1' ||
+                    inputField.editor.inputType.value === 'parentId2') &&
                     <IsraeliIdInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
 
-                  {inputField?.options?.length === 0 && 
-                  inputField.editor.inputType.value !== 'signature1' && 
-                  inputField.editor.inputType.value !== 'signature2' && 
-                  inputField.editor.inputType.value !== 'dateOfBirth' && 
-                  inputField.editor.inputType.value !== 'signingDate' &&
-                  inputField.editor.inputType.value !== 'childId' &&
-                  inputField.editor.inputType.value !== 'parentId1' && 
-                  inputField.editor.inputType.value !== 'parentId2' &&
+                  {inputField?.options?.length === 0 &&
+                    inputField.editor.inputType.value !== 'signature1' &&
+                    inputField.editor.inputType.value !== 'signature2' &&
+                    inputField.editor.inputType.value !== 'dateOfBirth' &&
+                    inputField.editor.inputType.value !== 'signingDate' &&
+                    inputField.editor.inputType.value !== 'childId' &&
+                    inputField.editor.inputType.value !== 'parentId1' &&
+                    inputField.editor.inputType.value !== 'parentId2' &&
                     <TextInput index={index} inputField={inputField} handleInputChange={handleInputChange} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} hoveredInde={hoveredIndex} windowWidth={windowWidth} pageHeight={pageHeight} pageWidth={pageWidth} />}
                 </div> : <div></div>
             ))}</>}
