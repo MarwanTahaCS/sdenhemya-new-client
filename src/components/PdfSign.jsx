@@ -71,8 +71,11 @@ export default function PdfSign(props) {
   const username = query.get("username");
   const signatureHash = query.get("signature_hash");
   const requestId = query.get("request_id");
+  const child_name = query.get("child_name");
+  const signer_name = query.get("signer_name");
+  const child_dob = query.get("child_dob");
 
-  // console.log(govId, username, signatureHash, requestId);
+  console.log(govId, username, signatureHash, requestId, child_name, signer_name, child_dob);
 
 
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
@@ -120,7 +123,9 @@ export default function PdfSign(props) {
           setPageHeight(height);
         }
         //----------------------------------------------------------
-        setInputFields(response.data.inputFields); // Update the state with the fetched data
+
+        await setParameterData(response.data.inputFields, child_name ,signer_name ,child_dob );
+         // Update the state with the fetched data
         if (response.data.inputFields) {
           setRequireID(response.data.requireID);
         }
@@ -133,6 +138,21 @@ export default function PdfSign(props) {
     // Call the fetchData function when the component mounts
     fetchData();
   }, []);
+
+  async function setParameterData(fetchedInputFields, child_name ,signer_name ,child_dob ){
+    const updatedInputFields = [...fetchedInputFields];
+
+    fetchedInputFields.forEach((field, index2) => {
+      if (field.editor.inputType.value === "childName" && child_name !== null) {
+        updatedInputFields[index2].value = child_name;
+      } else if (field.editor.inputType.value === "approverName" && signer_name !== null) {
+        updatedInputFields[index2].value = signer_name;
+      } else if (field.editor.inputType.value === "dateOfBirth" && child_dob !== null && child_dob !== "") {
+        updatedInputFields[index2].value = child_dob;
+      }
+    })
+    setInputFields(updatedInputFields);
+  }
 
 
   const handleInputChange = (event, index) => {
