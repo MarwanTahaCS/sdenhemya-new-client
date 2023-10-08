@@ -71,11 +71,24 @@ export default function PdfSign(props) {
   const username = query.get("username");
   const signatureHash = query.get("signature_hash");
   const requestId = query.get("request_id");
+
+  // for parent signing
   const child_name = query.get("child_name");
   const signer_name = query.get("signer_name");
   const child_dob = query.get("child_dob");
 
-  console.log(govId, username, signatureHash, requestId, child_name, signer_name, child_dob);
+  // for teacher signing
+  const child_id = query.get("child_id");
+  const first_name = query.get("first_name");
+  const last_name = query.get("last_name");
+  const kindergarten = query.get("kindergarten");
+  const parent_name = query.get("parent_name");
+  const parent_phone = query.get("parent_phone");
+  const form_id = query.get("form_id");
+
+
+  // console.log(govId, username, signatureHash, requestId, child_name, signer_name, child_dob,
+  //   child_id, first_name, last_name, kindergarten, parent_name, parent_phone, form_id);
 
 
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
@@ -139,7 +152,7 @@ export default function PdfSign(props) {
     fetchData();
   }, []);
 
-  async function setParameterData(fetchedInputFields, child_name ,signer_name ,child_dob ){
+  async function setParameterData(fetchedInputFields, child_name ,signer_name ,child_dob){
     const updatedInputFields = [...fetchedInputFields];
 
     fetchedInputFields.forEach((field, index2) => {
@@ -149,7 +162,21 @@ export default function PdfSign(props) {
         updatedInputFields[index2].value = signer_name;
       } else if (field.editor.inputType.value === "dateOfBirth" && child_dob !== null && child_dob !== "") {
         updatedInputFields[index2].value = child_dob;
-      }
+      } else if (field.editor.inputType.value === "childId" && govId  !== null) {
+        updatedInputFields[index2].value = govId ;
+      } else if (field.editor.inputType.value === "childId" && child_id  !== null) {
+        updatedInputFields[index2].value = child_id ;
+      } else if (field.editor.inputType.value === "childFirstName" && first_name  !== null) {
+        updatedInputFields[index2].value = first_name ;
+      } else if (field.editor.inputType.value === "childLastName" && last_name  !== null) {
+        updatedInputFields[index2].value = last_name ;
+      } else if (field.editor.inputType.value === "kindergarten" && kindergarten  !== null) {
+        updatedInputFields[index2].value = kindergarten ;
+      } else if (field.editor.inputType.value === "parentName1" && parent_name  !== null) {
+        updatedInputFields[index2].value = parent_name ;
+      } else if (field.editor.inputType.value === "phoneNumber1" && parent_phone  !== null) {
+        updatedInputFields[index2].value = parent_phone ;
+      } 
     })
     setInputFields(updatedInputFields);
   }
@@ -483,6 +510,9 @@ export default function PdfSign(props) {
     data.append('username', username ? username : "null");
     data.append('signatureHash', signatureHash ? signatureHash : "null");
     data.append('requestId', requestId ? requestId : "null");
+
+    data.append('child_id', child_id ? child_id : "null");
+    data.append('form_id', form_id ? form_id : "null");
     // Add more fields as needed
 
     try {
@@ -698,7 +728,7 @@ export default function PdfSign(props) {
       </div>
       <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
 
-        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מה מספר פלפון שלך" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מספר טלפון נייד" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
 
         <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
       </div>
