@@ -814,18 +814,13 @@ export default function PdfSign(props) {
           <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
         </div>}
       </div> */}
-      <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
-
-        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מספר טלפון נייד" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
-
-        <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
-      </div>
+      
 
       <Button onClick={handlePreviousClick} disabled={visibleDiv === 0}>
-        Previous
+        הקודם
       </Button>
       <Button onClick={handleNextClick} disabled={visibleDiv === 1}>
-        Next
+        הבא
       </Button>
 
     </div>
