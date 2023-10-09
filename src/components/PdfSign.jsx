@@ -74,7 +74,23 @@ export default function PdfSign(props) {
   const signatureHash = query.get("signature_hash");
   const requestId = query.get("request_id");
 
-  // console.log(govId, username, signatureHash, requestId);
+  // for parent signing
+  const child_name = query.get("child_name");
+  const signer_name = query.get("signer_name");
+  const child_dob = query.get("child_dob");
+
+  // for teacher signing
+  const child_id = query.get("child_id");
+  const first_name = query.get("first_name");
+  const last_name = query.get("last_name");
+  const kindergarten = query.get("kindergarten");
+  const parent_name = query.get("parent_name");
+  const parent_phone = query.get("parent_phone");
+  const form_id = query.get("form_id");
+
+
+  // console.log(govId, username, signatureHash, requestId, child_name, signer_name, child_dob,
+  //   child_id, first_name, last_name, kindergarten, parent_name, parent_phone, form_id);
 
 
   // const pdfFile = `http://localhost:3001/api/documentSign/${key}.pdf`;
@@ -123,7 +139,9 @@ export default function PdfSign(props) {
           setPageHeight(height);
         }
         //----------------------------------------------------------
-        setInputFields(response.data.inputFields); // Update the state with the fetched data
+
+        await setParameterData(response.data.inputFields, child_name ,signer_name ,child_dob );
+         // Update the state with the fetched data
         if (response.data.inputFields) {
           setRequireID(response.data.requireID);
         }
@@ -201,6 +219,35 @@ export default function PdfSign(props) {
   const handlePreviousClick = () => {
     setVisibleDiv(current => current - 1);
   };
+  async function setParameterData(fetchedInputFields, child_name ,signer_name ,child_dob){
+    const updatedInputFields = [...fetchedInputFields];
+
+    fetchedInputFields.forEach((field, index2) => {
+      if (field.editor.inputType.value === "childName" && child_name !== null) {
+        updatedInputFields[index2].value = child_name;
+      } else if (field.editor.inputType.value === "approverName" && signer_name !== null) {
+        updatedInputFields[index2].value = signer_name;
+      } else if (field.editor.inputType.value === "dateOfBirth" && child_dob !== null && child_dob !== "") {
+        updatedInputFields[index2].value = child_dob;
+      } else if (field.editor.inputType.value === "childId" && govId  !== null) {
+        updatedInputFields[index2].value = govId ;
+      } else if (field.editor.inputType.value === "childId" && child_id  !== null) {
+        updatedInputFields[index2].value = child_id ;
+      } else if (field.editor.inputType.value === "childFirstName" && first_name  !== null) {
+        updatedInputFields[index2].value = first_name ;
+      } else if (field.editor.inputType.value === "childLastName" && last_name  !== null) {
+        updatedInputFields[index2].value = last_name ;
+      } else if (field.editor.inputType.value === "kindergarten" && kindergarten  !== null) {
+        updatedInputFields[index2].value = kindergarten ;
+      } else if (field.editor.inputType.value === "parentName1" && parent_name  !== null) {
+        updatedInputFields[index2].value = parent_name ;
+      } else if (field.editor.inputType.value === "phoneNumber1" && parent_phone  !== null) {
+        updatedInputFields[index2].value = parent_phone ;
+      } 
+    })
+    setInputFields(updatedInputFields);
+  }
+
 
   const handleInputChange = (event, index) => {
     console.log(inputFields[index].editor.inputType.label);
@@ -605,6 +652,9 @@ export default function PdfSign(props) {
     Object.keys(files).forEach((key) => {
       data.append('files', files[key], modified[key]);
     });
+
+    data.append('child_id', child_id ? child_id : "null");
+    data.append('form_id', form_id ? form_id : "null");
     // Add more fields as needed
 
     try {
@@ -755,12 +805,28 @@ export default function PdfSign(props) {
         </div>
       </div>
 
-      <button onClick={handlePreviousClick} disabled={visibleDiv === 0}>
+      {/* {selectedImage && <img src={selectedImage} alt="Selected" style={{ maxWidth: '100%' }} />} */}
+      {/* <div className="d-flex justify-content-center p-3">
+
+        {requireID && <div className="form-group" style={{ direction: 'rtl', textAlign: 'right' }}>
+          <label htmlFor="customFile" style={{ direction: 'rtl' }}> בחר צילום תעודה מזהה שמראה את פרטי הילד/ה: </label>
+
+          <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
+        </div>}
+      </div> */}
+      <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
+
+        <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מספר טלפון נייד" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+
+        <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
+      </div>
+
+      <Button onClick={handlePreviousClick} disabled={visibleDiv === 0}>
         Previous
-      </button>
-      <button onClick={handleNextClick} disabled={visibleDiv === 1}>
+      </Button>
+      <Button onClick={handleNextClick} disabled={visibleDiv === 1}>
         Next
-      </button>
+      </Button>
 
     </div>
   );
