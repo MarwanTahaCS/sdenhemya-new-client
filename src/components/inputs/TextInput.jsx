@@ -2,7 +2,7 @@ import React from 'react';
 
 function TextInput({ index, inputField, handleInputChange, handleMouseEnter, handleMouseLeave, hoveredIndex, windowWidth, pageHeight, pageWidth }) {
   return (
-    <>
+    <> 
       <input
         key={index}
         type="text"
@@ -15,6 +15,7 @@ function TextInput({ index, inputField, handleInputChange, handleMouseEnter, han
           height: `${windowWidth * inputField.editor.height / 40}px`,
           fontSize: `${windowWidth / 60}px`,
           padding: '4px',
+          border: `${inputField.valid? '':'2px solid red'}`
         }}
         onMouseEnter={(event) => handleMouseEnter(event, index)}
         onMouseLeave={handleMouseLeave}

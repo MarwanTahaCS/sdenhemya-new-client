@@ -20,13 +20,14 @@ import AtomicSpinner from 'atomic-spinner';
 import DOMPurify from 'dompurify';
 import LinearProgress from '@mui/material/LinearProgress';
 
+// local imports
 import RequestedFilesList from "./RequestedFilesList.jsx";
-import SignatureModal from "./SignatureModal.jsx";
 import TextInput from "./inputs/TextInput.jsx";
 import SelectInput from "./inputs/SelectInput.jsx";
 import SignatureInput from "./inputs/SignatureInput.jsx";
 import DateInput from "./inputs/DateInput.jsx";
 import IsraeliIdInput from "./inputs/IsraeliIdInput.jsx";
+import FormStepper from "./minorComponents/FormStepper.jsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -111,7 +112,7 @@ export default function PdfSign(props) {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [visibleDiv]);
 
   useEffect(() => {
     // Function to fetch data from the backend server
@@ -140,8 +141,8 @@ export default function PdfSign(props) {
         }
         //----------------------------------------------------------
 
-        await setParameterData(response.data.inputFields, child_name ,signer_name ,child_dob );
-         // Update the state with the fetched data
+        await setParameterData(response.data.inputFields, child_name, signer_name, child_dob);
+        // Update the state with the fetched data
         if (response.data.inputFields) {
           setRequireID(response.data.requireID);
         }
@@ -158,68 +159,54 @@ export default function PdfSign(props) {
     fetchData();
   }, []);
 
+  function updateValidity(index){
+    const updatedInputFields = [...inputFields];
+
+    updatedInputFields[index].valid = false;
+
+    setInputFields(updatedInputFields);
+  }
+
   const handleNextClick = () => {
     if (visibleDiv === 0) {
       const emptySignature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
 
       var foundNotFilled = false;
 
-      inputFields.some(field => {
+      inputFields.some((field, index) => {
         if (field?.mandatory === true && field?.value === "") {
-          alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
+          updateValidity(index);
+          alert(` אנא ודא שכל הפרטים מולאו. ("${field?.editor.inputType.label}" בדף ${field.page} עדיין ריק)`);
           foundNotFilled = true;
+          setCurrentPage(field?.page);
+          return true;
+        } else if (field?.mandatory === true && (field?.editor.inputType.value.includes('signature')) && field?.value === emptySignature){
+          updateValidity(index);
+          alert('אנא ודא שחתמת את המסמך.');
+          foundNotFilled = true;
+          setCurrentPage(field?.page);
           return true;
         }
       })
-
+  
       if (foundNotFilled) {
         return;
       }
 
-      inputFields.some(inputField => {
-        if (inputField.value === "") {
-          if ((inputField.editor.inputType.value === 'childName' || inputField.editor.inputType.value === 'childId' ||
-            inputField.editor.inputType.value === 'day' || inputField.editor.inputType.value === 'month' || inputField.editor.inputType.value.includes('year') ||
-            inputField.editor.inputType.value === 'parentName1' || inputField.editor.inputType.value === 'parentId1' ||
-            inputField.editor.inputType.value === 'phoneNumber1' || inputField.editor.inputType.value === 'parentName2' ||
-            inputField.editor.inputType.value === 'parentId2' || inputField.editor.inputType.value === 'phoneNumber2' ||
-            inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear') ||
-            inputField.editor.inputType.value === 'childFirstName' || inputField.editor.inputType.value === 'childLastName' ||
-            inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'countryOfBirth' ||
-            inputField.editor.inputType.value === 'zip' || inputField.editor.inputType.value === 'address' ||
-            inputField.editor.inputType.value === 'parentJob1' || inputField.editor.inputType.value === 'dateOfBirth' ||
-            inputField.editor.inputType.value === 'parentEmailAddress1' || inputField.editor.inputType.value === 'parentEmailAddress2' ||
-            inputField.editor.inputType.value === 'healthIssueExist' || inputField.editor.inputType.value === 'receivedFullVaccination' ||
-            inputField.editor.inputType.value === 'hmo' || inputField.editor.inputType.value === 'attendanceStartingDate' ||
-            inputField.editor.inputType.value === 'from' || inputField.editor.inputType.value === 'signingDate' ||
-            inputField.editor.inputType.value === 'className' || inputField.editor.inputType.value === 'monthlyPayment' ||
-            inputField.editor.inputType.value === 'paymentMethod' || inputField.editor.inputType.value === 'allowsPhotographingInternal' ||
-            inputField.editor.inputType.value === 'allowsPhotographingExternal' || inputField.editor.inputType.value === 'approverName' ||
-            inputField.editor.inputType.value === 'approverStatus' || inputField.editor.inputType.value === 'approverAddress' ||
-            inputField.editor.inputType.value === 'approverPhoneNumber') {
-            alert(` אנא ודא שכל הפרטים מולאו. ("${inputField.editor.inputType.label}" בדף ${inputField.page} עדיין ריק)`);
-            foundNotFilled = true;
-            return true;
-          }
-        } else if ((inputField.editor.inputType.value.includes('signature')) && inputField.value === emptySignature) {
-          alert('אנא ודא שחתמת את המסמך.');
-          foundNotFilled = true;
-          return true;
-        }
+      setVisibleDiv(current => current + (requestedFiles.length>0?1:2));
 
-      });
-
-      if (foundNotFilled) {
+    } else if (visibleDiv === 1) {
+      if (!mandatoryFilesSubmitted()) {
         return;
       }
+      setVisibleDiv(current => current + 1);
     }
-    setVisibleDiv(current => current + 1);
   };
 
   const handlePreviousClick = () => {
     setVisibleDiv(current => current - 1);
   };
-  async function setParameterData(fetchedInputFields, child_name ,signer_name ,child_dob){
+  async function setParameterData(fetchedInputFields, child_name, signer_name, child_dob) {
     const updatedInputFields = [...fetchedInputFields];
 
     fetchedInputFields.forEach((field, index2) => {
@@ -229,23 +216,26 @@ export default function PdfSign(props) {
         updatedInputFields[index2].value = signer_name;
       } else if (field.editor.inputType.value === "dateOfBirth" && child_dob !== null && child_dob !== "") {
         updatedInputFields[index2].value = child_dob;
-      } else if (field.editor.inputType.value === "childId" && govId  !== null) {
-        updatedInputFields[index2].value = govId ;
-      } else if (field.editor.inputType.value === "childId" && child_id  !== null) {
-        updatedInputFields[index2].value = child_id ;
-      } else if (field.editor.inputType.value === "childFirstName" && first_name  !== null) {
-        updatedInputFields[index2].value = first_name ;
-      } else if (field.editor.inputType.value === "childLastName" && last_name  !== null) {
-        updatedInputFields[index2].value = last_name ;
-      } else if (field.editor.inputType.value === "kindergarten" && kindergarten  !== null) {
-        updatedInputFields[index2].value = kindergarten ;
-      } else if (field.editor.inputType.value === "parentName1" && parent_name  !== null) {
-        updatedInputFields[index2].value = parent_name ;
-      } else if (field.editor.inputType.value === "phoneNumber1" && parent_phone  !== null) {
-        updatedInputFields[index2].value = parent_phone ;
-      } 
+      } else if (field.editor.inputType.value === "childId" && govId !== null) {
+        updatedInputFields[index2].value = govId;
+      } else if (field.editor.inputType.value === "childId" && child_id !== null) {
+        updatedInputFields[index2].value = child_id;
+      } else if (field.editor.inputType.value === "childFirstName" && first_name !== null) {
+        updatedInputFields[index2].value = first_name;
+      } else if (field.editor.inputType.value === "childLastName" && last_name !== null) {
+        updatedInputFields[index2].value = last_name;
+      } else if (field.editor.inputType.value === "kindergarten" && kindergarten !== null) {
+        updatedInputFields[index2].value = kindergarten;
+      } else if (field.editor.inputType.value === "parentName1" && parent_name !== null) {
+        updatedInputFields[index2].value = parent_name;
+      } else if (field.editor.inputType.value === "phoneNumber1" && parent_phone !== null) {
+        updatedInputFields[index2].value = parent_phone;
+      }
     })
-    setInputFields(updatedInputFields);
+
+    const updatedFields = updatedInputFields.map(field => ({ ...field, valid: true }));
+
+    setInputFields(updatedFields);
   }
 
 
@@ -258,6 +248,7 @@ export default function PdfSign(props) {
       if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
         const sanitizedInput = DOMPurify.sanitize(event.target.value);
         updatedInputFields[index2].value = sanitizedInput;
+        updatedInputFields[index2].valid = true;
       }
     })
     setInputFields(updatedInputFields);
@@ -362,6 +353,21 @@ export default function PdfSign(props) {
     return lines;
   };
 
+  function mandatoryFilesSubmitted() {
+
+    let response = true;
+
+    requestedFiles.map((request, index) => {
+      if (request.mandatory && !Object.keys(files).includes(String(index))) {
+        alert(` אנא הגש את המסמכים הדרושים חובה בדף זה, חסר לך המסמך שתיאורו: "${request.description}".`);
+        response = false;
+        return response;
+      }
+    });
+
+    return response;
+  }
+
   const handleOpenPDF = async () => {
 
     const emptySignature = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADICAYAAAC3QRk5AAAAAXNSR0IArs4c6QAABmJJREFUeF7t1DENADAMBLEEQPnTrVQKvdEB8IMV3c7MGUeAAAEC3wIrqN+GBggQIPAEBNUjECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIEBNUPECBAIBIQ1AjSDAECBATVDxAgQCASENQI0gwBAgQE1Q8QIEAgEhDUCNIMAQIELjoXCvGAGlIAAAAAAElFTkSuQmCC";
@@ -370,48 +376,16 @@ export default function PdfSign(props) {
 
     inputFields.some(field => {
       if (field?.mandatory === true && field?.value === "") {
-        alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
+        // alert(` אנא ודא שכל הפרטים מולאו. (קיים שדה חובה בדף ${field.page} עדיין ריק)`);
+        alert(` אנא ודא שכל הפרטים מולאו. ("${field?.editor.inputType.label}" בדף ${field.page} עדיין ריק)`);
         foundNotFilled = true;
         return true;
-      }
-    })
-
-    if (foundNotFilled) {
-      return;
-    }
-
-    inputFields.some(inputField => {
-      if (inputField.value === "") {
-        if ((inputField.editor.inputType.value === 'childName' || inputField.editor.inputType.value === 'childId' ||
-          inputField.editor.inputType.value === 'day' || inputField.editor.inputType.value === 'month' || inputField.editor.inputType.value.includes('year') ||
-          inputField.editor.inputType.value === 'parentName1' || inputField.editor.inputType.value === 'parentId1' ||
-          inputField.editor.inputType.value === 'phoneNumber1' || inputField.editor.inputType.value === 'parentName2' ||
-          inputField.editor.inputType.value === 'parentId2' || inputField.editor.inputType.value === 'phoneNumber2' ||
-          inputField.editor.inputType.value === 'kindergarten' || inputField.editor.inputType.value === 'hebrewYear') ||
-          inputField.editor.inputType.value === 'childFirstName' || inputField.editor.inputType.value === 'childLastName' ||
-          inputField.editor.inputType.value === 'dateOfBirth' || inputField.editor.inputType.value === 'countryOfBirth' ||
-          inputField.editor.inputType.value === 'zip' || inputField.editor.inputType.value === 'address' ||
-          inputField.editor.inputType.value === 'parentJob1' || inputField.editor.inputType.value === 'dateOfBirth' ||
-          inputField.editor.inputType.value === 'parentEmailAddress1' || inputField.editor.inputType.value === 'parentEmailAddress2' ||
-          inputField.editor.inputType.value === 'healthIssueExist' || inputField.editor.inputType.value === 'receivedFullVaccination' ||
-          inputField.editor.inputType.value === 'hmo' || inputField.editor.inputType.value === 'attendanceStartingDate' ||
-          inputField.editor.inputType.value === 'from' || inputField.editor.inputType.value === 'signingDate' ||
-          inputField.editor.inputType.value === 'className' || inputField.editor.inputType.value === 'monthlyPayment' ||
-          inputField.editor.inputType.value === 'paymentMethod' || inputField.editor.inputType.value === 'allowsPhotographingInternal' ||
-          inputField.editor.inputType.value === 'allowsPhotographingExternal' || inputField.editor.inputType.value === 'approverName' ||
-          inputField.editor.inputType.value === 'approverStatus' || inputField.editor.inputType.value === 'approverAddress' ||
-          inputField.editor.inputType.value === 'approverPhoneNumber') {
-          alert(` אנא ודא שכל הפרטים מולאו. ("${inputField.editor.inputType.label}" בדף ${inputField.page} עדיין ריק)`);
-          foundNotFilled = true;
-          return true;
-        }
-      } else if ((inputField.editor.inputType.value.includes('signature')) && inputField.value === emptySignature) {
+      } else if (field?.mandatory === true && (field?.editor.inputType.value.includes('signature')) && field?.value === emptySignature){
         alert('אנא ודא שחתמת את המסמך.');
         foundNotFilled = true;
         return true;
       }
-
-    });
+    })
 
     if (foundNotFilled) {
       return;
@@ -422,13 +396,7 @@ export default function PdfSign(props) {
       return;
     }
 
-    // if (requireID && !selectedImage) {
-    //   alert('אנא העלה צילום ת"ז עבור השדה המיועד למטה.');
-    //   return;
-    // }
-
-    if (Object.keys(files).length !== requestedFiles.length) {
-      alert('אנא הגש את המסמכים הדרושים למטה.');
+    if (!mandatoryFilesSubmitted()) {
       return;
     }
 
@@ -540,23 +508,23 @@ export default function PdfSign(props) {
         const page = pdfDoc.addPage();
         const { width, height } = page.getSize();
 
-        let y = height-200;
+        let y = height - 200;
         const x = 50;
         let counter = 0;
         const sizeFont = 12;
         let totalLines = 0;
 
         // Iterate through the links object and write each link to the PDF
-        for (const link of Object.values(modified)) {
+        for (let link of Object.entries(modified)) {
           // Write the link to the PDF
-          const lines = await wrapText(`${requestedFiles[counter]}`, pageWidth * 0.8, customFont, sizeFont);
+          const lines = await wrapText(`${requestedFiles[link[0]].description}`, pageWidth * 0.8, customFont, sizeFont);
           totalLines = totalLines + lines.length;
 
           lines.forEach((line, index) => {
             console.log(line);
-            page.drawText(`${index===0?`${counter+1}( `:" "}${line}`, {
+            page.drawText(`${index === 0 ? `${counter + 1}. ` : " "}${line}`, {
               x: x + pageWidth * 0.8 - customFont.widthOfTextAtSize(lines[index], sizeFont),
-              y: y-20*(index),
+              y: y - 20 * (index),
               font: customFont,
               size: sizeFont,
               color: rgb(0, 0, 0)
@@ -564,10 +532,10 @@ export default function PdfSign(props) {
           });
 
           // page.drawText(`${requestedFiles[counter]}`, { x, y, size: 12, font: customFont });
-          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link}`, { x, y: y - (lines.length) * 20, size: sizeFont, color: rgb(0, 0, 1), font: customFont });
+          page.drawText(`https://templates-api.myvarno.io/api/documentSign/${link[1]}`, { x, y: y - (lines.length) * 20, size: sizeFont, color: rgb(0, 0, 1), font: customFont });
           // `https://templates-api.myvarno.io/api/documentSign/${link}`
           // Move the y-coordinate down for the next link
-          y -= (lines.length+2)*20;
+          y -= (lines.length + 2) * 20;
           counter = counter + 1;
         }
       }
@@ -697,6 +665,7 @@ export default function PdfSign(props) {
       inputFields.forEach((field, index2) => {
         if (field.editor.inputType.value === inputFields[index].editor.inputType.value) {
           updatedInputFields[index2].value = url;
+          updatedInputFields[index2].valid = true;
         }
       })
       // console.log(updatedInputFields);
@@ -715,7 +684,7 @@ export default function PdfSign(props) {
     setInputFields(prevInputFields => {
       const updatedInputFields = [...prevInputFields]; // Copy the existing array
       updatedInputFields[index].value = event.target.value;
-      console.log(updatedInputFields[index].value);
+      updatedInputFields[index].valid = true;
       return updatedInputFields; // Set the updated array as the new state
     });
   }
@@ -733,6 +702,8 @@ export default function PdfSign(props) {
           </div>
         </div>
       }
+
+      <FormStepper visibleDiv={visibleDiv} setVisibleDiv={setVisibleDiv} requestedFiles={requestedFiles} handleNextClick={handleNextClick} />
 
       <div className={`div-container ${visibleDiv === 0 ? '' : 'hidden'}`}>
         <div ref={containerRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }} >
@@ -786,7 +757,7 @@ export default function PdfSign(props) {
       </div>
 
       <div className={`div-container ${visibleDiv === 1 ? '' : 'hidden'}`}>
-        {requestedFiles.length > 0 && <RequestedFilesList requestedFiles={requestedFiles} files={files} setFiles={setFiles} />}
+         <RequestedFilesList requestedFiles={requestedFiles} files={files} setFiles={setFiles} />
 
 
         <div className="d-flex justify-content-center p-3">
@@ -797,9 +768,12 @@ export default function PdfSign(props) {
             <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
           </div>}
         </div>
+      </div>
+
+      <div className={`div-container ${visibleDiv === 2 ? '' : 'hidden'} mt-5`}>
         <div className="d-flex justify-content-center input-group pb-5" style={{ direction: 'ltr', textAlign: 'right' }}>
 
-          <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מה מספר פלפון שלך" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
+          <input type="text" style={{ maxWidth: "200px" }} value={approverPhoneNumber} className="form-control" id="numberInput" placeholder="מספר טלפאן נייד" onChange={(event) => setApproverPhoneNumner(event.target.value)} />
 
           <button className="btn btn-primary " onClick={handleOpenPDF}>הגש מסמך</button>
         </div>
@@ -814,12 +788,12 @@ export default function PdfSign(props) {
           <input className="form-control" id="customFile" type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
         </div>}
       </div> */}
-      
 
-      <Button onClick={handlePreviousClick} disabled={visibleDiv === 0}>
+
+      <Button className=" m-3 mb-5 " variant="outlined" onClick={handlePreviousClick} disabled={visibleDiv === 0}>
         הקודם
       </Button>
-      <Button onClick={handleNextClick} disabled={visibleDiv === 1}>
+      <Button className=" m-3 mb-5" variant="contained" onClick={handleNextClick} disabled={visibleDiv === 2}>
         הבא
       </Button>
 

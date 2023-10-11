@@ -12,6 +12,7 @@ function SignatureInput({ index, inputField, setHoveredIndex, setSignatureOpen, 
         fontSize: `${windowWidth / 40}px`,
         width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
         padding: '4px',
+        border: `${inputField.valid? '':'2px solid red'}`
       }}
       onMouseEnter={(event) => handleMouseEnter(event, index)}
       onMouseLeave={handleMouseLeave}

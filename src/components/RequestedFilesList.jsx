@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Input, Typography, Divider, Paper, } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
 
 import '../index.css';
 
@@ -49,13 +50,12 @@ function RequestedFilesList(props) {
   return (
 
     <div className="david" >
-      <Box >
-
+      {props.requestedFiles.length > 0 &&<Box >
         <Typography variant="h4" mb={2}>מסמכים דרושים</Typography>
         <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px', margin: '8px' }}>
           {props.requestedFiles.map((description, index) => (
             <React.Fragment key={index}>
-              <Typography variant="h6" align="right" style={{ marginTop: '8px' }}>{description}</Typography>
+              <Typography variant="h6" align="right" style={{ marginTop: '8px' }}>{description.description} {description.mandatory && <span className="david text-danger">(חובה*)</span>}</Typography>
               <Box key={index} mb={2} display="flex" alignItems="center" justifyContent="space-between">
 
                 <Input
@@ -69,7 +69,11 @@ function RequestedFilesList(props) {
             </React.Fragment>
           ))}
         </Paper>
-      </Box>
+      </Box>}
+
+      {!props.requestedFiles.length > 0 && <Box >
+        <Typography variant="h5" mb={2}><div className="david mt-5" > לא נדרש צירוף מסמכים עם הגשה זו. <DoneIcon/> </div>  </Typography>
+      </Box> }
     </div>
   );
 }

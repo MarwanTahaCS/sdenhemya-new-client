@@ -10,7 +10,7 @@ function SelectInput({index, inputField, handleSelectChange, handleMouseEnter, h
           width: `${(windowWidth * inputField.editor.width / 1.5)}px`,
           height: `${windowWidth * inputField.editor.height / 40}px`,
           fontSize: `${windowWidth / 60}px`,
-          border: '1px solid #ccc',
+          border: `${inputField.valid? '1px solid #ccc':'2px solid red'}`
         }}
         value={inputField.value}
         onChange={(event) => handleSelectChange(event, index)}

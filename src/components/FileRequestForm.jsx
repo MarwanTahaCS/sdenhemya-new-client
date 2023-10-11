@@ -9,32 +9,41 @@ function FileRequestForm(props) {
   const [currentDescription, setCurrentDescription] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
   const [showInput, setShowInput] = useState(false); // Control whether to show the input field
+  const [isMandatory, setIsMandatory] = useState(true);
 
   const handleAddFileRequest = () => {
     if (currentDescription.trim() !== '') {
       props.setRequestedFiles([
         ...props.requestedFiles,
-        currentDescription,
+        { description: currentDescription, mandatory: isMandatory },
       ]);
       setCurrentDescription('');
-      setShowInput(false); // Hide the input field after adding a file
+      setIsMandatory(true);
+      setShowInput(false);
     }
+
+    console.log([
+      ...props.requestedFiles,
+      { description: currentDescription, mandatory: isMandatory },
+    ]);
   };
 
   const handleEditFileRequest = (index) => {
     setEditingIndex(index);
-    setCurrentDescription(props.requestedFiles[index]);
-    setShowInput(true); // Show the input field when editing
+    setCurrentDescription(props.requestedFiles[index].description);
+    setIsMandatory(props.requestedFiles[index].mandatory);
+    setShowInput(true);
   };
 
   const handleSaveEdit = () => {
     if (currentDescription.trim() !== '') {
       const updatedFiles = [...props.requestedFiles];
-      updatedFiles[editingIndex] = currentDescription;
+      updatedFiles[editingIndex] = { description: currentDescription, mandatory: isMandatory };
       props.setRequestedFiles(updatedFiles);
       setCurrentDescription('');
+      setIsMandatory(true);
       setEditingIndex(null);
-      setShowInput(false); // Hide the input field after saving edit
+      setShowInput(false);
     }
   };
 
@@ -52,7 +61,7 @@ function FileRequestForm(props) {
 
   return (
     <div>
-      <h2>מסמכים דרושים</h2>
+      <h2>דרישת מסמכים</h2>
       {!showInput && (
         <div dir="ltr">
           <Button variant="contained" endIcon={<AddIcon />} onClick={() => setShowInput(true)}>
@@ -62,13 +71,28 @@ function FileRequestForm(props) {
       )}
       {showInput && (
         <div>
-          <TextField
-            label="תיאור המסמך (max 100 characters)"
-            variant="outlined"
-            fullWidth
-            value={currentDescription}
-            onChange={(e) => setCurrentDescription(e.target.value)}
-          />
+          <Paper elevation={3} style={{ padding: '16px', marginBottom: '16px' }}>
+            <TextField
+              label="תיאור המסמך (max 100 characters)"
+              variant="outlined"
+              fullWidth
+              value={currentDescription}
+              onChange={(e) => setCurrentDescription(e.target.value)}
+            />
+            <div>
+
+              <label>
+                חובה
+                <input
+                  className="m-3"
+                  type="checkbox"
+                  checked={isMandatory}
+                  onChange={(e) => setIsMandatory(e.target.checked)}
+                />
+              </label>
+
+            </div>
+          </Paper>
           {editingIndex !== null ? (
             <div dir="ltr">
               <Button variant="contained" endIcon={<DoneIcon />} onClick={handleSaveEdit}>
@@ -97,7 +121,7 @@ function FileRequestForm(props) {
             {props.requestedFiles.map((file, index) => (
               <React.Fragment key={index}>
                 <ListItem key={index}>
-                  <ListItemText primary={file} />
+                  <ListItemText primary={file.description} />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" onClick={() => handleEditFileRequest(index)}>
                       <EditIcon />
