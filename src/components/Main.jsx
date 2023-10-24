@@ -32,7 +32,8 @@ export default function Main(props) {
 
   const [otp, setOtp] = useState("");
   const [ph, setPh] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingAuth, setLoadingAuth] = useState(true);
   const [showOTP, setShowOTP] = useState(false);
   const [user, setUser] = useState(null);
   const [manager, setManager] = useState(false);
@@ -45,7 +46,6 @@ export default function Main(props) {
         await onAuthStateChanged(auth, (data) => {
           console.log(data);
           setUser(data);
-          setLoading(false);
         });
         // const isManager = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/manager/${props.user}`);
         // setManager(isManager);
@@ -54,10 +54,13 @@ export default function Main(props) {
       } catch (err) {
         console.error(err);
         setLoading(false);
+        setLoadingAuth(false);
       }
     }
 
     fetchAuth();
+
+    setLoadingAuth(false);
 
   }, []);
 
@@ -111,27 +114,32 @@ export default function Main(props) {
   return (
     <div className="bg-light" style={{ height: '100%' }}>
       {/* <Header switchLanguage={handleClick} /> */}
-      {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
+      {(loading||loadingAuth) && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
       {user && <NavBar user={user.phoneNumber} signOut={() => signOut(auth)} />}
 
       <Routes>
 
         <Route path="/create-org" element=
-          {<>
-            {user ?
-              <CreateOrg /> :
-              <>
-                {loading && <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>}
+          {loadingAuth ?
+            <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div>
+            :
+            <>
+              {user ?
+                <CreateOrg /> :
                 <>
-                  <Toaster toastOptions={{ duration: 4000 }} />
-                  <div id="recaptcha-container" ></div>
-                  <SignIn onClick={onSignup} ph={ph} setPh={setPh}
-                    otp={otp} setOtp={setOtp}
-                    showOTP={showOTP} setShowOTP={setShowOTP}
-                    onOTPVerify={onOTPVerify} setManager={setManager} />
-                </></>
-            }
-          </>}
+                  {loading ? <div className="loading-wrapper"><div className="loading"><AtomicSpinner /></div></div> :
+                    <>
+                      <Toaster toastOptions={{ duration: 4000 }} />
+                      <div id="recaptcha-container" ></div>
+                      <SignIn onClick={onSignup} ph={ph} setPh={setPh}
+                        otp={otp} setOtp={setOtp}
+                        showOTP={showOTP} setShowOTP={setShowOTP}
+                        onOTPVerify={onOTPVerify} setManager={setManager} />
+                    </>}
+                </>
+              }
+
+            </>}
         />
 
         <Route path="/" element=

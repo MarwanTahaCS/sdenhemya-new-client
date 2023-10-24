@@ -65,7 +65,7 @@ function FileRequestForm(props) {
       {!showInput && (
         <div dir="ltr">
           <Button variant="contained" endIcon={<AddIcon />} onClick={() => setShowInput(true)}>
-            הוספת מסמכך דרוש
+            הוספת מסמך דרוש
           </Button>
         </div>
       )}

@@ -160,7 +160,7 @@ export default function Org(props) {
     }
 
 
-    function downloadSubmittedData(event, templateID, templateName) {
+    async function downloadSubmittedData(event, templateID, templateName) {
         // Function to fetch data from the backend server
         const fetchSubmittedData = async () => {
             try {
@@ -168,8 +168,8 @@ export default function Org(props) {
                 // Make the GET request using Axios
                 const response = await axios.get(`${window.AppConfig.serverDomain}/api/organzations/submitted/${templateID}`);
                 // const response = await axios.get(`http://localhost:3001/api/organzations/submitted/${templateID}`);
-                console.log(response.data);
-                const buffer = await generateExcelFile(response.data);
+                console.log(JSON.stringify(response.data));
+                const buffer = await generateExcelFile(JSON.stringify(response.data));
                 const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
                 saveAs(blob, `${templateName.split(".")[0]}.xlsx`);
                 setLoading(false);
@@ -180,7 +180,7 @@ export default function Org(props) {
         };
 
         // Call the fetchData function when the component mounts
-        fetchSubmittedData();
+        await fetchSubmittedData();
 
     }
 
@@ -188,21 +188,29 @@ export default function Org(props) {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet1');
 
-        worksheet.columns = 
-        [
-            ...Object.keys(data).map(key => ({ header: key, key: key, width: key.length  })), 
-            ...submittedData.pop().extraFields.map(item => ({ header: item.fieldID, key: item.fieldID, width: item.fieldID.length }))
+        const inputsHeaders = [
+            ...Object.keys(JSON.parse(submittedData)[0].staticFields).map(key => ({ header: key, key: key, width: key.length * 1.2 })),
+            ...JSON.parse(submittedData).pop().extraFields.map(item => ({ header: item.fieldID, key: item.fieldID, width: item.fieldID.length })),
         ];
 
-        submittedData.forEach((submittedDocument, index) => {
+        worksheet.columns = 
+        [
+            { header: 'pdfFileURL', key: 'pdfFileURL', width: 60 },
+            ... inputsHeaders,
+            
+        ];
+
+        JSON.parse(submittedData).forEach((submittedDocument, index) => {
             if (submittedDocument.accepted) {
                 const extraFields = submittedDocument.extraFields.reduce((acc, item) => {
                     acc[item.fieldID] = item.fieldValue;
                     return acc;
                 }, {});
 
-                const newRow = { ...submittedDocument.staticFields, pdfFileURL: submittedDocument.signedPdf, ...extraFields };
-                
+                const inputValues = { ...submittedDocument.staticFields, ...extraFields }
+
+                const newRow = { ...{ pdfFileURL: submittedDocument.signedPdf }, ...inputValues }; //, ...extraFields
+
                 worksheet.addRow(newRow);
             }
         });
@@ -383,18 +391,18 @@ export default function Org(props) {
                                             </Typography>
                                         </CardContent>
                                         <CardActions style={{ fontSize: calculateFontSize() }} sx={{ borderTop: '1px solid lightgrey', display: 'flex', justifyContent: 'space-between' }}>
-                                            
+
                                             <Tooltip title="הורד קובץ אקסל הכולל את נתוני ההגשות">
-                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}><GetAppIcon/> הורד הגשות </Button>
+                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => downloadSubmittedData(event, template.id, template.name)}><GetAppIcon /> הורד הגשות </Button>
                                             </Tooltip>
                                             <Tooltip title="הצג את הפרטים העיקריים של כל הגשה, ופסול הגשות לא מרוצות.">
-                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}><TableChartIcon/> הצג הגשות </Button>
+                                                <Button size="small" style={{ fontSize: calculateFontSize() }} onClick={(event) => showSubmittedData(event, template.id)}><TableChartIcon /> הצג הגשות </Button>
                                             </Tooltip>
                                             <Tooltip title="פתח את דף עריכת המסמך">
-                                                <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}><EditIcon/> עדכן מסמך </a></Button>
+                                                <Button size="small"> <a style={{ fontSize: calculateFontSize(), textDecoration: 'none', color: 'inherit' }} target="_blank" href={`${currentProtocol}//${currentDomain}${port}/update-doc/${removeAfterLastUnderscore(template.name.split('.')[0])}_${template.id}`}><EditIcon /> עדכן מסמך </a></Button>
                                             </Tooltip>
                                             <Tooltip title="פתח את המסמך הדיגטלי במסמך חדש.">
-                                                <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.id}`}> <LaunchIcon  /> פתח </a>
+                                                <a style={{ fontSize: calculateFontSize() }} target="_blank" className="btn btn-outline-secondary btn-sm ms-3" href={`${currentProtocol}//${currentDomain}${port}/template/${template.id}`}> <LaunchIcon /> פתח </a>
                                             </Tooltip>
                                             <Tooltip title="כפתור זה משבית מסמך זה, אך ישאר שמור במאגר שלנו.">
                                                 <IconButton onClick={() => handleDelete(template.id)} disabled={deleting}>
